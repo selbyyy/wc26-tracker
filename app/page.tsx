@@ -1,8 +1,7 @@
 // app/page.tsx
-export const revalidate = 300; // 核心机制：每300秒(5分钟)，Vercel 自动在后台请求一次 Polymarket API
+export const revalidate = 300; 
 
 export default async function Home() {
-  // 调用 Polymarket Gamma API，拉取当前活跃的市场数据 (MVP阶段先拉取10个作为测试)
   const res = await fetch('https://gamma-api.polymarket.com/markets?limit=10&active=true&closed=false', {
     next: { revalidate: 300 }
   });
@@ -17,10 +16,23 @@ export default async function Home() {
         
         <div className="space-y-4">
           {markets
-            .filter((m: any) => m.outcomePrices && m.outcomePrices.length > 0)
+            .filter((m: any) => m.outcomePrices)
             .map((market: any) => {
-             // 降维转换：提取买盘价格 (如 0.65) 并直接转化为大众秒懂的百分比 (65.0%)
-             const price = parseFloat(market.outcomePrices[0]);
+             
+             let price = 0;
+             try {
+               // 核心修复：自动识别并剥离外层的文本伪装，提取真实的数字
+               const parsedPrices = typeof market.outcomePrices === 'string' 
+                 ? JSON.parse(market.outcomePrices) 
+                 : market.outcomePrices;
+               price = parseFloat(parsedPrices[0]);
+             } catch (e) {
+               return null; // 遇到异常数据直接跳过，保护页面不崩溃
+             }
+
+             // 过滤掉无效数字
+             if (isNaN(price)) return null;
+
              const probability = (price * 100).toFixed(1);
              
              return (
