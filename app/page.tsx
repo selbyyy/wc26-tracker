@@ -1,5 +1,13 @@
-// app/page.tsx
+import Link from 'next/link';
+
 export const revalidate = 300; 
+
+function generateSlug(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 
 export default async function Home() {
   const res = await fetch('https://gamma-api.polymarket.com/markets?limit=10&active=true&closed=false', {
@@ -18,30 +26,30 @@ export default async function Home() {
           {markets
             .filter((m: any) => m.outcomePrices)
             .map((market: any) => {
-             
              let price = 0;
              try {
-               // 核心修复：自动识别并剥离外层的文本伪装，提取真实的数字
                const parsedPrices = typeof market.outcomePrices === 'string' 
                  ? JSON.parse(market.outcomePrices) 
                  : market.outcomePrices;
                price = parseFloat(parsedPrices[0]);
              } catch (e) {
-               return null; // 遇到异常数据直接跳过，保护页面不崩溃
+               return null; 
              }
 
-             // 过滤掉无效数字
              if (isNaN(price)) return null;
 
              const probability = (price * 100).toFixed(1);
+             const slug = generateSlug(market.question);
              
              return (
-              <div key={market.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center hover:shadow-md transition">
-                <h2 className="text-lg font-medium text-gray-800 pr-4">{market.question}</h2>
-                <div className="text-2xl font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-lg whitespace-nowrap">
-                  {probability}%
+              <Link href={`/market/${slug}`} key={market.id} className="block">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center hover:shadow-md hover:border-blue-300 transition cursor-pointer">
+                  <h2 className="text-lg font-medium text-gray-800 pr-4">{market.question}</h2>
+                  <div className="text-2xl font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-lg whitespace-nowrap">
+                    {probability}%
+                  </div>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>
