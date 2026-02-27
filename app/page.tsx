@@ -1,4 +1,3 @@
-// app/page.tsx
 import Link from 'next/link';
 
 export const revalidate = 300; 
@@ -8,15 +7,21 @@ function generateSlug(text: string) {
 }
 
 export default async function Home() {
-  // 核心修改 1：API 链接末尾加入了 &search=World%20Cup，精准过滤世界杯盘口
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=20&active=true&closed=false&search=World%20Cup', {
+  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=100&active=true&closed=false&search=FIFA', {
     next: { revalidate: 300 }
   });
   
-  const markets = await res.json();
+  const rawMarkets = await res.json();
+
+  // 严格过滤：必须包含足球关键词，且排除政治杂音
+  const markets = rawMarkets.filter((m: any) => {
+    const text = `${m.question} ${m.description || ''}`.toLowerCase();
+    const isWorldCup = text.includes('world cup') || text.includes('fifa');
+    const isNotPolitics = !text.includes('trump');
+    return isWorldCup && isNotPolitics && m.outcomePrices;
+  });
 
   return (
-    // 核心修改 2：全面重构 UI，采用深色体育风格、网格布局和高对比度悬浮特效
     <main className="min-h-screen bg-slate-900 text-slate-50 p-6 md:p-12 font-sans">
       <div className="max-w-5xl mx-auto">
         <header className="mb-12 text-center pt-8">
@@ -26,11 +31,8 @@ export default async function Home() {
           <p className="text-slate-400 text-lg">Real-time mathematical probabilities from global prediction markets.</p>
         </header>
         
-        {/* 桌面端改为双列网格结构，更显专业 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {markets
-            .filter((m: any) => m.outcomePrices)
-            .map((market: any) => {
+          {markets.map((market: any) => {
              let price = 0;
              try {
                const parsedPrices = typeof market.outcomePrices === 'string' 

@@ -1,4 +1,3 @@
-// app/market/[slug]/page.tsx
 import { Metadata } from 'next';
 
 export const revalidate = 300;
@@ -19,11 +18,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function MarketDetail({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   
-  // 抓取并匹配当前页面对应的数据
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=100&active=true&closed=false&search=World%20Cup', {
+  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=100&active=true&closed=false&search=FIFA', {
     next: { revalidate: 300 }
   });
   const markets = await res.json();
+  
   const market = markets.find((m: any) => generateSlug(m.question) === resolvedParams.slug);
 
   let probability = "N/A";
@@ -38,7 +37,7 @@ export default async function MarketDetail({ params }: { params: Promise<{ slug:
   }
 
   const cleanName = market ? market.question : resolvedParams.slug.replace(/-/g, ' ');
-  const tradeUrl = `https://polymarket.com`; // 未来替换为你的专属链接
+  const tradeUrl = `https://polymarket.com`; 
 
   return (
     <main className="min-h-screen bg-slate-900 text-slate-50 p-6 md:p-12 font-sans">
@@ -47,7 +46,6 @@ export default async function MarketDetail({ params }: { params: Promise<{ slug:
           {cleanName}
         </h1>
         
-        {/* 硬核数据看板 */}
         <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-slate-900 p-5 rounded-xl border border-slate-700">
             <p className="text-slate-400 text-sm font-medium mb-1 uppercase tracking-wider">Win Probability</p>
@@ -59,7 +57,6 @@ export default async function MarketDetail({ params }: { params: Promise<{ slug:
           </div>
         </div>
 
-        {/* 赔率对比模块 (教育用户为何在此交易) */}
         <div className="bg-blue-500/10 border border-blue-500/30 p-6 rounded-xl mb-10">
           <h3 className="text-blue-400 font-semibold mb-4 text-lg">🔥 Why Trade Here?</h3>
           <ul className="space-y-3 text-sm text-slate-300">
@@ -74,7 +71,6 @@ export default async function MarketDetail({ params }: { params: Promise<{ slug:
           </ul>
         </div>
 
-        {/* 交易转化按钮 */}
         <a 
           href={tradeUrl}
           target="_blank"
