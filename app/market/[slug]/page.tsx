@@ -18,7 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function MarketDetail({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=50&active=true&closed=false&search=World%20Cup&order=volume&ascending=false', {
+  // 必须与首页保持完全一致的数据源
+  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=200&active=true&closed=false&search=FIFA', {
     next: { revalidate: 300 }
   });
   const markets = await res.json();

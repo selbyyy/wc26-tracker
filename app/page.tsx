@@ -7,19 +7,23 @@ function generateSlug(text: string) {
 }
 
 export default async function Home() {
-  // 加入 order=volume 强制按资金池降序，核心市场置顶
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=50&active=true&closed=false&search=World%20Cup&order=volume&ascending=false', {
+  // 移除容易引起冲突的 order 参数，放大 limit 并使用最精准的 FIFA 关键词
+  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=200&active=true&closed=false&search=FIFA', {
     next: { revalidate: 300 }
   });
   
   const rawMarkets = await res.json();
 
-  const markets = rawMarkets.filter((m: any) => {
+  // 1. 本地精准过滤
+  let markets = rawMarkets.filter((m: any) => {
     const text = `${m.question} ${m.description || ''}`.toLowerCase();
     const isWorldCup = text.includes('world cup') || text.includes('fifa');
     const isNotPolitics = !text.includes('trump');
     return isWorldCup && isNotPolitics && m.outcomePrices && m.outcomes;
   });
+
+  // 2. 本地强制按交易量 (Volume) 降序排列，完美避开 API 吞数据 BUG
+  markets.sort((a: any, b: any) => (b.volume || 0) - (a.volume || 0));
 
   return (
     <main className="min-h-screen bg-slate-900 text-slate-50 p-6 md:p-12 font-sans">
@@ -49,7 +53,6 @@ export default async function Home() {
              let displayLabel = "WIN PROBABILITY";
              let displaySub = "";
 
-             // 智能匹配逻辑：区分二元市场与多选市场
              if (isBinary) {
                const price = parseFloat(prices[yesIndex]);
                if(isNaN(price)) return null;
