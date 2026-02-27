@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function MarketDetail({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=100&active=true&closed=false&search=FIFA', {
+  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=50&active=true&closed=false&search=World%20Cup&order=volume&ascending=false', {
     next: { revalidate: 300 }
   });
   const markets = await res.json();
@@ -27,11 +27,29 @@ export default async function MarketDetail({ params }: { params: Promise<{ slug:
 
   let probability = "N/A";
   let volume = "$0";
+  let displaySub = "";
+  let displayLabel = "WIN PROBABILITY";
 
   if (market) {
     try {
-      const parsedPrices = typeof market.outcomePrices === 'string' ? JSON.parse(market.outcomePrices) : market.outcomePrices;
-      probability = (parseFloat(parsedPrices[0]) * 100).toFixed(1) + "%";
+      const prices = typeof market.outcomePrices === 'string' ? JSON.parse(market.outcomePrices) : market.outcomePrices;
+      const outcomes = typeof market.outcomes === 'string' ? JSON.parse(market.outcomes) : market.outcomes;
+      
+      const yesIndex = outcomes.indexOf("Yes");
+      const isBinary = yesIndex !== -1 && outcomes.length === 2;
+      
+      if (isBinary) {
+        probability = (parseFloat(prices[yesIndex]) * 100).toFixed(1) + "%";
+      } else {
+        const paired = outcomes.map((name: string, index: number) => ({
+          name,
+          price: parseFloat(prices[index] || "0")
+        })).sort((a: any, b: any) => b.price - a.price);
+        
+        probability = (paired[0].price * 100).toFixed(1) + "%";
+        displaySub = paired[0].name;
+        displayLabel = "FAVORITE";
+      }
     } catch(e) {}
     volume = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(market.volume || 0);
   }
@@ -48,7 +66,8 @@ export default async function MarketDetail({ params }: { params: Promise<{ slug:
         
         <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-slate-900 p-5 rounded-xl border border-slate-700">
-            <p className="text-slate-400 text-sm font-medium mb-1 uppercase tracking-wider">Win Probability</p>
+            <p className="text-slate-400 text-sm font-medium mb-1 uppercase tracking-wider">{displayLabel}</p>
+            {displaySub && <p className="text-xl font-bold text-slate-200 mb-1">{displaySub}</p>}
             <p className="text-4xl font-black text-emerald-400">{probability}</p>
           </div>
           <div className="bg-slate-900 p-5 rounded-xl border border-slate-700">

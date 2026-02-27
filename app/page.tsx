@@ -7,18 +7,18 @@ function generateSlug(text: string) {
 }
 
 export default async function Home() {
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=100&active=true&closed=false&search=FIFA', {
+  // 加入 order=volume 强制按资金池降序，核心市场置顶
+  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=50&active=true&closed=false&search=World%20Cup&order=volume&ascending=false', {
     next: { revalidate: 300 }
   });
   
   const rawMarkets = await res.json();
 
-  // 严格过滤：必须包含足球关键词，且排除政治杂音
   const markets = rawMarkets.filter((m: any) => {
     const text = `${m.question} ${m.description || ''}`.toLowerCase();
     const isWorldCup = text.includes('world cup') || text.includes('fifa');
     const isNotPolitics = !text.includes('trump');
-    return isWorldCup && isNotPolitics && m.outcomePrices;
+    return isWorldCup && isNotPolitics && m.outcomePrices && m.outcomes;
   });
 
   return (
@@ -33,19 +33,39 @@ export default async function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {markets.map((market: any) => {
-             let price = 0;
+             let prices = [];
+             let outcomes = [];
              try {
-               const parsedPrices = typeof market.outcomePrices === 'string' 
-                 ? JSON.parse(market.outcomePrices) 
-                 : market.outcomePrices;
-               price = parseFloat(parsedPrices[0]);
+               prices = typeof market.outcomePrices === 'string' ? JSON.parse(market.outcomePrices) : market.outcomePrices;
+               outcomes = typeof market.outcomes === 'string' ? JSON.parse(market.outcomes) : market.outcomes;
              } catch (e) {
                return null; 
              }
 
-             if (isNaN(price)) return null;
+             const yesIndex = outcomes.indexOf("Yes");
+             const isBinary = yesIndex !== -1 && outcomes.length === 2;
 
-             const probability = (price * 100).toFixed(1);
+             let displayProb = "0.0";
+             let displayLabel = "WIN PROBABILITY";
+             let displaySub = "";
+
+             // 智能匹配逻辑：区分二元市场与多选市场
+             if (isBinary) {
+               const price = parseFloat(prices[yesIndex]);
+               if(isNaN(price)) return null;
+               displayProb = (price * 100).toFixed(1);
+             } else {
+               const paired = outcomes.map((name: string, index: number) => ({
+                 name,
+                 price: parseFloat(prices[index] || "0")
+               })).sort((a: any, b: any) => b.price - a.price);
+               
+               if (paired.length === 0 || isNaN(paired[0].price)) return null;
+               displayProb = (paired[0].price * 100).toFixed(1);
+               displayLabel = "FAVORITE";
+               displaySub = paired[0].name;
+             }
+
              const slug = generateSlug(market.question);
              
              return (
@@ -54,10 +74,13 @@ export default async function Home() {
                   <h2 className="text-xl font-semibold text-slate-100 mb-6 group-hover:text-blue-400 transition-colors">
                     {market.question}
                   </h2>
-                  <div className="flex justify-between items-center mt-auto border-t border-slate-700 pt-4">
-                    <span className="text-sm text-slate-400 uppercase tracking-wider font-medium">Win Probability</span>
+                  <div className="flex justify-between items-end mt-auto border-t border-slate-700 pt-4">
+                    <div className="flex flex-col">
+                      <span className="text-sm text-slate-400 uppercase tracking-wider font-medium">{displayLabel}</span>
+                      {displaySub && <span className="text-lg font-bold text-slate-200 mt-1">{displaySub}</span>}
+                    </div>
                     <div className="text-3xl font-black text-emerald-400 bg-emerald-400/10 px-4 py-2 rounded-lg">
-                      {probability}%
+                      {displayProb}%
                     </div>
                   </div>
                 </div>
