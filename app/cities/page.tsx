@@ -1,55 +1,91 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { hostCities } from '@/lib/site-data';
+import { allMatches } from '@/lib/schedule';
 
 export const metadata: Metadata = {
-  title: 'World Cup 2026 Host City Chances',
+  title: 'World Cup 2026 Host Cities and Match Routes',
   description:
-    'Track which teams are most likely to appear in each World Cup 2026 host city for ticket, travel, and market decisions.',
+    'See World Cup 2026 host cities, stadiums, scheduled matches, teams, and knockout route slots.',
 };
 
+const cityOrder = [
+  'Mexico City',
+  'Guadalajara',
+  'Monterrey',
+  'Toronto',
+  'Vancouver',
+  'Los Angeles',
+  'Seattle',
+  'San Francisco Bay Area',
+  'Dallas',
+  'Houston',
+  'Kansas City',
+  'Atlanta',
+  'Miami',
+  'Boston',
+  'Philadelphia',
+  'New York/New Jersey',
+];
+
 export default function CitiesPage() {
+  const cities = cityOrder.map((city) => ({
+    city,
+    matches: allMatches.filter((match) => match.city === city),
+  }));
+
   return (
-    <main className="min-h-screen bg-[#f7f9fb] text-[#101820]">
-      <section className="border-b border-[#dbe3ea] bg-white">
-        <div className="mx-auto max-w-7xl px-5 py-8 md:px-8">
-          <nav className="mb-10 flex flex-wrap gap-3 text-sm font-semibold text-[#516170]">
-            <Link href="/" className="text-[#101820] hover:text-[#0b6b58]">WC26 Chances</Link>
-            <Link href="/teams/usa" className="hover:text-[#0b6b58]">Teams</Link>
-            <Link href="/scenarios" className="hover:text-[#0b6b58]">Scenarios</Link>
+    <main className="min-h-screen bg-[#fffaf0] text-[#102033]">
+      <section className="bg-[#e52b2f] text-white">
+        <div className="mx-auto max-w-7xl px-5 py-6 md:px-8 md:py-10">
+          <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/75">
+            <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#e52b2f]">WC26 Chances</Link>
+            <Link href="/teams/argentina" className="px-2 py-2 hover:text-[#ffd447]">Teams</Link>
+            <Link href="/scenarios" className="px-2 py-2 hover:text-[#ffd447]">Routes</Link>
           </nav>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0b6b58]">Host city board</p>
-          <h1 className="mt-3 max-w-4xl text-5xl font-black leading-tight tracking-normal md:text-6xl">
-            Which teams might play in each city?
+          <p className="inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
+            Tourism board
+          </p>
+          <h1 className="mt-4 max-w-4xl text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
+            Every host city, every match slot.
           </h1>
-          <p className="mt-5 max-w-3xl text-lg leading-8 text-[#516170]">
-            This is the travel and ticketing angle of WC26 Chances. City exposure can become
-            a practical decision tool once the draw, group results, and bracket paths are connected.
+          <p className="mt-5 max-w-3xl text-xl leading-8 text-white/85">
+            Use cities like a travel map: see confirmed group games, knockout slots, and where fan demand may concentrate.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-10 md:px-8">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {hostCities.map((city) => (
-            <div key={city.slug} className="rounded-md border border-[#cfd9e2] bg-white p-5">
+      <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {cities.map(({ city, matches }) => (
+            <div key={city} className="rounded-md border-2 border-[#102033] bg-white p-5 shadow-[6px_6px_0_#ffd447]">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-xs font-bold uppercase text-[#697887]">{city.country}</p>
-                  <h2 className="mt-1 text-2xl font-black">{city.name}</h2>
+                  <p className="text-xs font-black uppercase text-[#667085]">{matches[0]?.country}</p>
+                  <h2 className="mt-1 text-2xl font-black">{city}</h2>
                 </div>
-                <span className="rounded-md bg-[#edf3f7] px-3 py-1 text-xs font-bold text-[#516170]">
-                  {city.venue}
+                <span className="rounded-full bg-[#0b7a3b] px-3 py-1 text-xs font-black text-white">
+                  {matches.length} slots
                 </span>
               </div>
-              <p className="mt-4 text-sm leading-6 text-[#516170]">{city.angle}</p>
-              <div className="mt-5 grid grid-cols-2 gap-2">
-                {city.likelyTeams.map((team) => (
-                  <span key={team} className="rounded-md bg-[#f7f9fb] px-3 py-2 text-sm font-bold">
-                    {team}
-                  </span>
+
+              <div className="mt-5 space-y-3">
+                {matches.slice(0, 5).map((match) => (
+                  <div key={match.id} className="rounded-md bg-[#fffaf0] p-3">
+                    <p className="text-sm font-black">
+                      Match {match.id}: {match.home} vs {match.away}
+                    </p>
+                    <p className="mt-1 text-xs font-bold text-[#506070]">
+                      {match.stage} · {match.date} · {match.stadium}
+                    </p>
+                  </div>
                 ))}
               </div>
+
+              {matches.length > 5 && (
+                <p className="mt-4 text-sm font-black text-[#e52b2f]">
+                  + {matches.length - 5} more knockout or group slots
+                </p>
+              )}
             </div>
           ))}
         </div>

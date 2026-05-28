@@ -1,92 +1,59 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { featuredTeams, scenarioCards } from '@/lib/site-data';
+import { knockoutEntryMatches } from '@/lib/schedule';
 
 export const metadata: Metadata = {
-  title: 'World Cup 2026 Scenario Simulator',
+  title: 'World Cup 2026 Knockout Route Map',
   description:
-    'Explore the World Cup 2026 scenario engine concept: group winner paths, third-place qualification, and city exposure.',
+    'See the first knockout route slots for World Cup 2026 groups, including Round of 32 cities and stadiums.',
 };
 
 export default function ScenariosPage() {
+  const groupWinnerRoutes = knockoutEntryMatches
+    .filter((match) => match.home.startsWith('Winner ') || match.away.startsWith('Winner '))
+    .slice(0, 12);
+
   return (
-    <main className="min-h-screen bg-[#f7f9fb] text-[#101820]">
-      <section className="border-b border-[#dbe3ea] bg-[#101820] text-white">
-        <div className="mx-auto max-w-7xl px-5 py-8 md:px-8">
-          <nav className="mb-10 flex flex-wrap gap-3 text-sm font-semibold text-white/60">
-            <Link href="/" className="text-white hover:text-[#83d6c4]">WC26 Chances</Link>
-            <Link href="/teams/usa" className="hover:text-[#83d6c4]">Teams</Link>
-            <Link href="/cities" className="hover:text-[#83d6c4]">Cities</Link>
+    <main className="min-h-screen bg-[#fffaf0] text-[#102033]">
+      <section className="bg-[#102033] text-white">
+        <div className="mx-auto max-w-7xl px-5 py-6 md:px-8 md:py-10">
+          <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/70">
+            <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#102033]">WC26 Chances</Link>
+            <Link href="/teams/argentina" className="px-2 py-2 hover:text-[#ffd447]">Teams</Link>
+            <Link href="/cities" className="px-2 py-2 hover:text-[#ffd447]">Cities</Link>
           </nav>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#83d6c4]">Scenario simulator</p>
-          <h1 className="mt-3 max-w-4xl text-5xl font-black leading-tight tracking-normal md:text-6xl">
-            Turn one result into path changes.
+          <p className="inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
+            Knockout route map
+          </p>
+          <h1 className="mt-4 max-w-4xl text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
+            If they win the group, where do they go?
           </h1>
-          <p className="mt-5 max-w-3xl text-lg leading-8 text-white/65">
-            The first build defines the product surface. The next build should connect real groups,
-            standings, and bracket rules so each match instantly updates team, city, and market probabilities.
+          <p className="mt-5 max-w-3xl text-xl leading-8 text-white/75">
+            No confusing forms. The current job is simple: show the first knockout city attached to each group route.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[0.85fr_1.15fr] md:px-8">
-        <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0b6b58]">Prototype controls</p>
-          <h2 className="mt-2 text-3xl font-black">The expected user workflow</h2>
-          <p className="mt-4 leading-7 text-[#516170]">
-            A user chooses a team, adjusts a match result, then sees qualification, next city,
-            likely opponent, and market gap update together.
-          </p>
-        </div>
+      <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {groupWinnerRoutes.map((match) => {
+            const winnerSlot = match.home.startsWith('Winner ') ? match.home : match.away;
+            const group = winnerSlot.replace('Winner ', '');
 
-        <div className="rounded-md border border-[#cfd9e2] bg-white p-5">
-          <div className="grid gap-4 md:grid-cols-3">
-            <label className="block">
-              <span className="text-xs font-bold uppercase text-[#697887]">Team</span>
-              <select className="mt-2 w-full rounded-md border border-[#cfd9e2] bg-white px-3 py-3 text-sm font-bold">
-                {featuredTeams.map((team) => (
-                  <option key={team.slug}>{team.name}</option>
-                ))}
-              </select>
-            </label>
-            <label className="block">
-              <span className="text-xs font-bold uppercase text-[#697887]">Result</span>
-              <select className="mt-2 w-full rounded-md border border-[#cfd9e2] bg-white px-3 py-3 text-sm font-bold">
-                <option>Win</option>
-                <option>Draw</option>
-                <option>Loss</option>
-              </select>
-            </label>
-            <label className="block">
-              <span className="text-xs font-bold uppercase text-[#697887]">Impact</span>
-              <select className="mt-2 w-full rounded-md border border-[#cfd9e2] bg-white px-3 py-3 text-sm font-bold">
-                <option>Qualification</option>
-                <option>City path</option>
-                <option>Market gap</option>
-              </select>
-            </label>
-          </div>
-          <div className="mt-5 rounded-md bg-[#edf3f7] p-5">
-            <p className="text-sm font-bold uppercase text-[#697887]">Example output</p>
-            <p className="mt-2 text-2xl font-black">A group win can change the next-city route and opponent pool.</p>
-            <p className="mt-3 leading-7 text-[#516170]">
-              This placeholder keeps the page usable while the real match model is built.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-[#dbe3ea] bg-white">
-        <div className="mx-auto max-w-7xl px-5 py-10 md:px-8">
-          <div className="grid gap-4 md:grid-cols-3">
-            {scenarioCards.map((card) => (
-              <div key={card.title} className="rounded-md border border-[#cfd9e2] bg-[#f7f9fb] p-5">
-                <h2 className="font-black">{card.title}</h2>
-                <p className="mt-2 text-sm font-semibold">{card.question}</p>
-                <p className="mt-2 text-sm leading-6 text-[#516170]">{card.value}</p>
+            return (
+              <div key={match.id} className="rounded-md border-2 border-[#102033] bg-white p-5 shadow-[6px_6px_0_#ffd447]">
+                <p className="text-xs font-black uppercase text-[#e52b2f]">Group {group} winner route</p>
+                <h2 className="mt-2 text-3xl font-black">{match.city}</h2>
+                <p className="mt-2 font-bold text-[#506070]">{match.stadium}</p>
+                <p className="mt-4 rounded-md bg-[#fffaf0] px-3 py-2 text-sm font-black">
+                  Match {match.id} · {match.date} · {match.time}
+                </p>
+                <p className="mt-3 text-sm leading-6 text-[#506070]">
+                  Slot: {match.home} vs {match.away}
+                </p>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </section>
     </main>
