@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!team) return { title: 'Team Schedule Not Found' };
 
   return {
-    title: `${team} World Cup 2026 Schedule, Cities, and Route`,
-    description: `See ${team}'s confirmed World Cup 2026 group-stage matches, host cities, stadiums, and possible knockout route.`,
+    title: `${team} World Cup 2026 Schedule and Cities`,
+    description: `See where ${team} plays at the 2026 World Cup, including group games, host cities, stadiums, and possible knockout stops.`,
     alternates: {
       canonical: `/teams/${slug}`,
     },
@@ -63,7 +63,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
                 {team} plays in {cities.join(', ')}.
               </h1>
               <p className="mt-5 max-w-3xl text-xl leading-8 text-white/85">
-                Confirmed group-stage route plus a modelled decision tree from the Round of 32 to the Final.
+                Start with the confirmed group games. Then see where the route could go if {team} make it through.
               </p>
             </div>
 
@@ -107,11 +107,11 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
 
       <section className="border-y-4 border-[#102033] bg-[#ffd447]">
         <div className="mx-auto max-w-7xl px-5 py-8 md:px-8">
-          <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Model layer</p>
-          <h2 className="mt-2 text-4xl font-black">How likely are they to reach each route?</h2>
+          <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Route odds</p>
+          <h2 className="mt-2 text-4xl font-black">What are the likely paths?</h2>
           <p className="mt-3 max-w-4xl text-lg leading-7 text-[#3d3b23]">
-            Polymarket-style prices can calibrate the top-level strength later. This version uses a transparent
-            internal model to turn the official bracket into a readable fan path.
+            This is a simple model built on top of the official bracket. Treat it as a planning guide, not a prediction
+            that knows the future.
           </p>
 
           <div className="mt-5 grid gap-4 md:grid-cols-4">
@@ -133,14 +133,14 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
       <section className="mx-auto grid max-w-7xl gap-5 px-5 py-8 md:grid-cols-2 md:px-8">
         <CommercialCta
           context={`team-${slug}-tickets`}
-          title={`Plan ${team} tickets`}
-          body={`Use the confirmed ${team} group-stage cities here, then check FIFA's official ticket page for current ticket and hospitality availability.`}
+          title={`Looking for ${team} tickets?`}
+          body={`Use the confirmed ${team} cities here first, then check FIFA's official ticket page for current availability.`}
           kind="tickets"
         />
         <CommercialCta
           context={`team-${slug}-alerts`}
-          title={`Follow the ${team} route`}
-          body={`Get a route reminder for ${team} if their knockout path changes, prices move, or a city becomes more important for fans.`}
+          title={`Want ${team} route updates?`}
+          body={`Tell us you care about ${team}, and we will shape alerts around the cities that matter next.`}
           kind="alerts"
         />
       </section>
@@ -148,11 +148,11 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
       <section className="bg-white">
         <div className="mx-auto max-w-7xl px-5 py-8 md:px-8">
           <div className="mb-6">
-            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Probability decision tree</p>
-            <h2 className="mt-2 text-4xl font-black">Win, lose, next city</h2>
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Match-by-match path</p>
+            <h2 className="mt-2 text-4xl font-black">Win, lose, where next?</h2>
             <p className="mt-3 max-w-4xl text-lg leading-7 text-[#506070]">
-              Each branch shows the chance of arriving at that match, the modelled chance to win there,
-              and the city unlocked by a win. Losing usually ends the trip; semifinal losers go to the third-place match.
+              Each card shows the chance of reaching that match, the model win chance, and the city that opens up
+              with a win. Most losses end the run; semifinal losers still go to the third-place match.
             </p>
           </div>
 
@@ -223,11 +223,10 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
       <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
         <div className="rounded-md bg-[#102033] p-6 text-white">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#ffd447]">What this page is for</p>
-          <h2 className="mt-2 text-3xl font-black">A fan should get the answer in 5 seconds.</h2>
+          <h2 className="mt-2 text-3xl font-black">This page is for quick planning.</h2>
           <p className="mt-4 max-w-3xl text-lg leading-8 text-white/75">
-            If you support {team}, this page tells you the confirmed cities first. Prediction, ticket, hotel,
-            and market layers can sit below this core route. The tree above is the shape we can later calibrate
-            with Polymarket, sportsbook odds, or our own match model.
+            If you support {team}, start here to see the cities that are already locked in. Tickets, hotels,
+            and odds are useful later, but the first question is simpler: where might you need to be?
           </p>
         </div>
       </section>

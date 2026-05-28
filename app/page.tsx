@@ -43,36 +43,35 @@ export default function Home() {
 
             <div>
               <p className="mb-4 inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
-                Real 2026 schedule paths
+                World Cup 2026 schedule
               </p>
               <h1 className="max-w-3xl text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
-                Pick your team. See their cities.
+                Where is your team playing?
               </h1>
               <p className="mt-6 max-w-2xl text-xl leading-8 text-white/85">
-                A faster World Cup guide for fans planning where their team plays, where they could go next,
-                and which host cities matter.
+                Choose a team and see its group games, host cities, stadiums, and possible first knockout stop.
               </p>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-md bg-white/15 p-4 backdrop-blur">
                 <span className="block text-3xl font-black">{groupStageMatches.length}</span>
-                <span className="text-sm font-bold text-white/75">group matches loaded</span>
+                <span className="text-sm font-bold text-white/75">group matches</span>
               </div>
               <div className="rounded-md bg-white/15 p-4 backdrop-blur">
                 <span className="block text-3xl font-black">{allMatches.length}</span>
-                <span className="text-sm font-bold text-white/75">official match slots</span>
+                <span className="text-sm font-bold text-white/75">scheduled games</span>
               </div>
               <div className="rounded-md bg-white/15 p-4 backdrop-blur">
                 <span className="block text-3xl font-black">{allTeams.length}</span>
-                <span className="text-sm font-bold text-white/75">teams with routes</span>
+                <span className="text-sm font-bold text-white/75">teams listed</span>
               </div>
             </div>
           </div>
 
           <div className="rounded-md border border-white/25 bg-white p-4 text-[#102033] shadow-2xl">
             <div className="mb-4 rounded-md bg-[#e52b2f] p-5 text-white">
-              <p className="text-sm font-black uppercase tracking-[0.16em] text-white/80">5-second fan task</p>
+              <p className="text-sm font-black uppercase tracking-[0.16em] text-white/80">Start here</p>
               <h2 className="mt-1 text-3xl font-black">Where does my team play?</h2>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -128,20 +127,20 @@ export default function Home() {
       <section className="bg-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[0.8fr_1.2fr] md:px-8">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Tourism mode</p>
-            <h2 className="mt-2 text-4xl font-black">Host cities as the product</h2>
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">City guide</p>
+            <h2 className="mt-2 text-4xl font-black">Planning by city?</h2>
             <p className="mt-4 text-lg leading-8 text-[#506070]">
-              This version answers the travel question first: which teams are already scheduled in each city,
-              and which knockout slots make that city worth watching.
+              If you already know where you might travel, start with the host city. See which teams are scheduled
+              there and which later-round games could make the trip more interesting.
             </p>
             <Link href="/cities" className="mt-6 inline-flex rounded-full bg-[#0b7a3b] px-6 py-3 text-sm font-black text-white hover:bg-[#e52b2f]">
-              Explore host cities
+              See host cities
             </Link>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {cityHighlights.map(({ city, matches }) => (
               <Link href="/cities" key={city} className="rounded-md border-2 border-[#eef0e8] bg-[#fffaf0] p-5 hover:border-[#0b7a3b]">
-                <p className="text-xs font-black uppercase text-[#667085]">{matches.length} match slots</p>
+                <p className="text-xs font-black uppercase text-[#667085]">{matches.length} games</p>
                 <h3 className="mt-1 text-2xl font-black">{city}</h3>
                 <div className="mt-4 space-y-2 text-sm">
                   {matches.slice(0, 3).map((match) => (
@@ -159,14 +158,14 @@ export default function Home() {
       <section className="mx-auto grid max-w-7xl gap-5 px-5 py-8 md:grid-cols-2 md:px-8">
         <CommercialCta
           context="home-ticket-planning"
-          title="Start with official ticket planning"
-          body="Use the team and city pages here to decide which matches matter, then check FIFA's official ticket page for current availability and ticket-inclusive hospitality options."
+          title="Ready to look at tickets?"
+          body="Use this page to decide which matches matter to you, then check FIFA's official ticket page for current availability."
           kind="tickets"
         />
         <CommercialCta
           context="home-route-alerts"
-          title="Follow a team route"
-          body="Tell us which team or city you care about and we can turn future updates into a route alert product instead of a one-time pageview."
+          title="Want updates for one team?"
+          body="Send the team or city you care about. We will use that to shape a simple route alert."
           kind="alerts"
         />
       </section>
@@ -174,9 +173,9 @@ export default function Home() {
       <section className="bg-[#102033] text-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-3 md:px-8">
           {[
-            ['No old market pages', 'Prediction-market prices can come back as inline signals, not as the main destination.'],
-            ['Real schedule first', 'Every team page now starts with confirmed group-stage dates, opponents, cities, and stadiums.'],
-            ['Knockout paths next', 'Round-of-32 city routes are shown from official bracket slots, without pretending future results are known.'],
+            ['No guessing the basics', 'The first answer is always the confirmed schedule: opponent, city, stadium, date, and time.'],
+            ['Routes after the group', 'Once you know the group, you can see the first possible knockout city without digging through the bracket.'],
+            ['Useful before it is fancy', 'Odds and prices can come later. Right now the site is built to answer the fan planning question quickly.'],
           ].map(([title, body]) => (
             <div key={title} className="rounded-md border border-white/15 bg-white/10 p-5">
               <h3 className="text-xl font-black text-[#ffd447]">{title}</h3>

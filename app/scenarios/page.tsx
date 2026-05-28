@@ -6,7 +6,7 @@ import { knockoutEntryMatches } from '@/lib/schedule';
 export const metadata: Metadata = {
   title: 'World Cup 2026 Knockout Route Map',
   description:
-    'See the first knockout route slots for World Cup 2026 groups, including Round of 32 cities and stadiums.',
+    'See the first knockout stop for World Cup 2026 group winners, including Round of 32 cities and stadiums.',
   alternates: {
     canonical: '/scenarios',
   },
@@ -27,13 +27,13 @@ export default function ScenariosPage() {
             <Link href="/cities" className="px-2 py-2 hover:text-[#ffd447]">Cities</Link>
           </nav>
           <p className="inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
-            Knockout route map
+            Knockout paths
           </p>
           <h1 className="mt-4 max-w-4xl text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
             If they win the group, where do they go?
           </h1>
           <p className="mt-5 max-w-3xl text-xl leading-8 text-white/75">
-            No confusing forms. The current job is simple: show the first knockout city attached to each group route.
+            A quick map of the first knockout stop for each group winner, using the official bracket.
           </p>
         </div>
       </section>
@@ -64,14 +64,14 @@ export default function ScenariosPage() {
       <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-8 md:grid-cols-2 md:px-8">
         <CommercialCta
           context="scenarios-tickets"
-          title="Plan around possible routes"
-          body="Use this route map to shortlist cities, then check official ticket and hospitality availability before making travel decisions."
+          title="Planning around a possible run?"
+          body="Use the route map to shortlist cities, then check official ticket availability before making travel plans."
           kind="tickets"
         />
         <CommercialCta
           context="scenarios-alerts"
-          title="Get route alerts"
-          body="Follow the knockout route logic so you know which city becomes relevant as soon as a team advances."
+          title="Want a route reminder?"
+          body="Tell us the team you care about and we will shape alerts around the cities that become relevant."
           kind="alerts"
         />
       </section>

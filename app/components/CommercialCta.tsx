@@ -13,17 +13,17 @@ type CommercialCtaProps = {
 
 const ctaConfig: Record<CtaKind, { label: string; href: string; event: string }> = {
   tickets: {
-    label: 'Plan tickets',
+    label: 'Check tickets',
     href: 'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/tickets',
     event: 'ticket_planning_click',
   },
   hotels: {
-    label: 'Compare hotels',
+    label: 'Look at hotels',
     href: 'https://www.google.com/travel/hotels',
     event: 'hotel_planning_click',
   },
   alerts: {
-    label: 'Get route alerts',
+    label: 'Send me updates',
     href: 'mailto:hello@wc26chances.com?subject=WC26%20route%20alerts',
     event: 'route_alert_click',
   },
@@ -43,7 +43,7 @@ export function CommercialCta({ context, title, body, kind = 'tickets' }: Commer
 
   return (
     <div className="rounded-md border-2 border-[#102033] bg-white p-5 shadow-[6px_6px_0_#ffd447]">
-      <p className="text-xs font-black uppercase tracking-[0.16em] text-[#e52b2f]">Planning next step</p>
+      <p className="text-xs font-black uppercase tracking-[0.16em] text-[#e52b2f]">Next step</p>
       <h2 className="mt-2 text-2xl font-black">{title}</h2>
       <p className="mt-3 leading-7 text-[#506070]">{body}</p>
       <a
