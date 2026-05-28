@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://wc26chances.com"),
+  metadataBase: new URL("https://www.wc26chances.com"),
   title: {
     default: "WC26 Chances | World Cup 2026 Team Cities & Routes",
     template: "%s | WC26 Chances",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "WC26 Chances | World Cup 2026 Team Cities & Routes",
     description:
       "Pick a team and instantly see its confirmed World Cup 2026 cities, stadiums, dates, and possible route.",
-    url: "https://wc26chances.com",
+    url: "https://www.wc26chances.com",
     siteName: "WC26 Chances",
     type: "website",
   },
@@ -39,13 +39,13 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "WC26 Chances",
-  url: "https://wc26chances.com",
+  url: "https://www.wc26chances.com",
   description:
     "World Cup 2026 team schedules, host city guides, and possible knockout routes for fans planning tickets and travel.",
   publisher: {
     "@type": "Organization",
     name: "WC26 Chances",
-    url: "https://wc26chances.com",
+    url: "https://www.wc26chances.com",
   },
 };
 

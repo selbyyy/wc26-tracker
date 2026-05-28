@@ -4,7 +4,7 @@ import { generateSlug } from '@/lib/slug';
 import { getAllTeams } from '@/lib/schedule';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://wc26chances.com';
+  const baseUrl = 'https://www.wc26chances.com';
   const homeUrl = {
     url: baseUrl,
     lastModified: new Date(),

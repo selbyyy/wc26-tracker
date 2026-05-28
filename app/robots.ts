@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://wc26chances.com/sitemap.xml',
+    sitemap: 'https://www.wc26chances.com/sitemap.xml',
   };
 }
