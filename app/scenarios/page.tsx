@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { CommercialCta } from '../components/CommercialCta';
 import { knockoutEntryMatches } from '@/lib/schedule';
 
 export const metadata: Metadata = {
   title: 'World Cup 2026 Knockout Route Map',
   description:
     'See the first knockout route slots for World Cup 2026 groups, including Round of 32 cities and stadiums.',
+  alternates: {
+    canonical: '/scenarios',
+  },
 };
 
 export default function ScenariosPage() {
@@ -55,6 +59,21 @@ export default function ScenariosPage() {
             );
           })}
         </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-8 md:grid-cols-2 md:px-8">
+        <CommercialCta
+          context="scenarios-tickets"
+          title="Plan around possible routes"
+          body="Use this route map to shortlist cities, then check official ticket and hospitality availability before making travel decisions."
+          kind="tickets"
+        />
+        <CommercialCta
+          context="scenarios-alerts"
+          title="Get route alerts"
+          body="Follow the knockout route logic so you know which city becomes relevant as soon as a team advances."
+          kind="alerts"
+        />
       </section>
     </main>
   );

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { CommercialCta } from '@/app/components/CommercialCta';
 import { generateSlug } from '@/lib/slug';
 import {
   getAllTeams,
@@ -26,6 +27,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${team} World Cup 2026 Schedule, Cities, and Route`,
     description: `See ${team}'s confirmed World Cup 2026 group-stage matches, host cities, stadiums, and possible knockout route.`,
+    alternates: {
+      canonical: `/teams/${slug}`,
+    },
   };
 }
 
@@ -124,6 +128,21 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-8 md:grid-cols-2 md:px-8">
+        <CommercialCta
+          context={`team-${slug}-tickets`}
+          title={`Plan ${team} tickets`}
+          body={`Use the confirmed ${team} group-stage cities here, then check FIFA's official ticket page for current ticket and hospitality availability.`}
+          kind="tickets"
+        />
+        <CommercialCta
+          context={`team-${slug}-alerts`}
+          title={`Follow the ${team} route`}
+          body={`Get a route reminder for ${team} if their knockout path changes, prices move, or a city becomes more important for fans.`}
+          kind="alerts"
+        />
       </section>
 
       <section className="bg-white">

@@ -1,0 +1,15 @@
+# Experiments
+
+Every material product, SEO, or monetization change should be recorded here.
+
+| ID | Date | Hypothesis | Change | Pages | Metric | Status | Result |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EXP-001 | 2026-05-28 | Commercial CTAs on high-intent pages will create measurable outbound intent without hurting the core fan answer. | Add reusable planning CTA with tracking attributes. | Home, team pages, cities, routes | Outbound clicks, engagement | Planned | Pending |
+| EXP-002 | 2026-05-28 | Structured data will help search engines understand the site and may improve presentation. | Add WebSite and Organization JSON-LD at layout level. | All pages | Search visibility, rich result eligibility | Planned | Pending |
+| EXP-003 | 2026-05-28 | A narrow 100-click sprint will reveal which team/city intents Google is willing to test first. | Run daily Search Console and analytics sensor loop, then ship one focused page or metadata improvement per signal. | Home, priority team pages, cities, routes | Google organic clicks | Active | Target: 100 clicks by 2026-06-10 |
+
+## Experiment Rules
+
+- Each experiment needs one primary metric.
+- Avoid changing title, H1, page content, and CTA all at once on the same page unless the page has no traffic yet.
+- Keep failed experiments. They are part of the learning mechanism.

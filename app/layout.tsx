@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
+import { AnalyticsSensors } from "./components/AnalyticsSensors";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,6 +35,20 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "WC26 Chances",
+  url: "https://wc26chances.com",
+  description:
+    "World Cup 2026 team schedules, host city guides, and possible knockout routes for fans planning tickets and travel.",
+  publisher: {
+    "@type": "Organization",
+    name: "WC26 Chances",
+    url: "https://wc26chances.com",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,6 +59,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <Suspense fallback={null}>
+          <AnalyticsSensors />
+        </Suspense>
         {children}
       </body>
     </html>

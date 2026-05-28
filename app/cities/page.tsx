@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { CommercialCta } from '../components/CommercialCta';
 import { allMatches } from '@/lib/schedule';
 
 export const metadata: Metadata = {
   title: 'World Cup 2026 Host Cities and Match Routes',
   description:
     'See World Cup 2026 host cities, stadiums, scheduled matches, teams, and knockout route slots.',
+  alternates: {
+    canonical: '/cities',
+  },
 };
 
 const cityOrder = [
@@ -89,6 +93,21 @@ export default function CitiesPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-8 md:grid-cols-2 md:px-8">
+        <CommercialCta
+          context="cities-hotels"
+          title="Compare host-city hotels"
+          body="Use the city match list to decide which host cities matter, then compare hotel options before tournament demand concentrates."
+          kind="hotels"
+        />
+        <CommercialCta
+          context="cities-alerts"
+          title="Watch a city route"
+          body="Track a host city if you care about which teams may arrive there during the knockout rounds."
+          kind="alerts"
+        />
       </section>
     </main>
   );

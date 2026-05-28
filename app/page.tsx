@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CommercialCta } from './components/CommercialCta';
 import { generateSlug } from '@/lib/slug';
 import {
   allMatches,
@@ -153,6 +154,21 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-8 md:grid-cols-2 md:px-8">
+        <CommercialCta
+          context="home-ticket-planning"
+          title="Start with official ticket planning"
+          body="Use the team and city pages here to decide which matches matter, then check FIFA's official ticket page for current availability and ticket-inclusive hospitality options."
+          kind="tickets"
+        />
+        <CommercialCta
+          context="home-route-alerts"
+          title="Follow a team route"
+          body="Tell us which team or city you care about and we can turn future updates into a route alert product instead of a one-time pageview."
+          kind="alerts"
+        />
       </section>
 
       <section className="bg-[#102033] text-white">
