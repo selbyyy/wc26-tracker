@@ -15,18 +15,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://wc26chances.com"),
   title: {
-    default: "WC26 Chances | World Cup 2026 Prediction Market Odds",
+    default: "WC26 Chances | World Cup 2026 Team Path Predictor",
     template: "%s | WC26 Chances",
   },
   description:
-    "Track live World Cup 2026 probabilities, market moves, and prediction market odds for every major tournament outcome.",
+    "Track World Cup 2026 team paths, host city chances, scenario swings, and prediction-market signals.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "WC26 Chances | World Cup 2026 Prediction Market Odds",
+    title: "WC26 Chances | World Cup 2026 Team Path Predictor",
     description:
-      "Live World Cup 2026 probabilities, market moves, and prediction market odds.",
+      "World Cup 2026 team paths, host city chances, scenario swings, and prediction-market signals.",
     url: "https://wc26chances.com",
     siteName: "WC26 Chances",
     type: "website",
