@@ -163,6 +163,22 @@ export function getRoundOf32Route(group: string) {
   ].filter(Boolean) as { label: string; match: Match }[];
 }
 
+export function getMatchById(id: number) {
+  return allMatches.find((match) => match.id === id);
+}
+
+export function getNextMatchForWinner(matchId: number) {
+  return allMatches.find(
+    (match) => match.home === `Winner ${matchId}` || match.away === `Winner ${matchId}`,
+  );
+}
+
+export function getNextMatchForLoser(matchId: number) {
+  return allMatches.find(
+    (match) => match.home === `Loser ${matchId}` || match.away === `Loser ${matchId}`,
+  );
+}
+
 export function getCountryFlag(country: Match['country']) {
   if (country === 'Canada') return 'CAN';
   if (country === 'Mexico') return 'MEX';
