@@ -1,29 +1,27 @@
 import Link from 'next/link';
+import { generateSlug, isMarket, isWorldCupMarket, parseStringArray, type OutcomePrice } from '@/lib/markets';
 
 export const revalidate = 300; 
 
-function generateSlug(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
-
 export default async function Home() {
   // 移除容易引起冲突的 order 参数，放大 limit 并使用最精准的 FIFA 关键词
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=200&active=true&closed=false&search=FIFA', {
-    next: { revalidate: 300 }
-  });
-  
-  const rawMarkets = await res.json();
+  let rawMarkets: unknown = [];
+  try {
+    const res = await fetch('https://gamma-api.polymarket.com/markets?limit=200&active=true&closed=false&search=FIFA', {
+      next: { revalidate: 300 }
+    });
+    rawMarkets = await res.json();
+  } catch {
+    rawMarkets = [];
+  }
 
   // 1. 本地精准过滤
-  let markets = rawMarkets.filter((m: any) => {
-    const text = `${m.question} ${m.description || ''}`.toLowerCase();
-    const isWorldCup = text.includes('world cup') || text.includes('fifa');
-    const isNotPolitics = !text.includes('trump');
-    return isWorldCup && isNotPolitics && m.outcomePrices && m.outcomes;
-  });
+  const markets = Array.isArray(rawMarkets)
+    ? rawMarkets.filter(isMarket).filter(isWorldCupMarket)
+    : [];
 
   // 2. 本地强制按交易量 (Volume) 降序排列，完美避开 API 吞数据 BUG
-  markets.sort((a: any, b: any) => (b.volume || 0) - (a.volume || 0));
+  markets.sort((a, b) => (b.volume || 0) - (a.volume || 0));
 
   return (
     <main className="min-h-screen bg-slate-900 text-slate-50 p-6 md:p-12 font-sans">
@@ -35,16 +33,17 @@ export default async function Home() {
           <p className="text-slate-400 text-lg">Real-time mathematical probabilities from global prediction markets.</p>
         </header>
         
+        {markets.length === 0 && (
+          <div className="rounded-2xl border border-slate-700 bg-slate-800 p-8 text-center text-slate-300">
+            Live World Cup markets are temporarily unavailable. Please check back shortly.
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {markets.map((market: any) => {
-             let prices = [];
-             let outcomes = [];
-             try {
-               prices = typeof market.outcomePrices === 'string' ? JSON.parse(market.outcomePrices) : market.outcomePrices;
-               outcomes = typeof market.outcomes === 'string' ? JSON.parse(market.outcomes) : market.outcomes;
-             } catch (e) {
-               return null; 
-             }
+          {markets.map((market) => {
+             const prices = parseStringArray(market.outcomePrices);
+             const outcomes = parseStringArray(market.outcomes);
+             if (!prices.length || !outcomes.length) return null;
 
              const yesIndex = outcomes.indexOf("Yes");
              const isBinary = yesIndex !== -1 && outcomes.length === 2;
@@ -58,10 +57,10 @@ export default async function Home() {
                if(isNaN(price)) return null;
                displayProb = (price * 100).toFixed(1);
              } else {
-               const paired = outcomes.map((name: string, index: number) => ({
+               const paired = outcomes.map((name, index) => ({
                  name,
                  price: parseFloat(prices[index] || "0")
-               })).sort((a: any, b: any) => b.price - a.price);
+               })).sort((a: OutcomePrice, b: OutcomePrice) => b.price - a.price);
                
                if (paired.length === 0 || isNaN(paired[0].price)) return null;
                displayProb = (paired[0].price * 100).toFixed(1);

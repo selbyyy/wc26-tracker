@@ -1,41 +1,43 @@
 // app/sitemap.ts
 import { MetadataRoute } from 'next';
-
-// 与首页相同的 URL 转换规则
-function generateSlug(text: string) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
+import { generateSlug, isMarket, isWorldCupMarket } from '@/lib/markets';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://wc26chances.com';
+  const homeUrl = {
+    url: baseUrl,
+    lastModified: new Date(),
+    changeFrequency: 'always' as const,
+    priority: 1.0,
+  };
 
-  // 1. 抓取与网站相同的数据
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=10&active=true&closed=false', {
-    next: { revalidate: 300 }
-  });
-  const markets = await res.json();
+  // 1. 抓取与首页相同的数据，并只保留世界杯相关市场
+  let rawMarkets: unknown = [];
+  try {
+    const res = await fetch('https://gamma-api.polymarket.com/markets?limit=200&active=true&closed=false&search=FIFA', {
+      next: { revalidate: 300 }
+    });
+    rawMarkets = await res.json();
+  } catch {
+    return [homeUrl];
+  }
+
+  const markets = Array.isArray(rawMarkets)
+    ? rawMarkets.filter(isMarket).filter(isWorldCupMarket)
+    : [];
 
   // 2. 批量生成所有动态网页的爬虫路径
   const marketUrls = markets
-    .filter((m: any) => m.outcomePrices)
-    .map((market: any) => ({
+    .map((market) => ({
       url: `${baseUrl}/market/${generateSlug(market.question)}`,
       lastModified: new Date(),
-      changeFrequency: 'hourly',
+      changeFrequency: 'hourly' as const,
       priority: 0.8, // 页面权重
     }));
 
   // 3. 返回完整的地图组合（首页 + 动态页）
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'always',
-      priority: 1.0, // 首页权重最高
-    },
+    homeUrl,
     ...marketUrls,
   ];
 }

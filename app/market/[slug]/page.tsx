@@ -1,10 +1,7 @@
 import { Metadata } from 'next';
+import { generateSlug, isMarket, parseStringArray, type OutcomePrice } from '@/lib/markets';
 
 export const revalidate = 300;
-
-function generateSlug(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
@@ -19,12 +16,18 @@ export default async function MarketDetail({ params }: { params: Promise<{ slug:
   const resolvedParams = await params;
   
   // 必须与首页保持完全一致的数据源
-  const res = await fetch('https://gamma-api.polymarket.com/markets?limit=200&active=true&closed=false&search=FIFA', {
-    next: { revalidate: 300 }
-  });
-  const markets = await res.json();
+  let rawMarkets: unknown = [];
+  try {
+    const res = await fetch('https://gamma-api.polymarket.com/markets?limit=200&active=true&closed=false&search=FIFA', {
+      next: { revalidate: 300 }
+    });
+    rawMarkets = await res.json();
+  } catch {
+    rawMarkets = [];
+  }
+  const markets = Array.isArray(rawMarkets) ? rawMarkets.filter(isMarket) : [];
   
-  const market = markets.find((m: any) => generateSlug(m.question) === resolvedParams.slug);
+  const market = markets.find((m) => generateSlug(m.question) === resolvedParams.slug);
 
   let probability = "N/A";
   let volume = "$0";
@@ -32,26 +35,26 @@ export default async function MarketDetail({ params }: { params: Promise<{ slug:
   let displayLabel = "WIN PROBABILITY";
 
   if (market) {
-    try {
-      const prices = typeof market.outcomePrices === 'string' ? JSON.parse(market.outcomePrices) : market.outcomePrices;
-      const outcomes = typeof market.outcomes === 'string' ? JSON.parse(market.outcomes) : market.outcomes;
+    const prices = parseStringArray(market.outcomePrices);
+    const outcomes = parseStringArray(market.outcomes);
       
+    if (prices.length && outcomes.length) {
       const yesIndex = outcomes.indexOf("Yes");
       const isBinary = yesIndex !== -1 && outcomes.length === 2;
       
       if (isBinary) {
         probability = (parseFloat(prices[yesIndex]) * 100).toFixed(1) + "%";
       } else {
-        const paired = outcomes.map((name: string, index: number) => ({
+        const paired = outcomes.map((name, index) => ({
           name,
           price: parseFloat(prices[index] || "0")
-        })).sort((a: any, b: any) => b.price - a.price);
+        })).sort((a: OutcomePrice, b: OutcomePrice) => b.price - a.price);
         
         probability = (paired[0].price * 100).toFixed(1) + "%";
         displaySub = paired[0].name;
         displayLabel = "FAVORITE";
       }
-    } catch(e) {}
+    }
     volume = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(market.volume || 0);
   }
 
