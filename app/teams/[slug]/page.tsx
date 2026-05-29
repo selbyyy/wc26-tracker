@@ -14,6 +14,16 @@ import { getTeamGroupForecast, getTeamProbabilityTree } from '@/lib/probability-
 
 export const dynamic = 'force-static';
 
+function getOpponent(match: ReturnType<typeof getTeamMatches>[number], team: string) {
+  return match.home === team ? match.away : match.home;
+}
+
+function formatList(items: string[]) {
+  if (items.length <= 1) return items[0] || '';
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+}
+
 export function generateStaticParams() {
   return getAllTeams().map((team) => ({ slug: generateSlug(team) }));
 }
@@ -24,11 +34,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!team) return { title: 'Team Schedule Not Found' };
 
+  const matches = getTeamMatches(team);
+  const cities = Array.from(new Set(matches.map((match) => match.city)));
+  const title = `${team} World Cup 2026 Schedule: Dates, Cities, Stadiums`;
+  const description = `${team} plays its World Cup 2026 group games in ${formatList(cities)}. See match dates, opponents, stadiums, and possible knockout routes.`;
+
   return {
-    title: `${team} World Cup 2026 Schedule and Cities`,
-    description: `See where ${team} plays at the 2026 World Cup, including group games, host cities, stadiums, and possible knockout stops.`,
+    title,
+    description,
     alternates: {
       canonical: `/teams/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `/teams/${slug}`,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
     },
   };
 }
@@ -43,9 +69,71 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
   const groupForecast = getTeamGroupForecast(team);
   const probabilityTree = getTeamProbabilityTree(team);
   const cities = Array.from(new Set(matches.map((match) => match.city)));
+  const firstMatch = matches[0];
+  const opponents = matches.map((match) => getOpponent(match, team));
+  const groupTeams = Array.from(new Set([team, ...opponents])).sort((a, b) => a.localeCompare(b));
+  const faqItems = [
+    {
+      question: `Where does ${team} play in World Cup 2026?`,
+      answer: `${team} plays its confirmed World Cup 2026 group games in ${formatList(cities)}.`,
+    },
+    {
+      question: `When is ${team}'s first World Cup 2026 match?`,
+      answer: `${team}'s first group match is ${firstMatch.home} vs ${firstMatch.away} on ${firstMatch.date} at ${firstMatch.stadium} in ${firstMatch.city}.`,
+    },
+    {
+      question: `Who does ${team} play in the group stage?`,
+      answer: `${team} plays ${formatList(opponents)} in Group ${group}.`,
+    },
+    {
+      question: `What stadiums does ${team} play at in World Cup 2026?`,
+      answer: `${team}'s confirmed group-stage stadiums are ${formatList(matches.map((match) => match.stadium))}.`,
+    },
+    {
+      question: `What is ${team}'s possible knockout route?`,
+      answer: `The knockout route depends on whether ${team} wins Group ${group}, finishes second, or advances as a third-place team. This page maps the likely cities and matches for each route.`,
+    },
+  ];
+  const pageUrl = `https://www.wc26chances.com/teams/${slug}`;
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'WC26 Chances',
+          item: 'https://www.wc26chances.com',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: `${team} World Cup 2026 Schedule`,
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    },
+  ];
 
   return (
     <main className="min-h-screen bg-[#fffaf0] text-[#102033]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="bg-[#0b7a3b] text-white">
         <div className="mx-auto max-w-7xl px-5 py-6 md:px-8 md:py-8">
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/75">
@@ -63,12 +151,16 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
                 {team} plays in {cities.join(', ')}.
               </h1>
               <p className="mt-5 max-w-3xl text-xl leading-8 text-white/85">
-                Start with the confirmed group games. Then see where the route could go if {team} make it through.
+                {team} has confirmed group games against {formatList(opponents)}. Start with the cities and dates
+                already locked in, then see where the route could go if {team} make it through.
               </p>
             </div>
 
             <div className="rounded-md bg-white p-5 text-[#102033] shadow-xl">
               <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Quick answer</p>
+              <p className="mt-2 text-lg font-black leading-7">
+                {team} plays its World Cup 2026 group games in {formatList(cities)}.
+              </p>
               <div className="mt-3 space-y-3">
                 {matches.map((match) => (
                   <div key={match.id} className="rounded-md border-2 border-[#eef0e8] bg-[#fffaf0] p-4">
@@ -143,6 +235,39 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
           body={`Tell us you care about ${team}, and we will shape alerts around the cities that matter next.`}
           kind="alerts"
         />
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
+        <div className="grid gap-5 md:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Common questions</p>
+            <h2 className="mt-2 text-4xl font-black">{team} World Cup 2026 FAQ</h2>
+            <div className="mt-5 divide-y-2 divide-[#e8dfc8] rounded-md border-2 border-[#102033] bg-white">
+              {faqItems.map((item) => (
+                <div key={item.question} className="p-5">
+                  <h3 className="text-xl font-black">{item.question}</h3>
+                  <p className="mt-2 text-base leading-7 text-[#506070]">{item.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-md border-2 border-[#102033] bg-[#ffd447] p-5">
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Group {group}</p>
+            <h2 className="mt-2 text-3xl font-black">Compare the group</h2>
+            <div className="mt-5 grid gap-3">
+              {groupTeams.map((groupTeam) => (
+                <Link
+                  key={groupTeam}
+                  href={`/teams/${generateSlug(groupTeam)}`}
+                  className="rounded-md border-2 border-[#102033] bg-white px-4 py-3 text-lg font-black hover:bg-[#fffaf0]"
+                >
+                  {groupTeam}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="bg-white">
