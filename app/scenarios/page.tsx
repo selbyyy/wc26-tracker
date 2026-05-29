@@ -4,11 +4,18 @@ import { CommercialCta } from '../components/CommercialCta';
 import { knockoutEntryMatches } from '@/lib/schedule';
 
 export const metadata: Metadata = {
-  title: 'World Cup 2026 Knockout Route Map',
+  title: 'World Cup 2026 Knockout Route by Group: Round of 32 Cities',
   description:
-    'See the first knockout stop for World Cup 2026 group winners, including Round of 32 cities and stadiums.',
+    'See where each World Cup 2026 group winner could play next, including Round of 32 host cities, stadiums, dates, and bracket slots.',
   alternates: {
     canonical: '/scenarios',
+  },
+  openGraph: {
+    title: 'World Cup 2026 Knockout Route by Group: Round of 32 Cities',
+    description:
+      'Map the first knockout stop for World Cup 2026 group winners by group, city, stadium, and bracket slot.',
+    url: '/scenarios',
+    type: 'article',
   },
 };
 
@@ -16,9 +23,42 @@ export default function ScenariosPage() {
   const groupWinnerRoutes = knockoutEntryMatches
     .filter((match) => match.home.startsWith('Winner ') || match.away.startsWith('Winner '))
     .slice(0, 12);
+  const faqItems = [
+    {
+      question: 'Where does a World Cup 2026 group winner play next?',
+      answer:
+        'Each group winner has a Round of 32 bracket slot tied to a host city and stadium. This page lists the first knockout stop for group winners.',
+    },
+    {
+      question: 'Does the knockout route depend on group position?',
+      answer:
+        'Yes. Winning the group, finishing second, or advancing as a third-place team can send a team to different Round of 32 cities.',
+    },
+    {
+      question: 'Can I use this page for travel planning?',
+      answer:
+        'Use it as an early planning map. The group-stage schedule is confirmed, while knockout opponents depend on tournament results.',
+    },
+  ];
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
 
   return (
     <main className="min-h-screen bg-[#fffaf0] text-[#102033]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="bg-[#102033] text-white">
         <div className="mx-auto max-w-7xl px-5 py-6 md:px-8 md:py-10">
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/70">
@@ -30,10 +70,10 @@ export default function ScenariosPage() {
             Knockout paths
           </p>
           <h1 className="mt-4 max-w-4xl text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
-            If they win the group, where do they go?
+            World Cup 2026 knockout route by group.
           </h1>
           <p className="mt-5 max-w-3xl text-xl leading-8 text-white/75">
-            A quick map of the first knockout stop for each group winner, using the official bracket.
+            See the first Round of 32 city for each group winner, using the official bracket slots.
           </p>
         </div>
       </section>
@@ -58,6 +98,19 @@ export default function ScenariosPage() {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 pb-8 md:px-8">
+        <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">FAQ</p>
+        <h2 className="mt-2 text-4xl font-black">World Cup 2026 route FAQ</h2>
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          {faqItems.map((item) => (
+            <div key={item.question} className="rounded-md border-2 border-[#102033] bg-white p-5">
+              <h3 className="text-xl font-black">{item.question}</h3>
+              <p className="mt-2 leading-7 text-[#506070]">{item.answer}</p>
+            </div>
+          ))}
         </div>
       </section>
 

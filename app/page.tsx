@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { CommercialCta } from './components/CommercialCta';
 import { generateSlug } from '@/lib/slug';
 import {
@@ -10,7 +11,29 @@ import {
   groupStageMatches,
 } from '@/lib/schedule';
 
+export const metadata: Metadata = {
+  title: 'World Cup 2026 Schedule by Team: Cities, Dates, Stadiums',
+  description:
+    'Pick any World Cup 2026 team and see its confirmed group-stage schedule, host cities, stadiums, opponents, and possible knockout route.',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'World Cup 2026 Schedule by Team: Cities, Dates, Stadiums',
+    description:
+      'Find where each World Cup 2026 team plays, including confirmed cities, dates, stadiums, opponents, and possible knockout routes.',
+    url: '/',
+    type: 'website',
+  },
+};
+
 const heroTeams = ['Argentina', 'USA', 'Mexico', 'Brazil', 'England', 'Spain', 'France', 'Portugal'];
+
+function formatList(items: string[]) {
+  if (items.length <= 1) return items[0] || '';
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+}
 
 function teamCard(team: string) {
   const matches = getTeamMatches(team);
@@ -23,6 +46,38 @@ function teamCard(team: string) {
 export default function Home() {
   const cards = heroTeams.map(teamCard);
   const allTeams = getAllTeams();
+  const faqItems = [
+    {
+      question: 'How do I find a World Cup 2026 schedule by team?',
+      answer:
+        'Choose a team on WC26 Chances to see its confirmed group-stage opponents, dates, host cities, stadiums, and possible first knockout stop.',
+    },
+    {
+      question: 'Where does Argentina play in World Cup 2026?',
+      answer: `Argentina plays its confirmed group games in ${formatList(teamCard('Argentina').cities)}.`,
+    },
+    {
+      question: 'Where does USA play in World Cup 2026?',
+      answer: `USA plays its confirmed group games in ${formatList(teamCard('USA').cities)}.`,
+    },
+    {
+      question: 'Can I search World Cup 2026 matches by city?',
+      answer:
+        'Yes. The host city guide lists scheduled group and knockout matches by city, including stadium, date, and teams where available.',
+    },
+  ];
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
   const cityHighlights = ['Dallas', 'Miami', 'New York/New Jersey', 'Los Angeles'].map((city) => ({
     city,
     matches: getCityMatches(city),
@@ -30,6 +85,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#fffaf0] text-[#102033]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="relative overflow-hidden bg-[#0b7a3b] text-white">
         <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(135deg,#ffffff_1px,transparent_1px),linear-gradient(45deg,#ffffff_1px,transparent_1px)] [background-size:38px_38px]" />
         <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-6 md:grid-cols-[0.95fr_1.05fr] md:px-8 md:py-10">
@@ -46,10 +105,11 @@ export default function Home() {
                 World Cup 2026 schedule
               </p>
               <h1 className="max-w-3xl text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
-                Where is your team playing?
+                World Cup 2026 schedule by team.
               </h1>
               <p className="mt-6 max-w-2xl text-xl leading-8 text-white/85">
-                Choose a team and see its group games, host cities, stadiums, and possible first knockout stop.
+                Choose a team and see where it plays: group games, host cities, stadiums, opponents, dates, and the
+                first possible knockout stop.
               </p>
             </div>
 
@@ -72,7 +132,7 @@ export default function Home() {
           <div className="rounded-md border border-white/25 bg-white p-4 text-[#102033] shadow-2xl">
             <div className="mb-4 rounded-md bg-[#e52b2f] p-5 text-white">
               <p className="text-sm font-black uppercase tracking-[0.16em] text-white/80">Start here</p>
-              <h2 className="mt-1 text-3xl font-black">Where does my team play?</h2>
+              <h2 className="mt-1 text-3xl font-black">Popular team schedules</h2>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               {cards.map(({ team, group, matches, route }) => (
@@ -109,7 +169,12 @@ export default function Home() {
 
       <section className="border-b-4 border-[#102033] bg-[#ffd447]">
         <div className="mx-auto max-w-7xl px-5 py-7 md:px-8">
-          <h2 className="text-2xl font-black">Choose any team</h2>
+          <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">All team pages</p>
+          <h2 className="mt-2 text-3xl font-black">Find any World Cup 2026 team schedule</h2>
+          <p className="mt-2 max-w-3xl text-base font-bold leading-7 text-[#3d3b23]">
+            Each page answers the same planning question: who they play, when they play, which cities they visit,
+            and where the bracket could send them next.
+          </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {allTeams.map((team) => (
               <Link
@@ -118,6 +183,35 @@ export default function Home() {
                 className="rounded-full border-2 border-[#102033] bg-white px-4 py-2 text-sm font-black hover:bg-[#102033] hover:text-white"
               >
                 {team}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
+        <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Search answers</p>
+            <h2 className="mt-2 text-4xl font-black">The questions fans actually ask</h2>
+            <p className="mt-4 text-lg leading-8 text-[#506070]">
+              These pages are built around quick answers: where a team plays, who they face, and which cities become
+              relevant if they get out of the group.
+            </p>
+          </div>
+          <div className="grid gap-3">
+            {[
+              ['Where does Argentina play in World Cup 2026?', '/teams/argentina'],
+              ['Where does USA play in World Cup 2026?', '/teams/usa'],
+              ['World Cup 2026 cities by team', '/cities'],
+              ['World Cup 2026 knockout route by group', '/scenarios'],
+            ].map(([label, href]) => (
+              <Link
+                key={label}
+                href={href}
+                className="rounded-md border-2 border-[#102033] bg-white px-5 py-4 text-lg font-black shadow-[5px_5px_0_#ffd447] hover:bg-[#fffaf0]"
+              >
+                {label}
               </Link>
             ))}
           </div>
@@ -180,6 +274,19 @@ export default function Home() {
             <div key={title} className="rounded-md border border-white/15 bg-white/10 p-5">
               <h3 className="text-xl font-black text-[#ffd447]">{title}</h3>
               <p className="mt-3 leading-7 text-white/75">{body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
+        <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">FAQ</p>
+        <h2 className="mt-2 text-4xl font-black">World Cup 2026 schedule FAQ</h2>
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          {faqItems.map((item) => (
+            <div key={item.question} className="rounded-md border-2 border-[#102033] bg-white p-5">
+              <h3 className="text-xl font-black">{item.question}</h3>
+              <p className="mt-2 leading-7 text-[#506070]">{item.answer}</p>
             </div>
           ))}
         </div>
