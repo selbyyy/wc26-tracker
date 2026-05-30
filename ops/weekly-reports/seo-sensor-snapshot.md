@@ -1,11 +1,18 @@
 # SEO Sensor Snapshot
 
-Generated: 2026-05-28
+Generated: 2026-05-30
 
 ## Inputs
 
-- Search Console: `ops/sensor-inputs/search-console.csv` (0 rows)
-- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (0 rows)
+- Search Console: `ops/sensor-inputs/search-console.csv` (missing)
+- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (missing)
+
+## Input Readiness
+
+| Input | Status | Next action |
+| --- | --- | --- |
+| Search Console | missing | Export and add `ops/sensor-inputs/search-console.csv`. |
+| Analytics pages | missing | Export and add `ops/sensor-inputs/analytics-pages.csv`. |
 
 ## Traffic Summary
 

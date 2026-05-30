@@ -20,6 +20,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.75,
     },
     {
+      url: `${baseUrl}/world-cup-2026-schedule-by-team`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/scenarios`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,

@@ -9,6 +9,7 @@
 - Metadata is present on all new page templates.
 - Canonical URLs are correct.
 - CTAs do not make unsupported commercial claims.
+- `ops/company-memory.md` has a dated entry explaining the inputs, observations, decision, actions, checks, expected impact, and follow-up for the loop.
 
 ## SEO Checks
 
@@ -36,3 +37,5 @@ Schedule, city, stadium, and route claims must come from:
 ## AI Change Policy
 
 AI-generated changes should be shipped through normal code review. For now, AI can generate patches and reports, but a human approves production release.
+
+Every AI run must preserve company memory. If the run changes code, content, operations docs, automation prompts, or strategy, it must append or update the relevant dated entry in `ops/company-memory.md`. If the run is blocked, it must still record the blocker and the exact user action needed.

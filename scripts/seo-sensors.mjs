@@ -57,9 +57,12 @@ function numberValue(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function readCsv(path) {
-  if (!existsSync(path)) return [];
-  return parseCsv(readFileSync(path, 'utf8'));
+function readCsvInput(path) {
+  const exists = existsSync(path);
+  return {
+    exists,
+    rows: exists ? parseCsv(readFileSync(path, 'utf8')) : [],
+  };
 }
 
 function pick(row, keys) {
@@ -70,7 +73,10 @@ function pick(row, keys) {
   return '';
 }
 
-const searchRows = readCsv(searchConsolePath).map((row) => ({
+const searchConsoleInput = readCsvInput(searchConsolePath);
+const analyticsPagesInput = readCsvInput(analyticsPagesPath);
+
+const searchRows = searchConsoleInput.rows.map((row) => ({
   query: pick(row, ['query', 'top_queries']),
   page: pick(row, ['page', 'pages', 'url', 'landing_page']),
   clicks: numberValue(pick(row, ['clicks'])),
@@ -79,7 +85,7 @@ const searchRows = readCsv(searchConsolePath).map((row) => ({
   position: numberValue(pick(row, ['position', 'average_position'])),
 }));
 
-const analyticsRows = readCsv(analyticsPagesPath).map((row) => ({
+const analyticsRows = analyticsPagesInput.rows.map((row) => ({
   page: pick(row, ['page', 'path', 'landing_page', 'page_path']),
   views: numberValue(pick(row, ['views', 'pageviews', 'screen_page_views', 'sessions'])),
   engagement: numberValue(pick(row, ['engagement_rate', 'engaged_sessions', 'average_engagement_time'])),
@@ -122,6 +128,18 @@ function percent(value) {
   return `${(value * 100).toFixed(1)}%`;
 }
 
+function inputSummary(input, rowCount) {
+  if (!input.exists) return 'missing';
+  if (rowCount === 0) return 'present, 0 rows';
+  return `present, ${rowCount} rows`;
+}
+
+function inputAction(input, rowCount, fileName) {
+  if (!input.exists) return `Export and add \`${fileName}\`.`;
+  if (rowCount === 0) return `Replace \`${fileName}\` with a non-empty export.`;
+  return 'Ready for opportunity analysis.';
+}
+
 const generatedAt = new Date().toISOString().slice(0, 10);
 const report = `# SEO Sensor Snapshot
 
@@ -129,8 +147,15 @@ Generated: ${generatedAt}
 
 ## Inputs
 
-- Search Console: \`${searchConsolePath.replace(`${root}/`, '')}\` (${searchRows.length} rows)
-- Analytics pages: \`${analyticsPagesPath.replace(`${root}/`, '')}\` (${analyticsRows.length} rows)
+- Search Console: \`${searchConsolePath.replace(`${root}/`, '')}\` (${inputSummary(searchConsoleInput, searchRows.length)})
+- Analytics pages: \`${analyticsPagesPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsPagesInput, analyticsRows.length)})
+
+## Input Readiness
+
+| Input | Status | Next action |
+| --- | --- | --- |
+| Search Console | ${inputSummary(searchConsoleInput, searchRows.length)} | ${inputAction(searchConsoleInput, searchRows.length, 'ops/sensor-inputs/search-console.csv')} |
+| Analytics pages | ${inputSummary(analyticsPagesInput, analyticsRows.length)} | ${inputAction(analyticsPagesInput, analyticsRows.length, 'ops/sensor-inputs/analytics-pages.csv')} |
 
 ## Traffic Summary
 

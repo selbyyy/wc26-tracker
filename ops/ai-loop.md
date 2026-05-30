@@ -37,6 +37,7 @@ Useful later:
 The project should maintain these files:
 
 - `ops/business-goals.md`: target, timeline, and metrics.
+- `ops/company-memory.md`: append-only operating memory for loop inputs, observations, decisions, actions, checks, expected impact, and follow-up.
 - `ops/seo-opportunity-log.md`: query and page opportunities.
 - `ops/experiments.md`: shipped experiments and results.
 - `ops/monetization-plan.md`: commercial surfaces and partners.
@@ -87,6 +88,8 @@ Before release:
 ## Learning Mechanism
 
 The first operating milestone is the `ops/100-click-sprint.md` loop: reach 100 Google organic clicks, then scale only the page patterns that show real impressions or clicks.
+
+Every daily, weekly, or manual loop must append an entry to `ops/company-memory.md`, even when blocked. The entry must record inputs, observations, decision, actions taken, files changed, quality gates, expected impact, and follow-up. This is the project's company memory.
 
 Every weekly review should answer:
 
