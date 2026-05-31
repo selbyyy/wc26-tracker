@@ -203,3 +203,50 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Export GA4 page/event data to `ops/sensor-inputs/analytics-pages.csv` or restore readable browser automation for live GA4 checks.
 - After deployment, request indexing for `https://www.wc26chances.com/world-cup-2026-schedule-by-team` in Search Console.
 - Monitor whether schedule-by-team queries start producing impressions for the new hub within 2 to 7 days.
+
+## 2026-05-31 10:10 CST - Daily 100-Click Growth Loop
+
+### Inputs
+- Search Console: Live browser access worked. The three-month Performance report, updated 3.5 hours before this run, showed 0 clicks, 20 impressions, 0% CTR, and average position 83.1 for May 27 to May 28, 2026. The visible queries were all Argentina odds variants, led by `argentina to win world cup odds` (4 impressions) and `odds on argentina to win world cup 2026` (4 impressions).
+- Search Console pages: The visible rows were the retired `/market/will-argentina-win-the-2026-fifa-world-cup` URL (20 impressions), the retired Japan market URL (1 impression), and the retired Ivory Coast market URL (1 impression). The Google UI total remained 20 impressions even though the visible rows summed to 22, so this entry preserves the displayed total without inferring a reconciliation.
+- Search Console sitemap and indexing: `/sitemap.xml` is `Success`, was last read on May 31, 2026, and reports 52 discovered pages. The Pages report is still processing and does not expose indexed or non-indexed counts yet.
+- Analytics: Live GA4 access to the `WC26 Chances` property worked. Realtime showed 0 active users in the last 30 minutes and 0 active users in the last 5 minutes. Views, event counts, key events, and source rows had no data available.
+- Revenue / CTA: No GA4 event rows or local analytics export are available, so outbound CTA clicks, route-alert clicks, conversions, and revenue cannot be measured yet.
+- Local sensors: `ops/sensor-inputs/search-console.csv` and `ops/sensor-inputs/analytics-pages.csv` are still missing. `npm run sensors:seo` regenerated the snapshot but the local sensor report remains at 0 / 100 until export inputs are connected.
+- Site health: Production checks returned 200 for the homepage, sitemap, and `/world-cup-2026-schedule-by-team`. The retired Argentina market URL returned 301 to `/teams/argentina`.
+
+### Observations
+- The sprint remains at 0 / 100 organic clicks. Live Search Console impressions increased from 12 to 20 since the prior manual measurement, while average position improved from 85.8 to 83.1.
+- Google's visible demand is still concentrated on Argentina odds queries and retired `/market/...` URLs. The live 301 redirects are working, so the current bottleneck is recrawl and reindex lag rather than a missing redirect.
+- The sitemap has been re-read after the schedule-by-team hub shipped. Adding another content page today would make `EXP-004` harder to evaluate before Google has had time to crawl the new hub.
+- Browser-based measurement works, but the repeatable local CSV/API sensor path is still incomplete.
+
+### Decision
+- Do not ship another content page today. Preserve the measurement window for `EXP-004`.
+- Request indexing for `https://www.wc26chances.com/world-cup-2026-schedule-by-team` through Search Console URL Inspection.
+- Regenerate the local sensor snapshot and record live browser measurements in company memory.
+
+### Actions Taken
+- Ran `npm run sensors:seo`.
+- Verified production homepage, sitemap, schedule-by-team hub, and the retired Argentina market redirect.
+- Checked live Search Console Performance, Pages, Sitemaps, and Page indexing reports.
+- Checked live GA4 Realtime access and current event availability.
+- Submitted the schedule-by-team hub in Search Console URL Inspection. Search Console confirmed that the URL was added to a priority crawl queue.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:seo` passed and wrote `ops/weekly-reports/seo-sensor-snapshot.md`.
+- Production HTTP checks passed for homepage, sitemap, schedule-by-team hub, and retired Argentina market redirect.
+- No application code changed, so lint and build were not rerun.
+
+### Expected Impact
+- The indexing request should accelerate discovery of the new schedule-by-team hub without contaminating the current experiment with another content change.
+- Continued daily browser measurements will show whether Google begins replacing retired `/market/...` impressions with current team or schedule hub URLs.
+
+### Follow-Up
+- Check whether the new hub appears in Search Console pages or queries within 2 to 7 days.
+- Monitor whether retired `/market/...` impressions migrate to `/teams/...` pages after the 301 redirects are recrawled.
+- Connect repeatable Search Console and GA4 export/API inputs so `npm run sensors:seo` can operate without browser-only measurements.
