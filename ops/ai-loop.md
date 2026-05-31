@@ -70,7 +70,8 @@ Initial tools:
 - JSON-LD structured data.
 - `app/components/AnalyticsSensors.tsx` for GA4/Plausible pageviews and Web Vitals.
 - `CommercialCta` analytics events for outbound commercial clicks.
-- `npm run sensors:seo` to turn Search Console and analytics exports into a weekly sensor snapshot.
+- `npm run sensors:refresh` to pull Search Console and GA4 API data and generate a weekly sensor snapshot.
+- `npm run sensors:seo` to process local Search Console and analytics CSV exports as a manual fallback.
 - Codex for code changes, reports, and opportunity analysis.
 
 ## Quality Gates

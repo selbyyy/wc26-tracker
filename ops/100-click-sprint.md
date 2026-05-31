@@ -26,13 +26,14 @@ Goal: reach the first 100 Google organic clicks for WC26 Chances, then use the s
 
 ## Current Sensor Capability
 
-The sensor layer can measure traffic from CSV exports today:
+The sensor layer can pull Google API data and generate local CSV inputs after
+the one-time OAuth setup in `ops/google-sensor-setup.md`:
 
-- Google organic clicks and impressions from Search Console.
-- Pageviews or sessions from analytics exports.
-- Commercial outbound clicks, route-alert clicks, key events, or conversions from analytics exports.
+- Google organic query/page clicks, impressions, CTR, and position from Search Console.
+- GA4 pageviews, sessions, and engagement rate.
+- Commercial outbound clicks and route-alert clicks from GA4 events.
 
-Direct API pulling from Search Console or GA4 is a later automation step.
+Manual CSV exports remain available as a fallback.
 
 ## First Moves
 

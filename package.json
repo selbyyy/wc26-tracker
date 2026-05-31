@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "sensors:seo": "node scripts/seo-sensors.mjs"
+    "sensors:seo": "node scripts/seo-sensors.mjs",
+    "sensors:oauth": "node --env-file-if-exists=.env.sensors.local scripts/google-oauth-bootstrap.mjs",
+    "sensors:pull-google": "node --env-file-if-exists=.env.sensors.local scripts/pull-google-sensors.mjs",
+    "sensors:refresh": "npm run sensors:pull-google && npm run sensors:seo"
   },
   "dependencies": {
     "next": "16.1.6",

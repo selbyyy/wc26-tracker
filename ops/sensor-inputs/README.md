@@ -1,6 +1,17 @@
 # Sensor Inputs
 
-Drop exported CSVs here before running the AI loop sensors.
+The preferred path is an automated Google API refresh:
+
+```bash
+npm run sensors:refresh
+```
+
+This pulls Search Console and GA4 data into local CSV files, then generates
+`ops/weekly-reports/seo-sensor-snapshot.md`. Complete the one-time setup in
+[`ops/google-sensor-setup.md`](../google-sensor-setup.md) first.
+
+Manual CSV exports remain a fallback. Drop them here before running
+`npm run sensors:seo`.
 
 ## `search-console.csv`
 

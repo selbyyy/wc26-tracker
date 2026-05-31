@@ -250,3 +250,61 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Check whether the new hub appears in Search Console pages or queries within 2 to 7 days.
 - Monitor whether retired `/market/...` impressions migrate to `/teams/...` pages after the 301 redirects are recrawled.
 - Connect repeatable Search Console and GA4 export/API inputs so `npm run sensors:seo` can operate without browser-only measurements.
+
+## 2026-05-31 12:16 CST - Google API Sensor Automation
+
+### Inputs
+- User instruction: Close the automation loop so daily Search Console and GA4 measurement no longer depends on manual browser inspection.
+- Existing sensor layer: `npm run sensors:seo` processed local CSV files, but no script pulled Search Console or GA4 data.
+- Local credentials: No `.env.sensors.local`, Google OAuth client credentials, `gcloud`, or Application Default Credentials were present on this machine.
+- Existing analytics events: `CommercialCta` emits `ticket_planning_click`, `hotel_planning_click`, and `route_alert_click`. GA4 property ID `539351001` was previously confirmed through live browser access.
+
+### Observations
+- Daily browser reads are useful as a fallback but are not a reliable unattended sensor because Chrome automation can occasionally fail.
+- A one-time Google OAuth desktop authorization can produce a refresh token that daily local scripts reuse without repeated user interaction.
+- Read-only Search Console and Analytics scopes are sufficient for the measurement loop.
+
+### Decision
+- Add an automated Google API pull layer with a one-time OAuth bootstrap.
+- Keep generated API CSV files local and ignored by Git while preserving `npm run sensors:seo` as the report generator and manual fallback.
+- Do not attempt to create Google Cloud OAuth credentials programmatically. The user must create the desktop OAuth client in Google Cloud Console and approve the read-only authorization once.
+
+### Actions Taken
+- Added `npm run sensors:oauth`, `npm run sensors:pull-google`, and `npm run sensors:refresh`.
+- Added a shared Google API helper for refresh-token authentication, JSON requests, dates, and CSV output.
+- Added Search Console query/page pulling for final data and GA4 page/event pulling for pageviews, sessions, engagement rate, and tracked CTA clicks.
+- Added a local OAuth callback bootstrap that stores the refresh token in ignored `.env.sensors.local` with file mode `0600`.
+- Added `ops/google-sensor-setup.md` with the one-time Google Cloud and local authorization tutorial.
+- Updated the sprint, AI loop, sensor README, and `.gitignore` to treat API refresh as the preferred path and CSV export as fallback.
+- Updated the daily heartbeat automation to run `npm run sensors:refresh` first and use authenticated browser inspection only as a fallback.
+
+### Files Changed
+- `.gitignore`
+- `package.json`
+- `scripts/google-api-common.mjs`
+- `scripts/google-oauth-bootstrap.mjs`
+- `scripts/pull-google-sensors.mjs`
+- `ops/google-sensor-setup.md`
+- `ops/sensor-inputs/README.md`
+- `ops/100-click-sprint.md`
+- `ops/ai-loop.md`
+- `ops/company-memory.md`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+
+### Quality Gates
+- `node --check scripts/google-api-common.mjs` passed.
+- `node --check scripts/google-oauth-bootstrap.mjs` passed.
+- `node --check scripts/pull-google-sensors.mjs` passed.
+- `npm run sensors:seo` passed and regenerated the local report.
+- `npm run lint` passed.
+- `npm run build` passed, generating 57 static/SSG routes.
+- `npm run sensors:pull-google` correctly stopped with `Missing GOOGLE_OAUTH_CLIENT_ID` because one-time OAuth setup is not complete.
+
+### Expected Impact
+- After one-time authorization, each daily loop can run `npm run sensors:refresh` to retrieve Search Console and GA4 data without browser automation.
+- The report will contain real query/page performance and CTA behavior signals for autonomous iteration decisions.
+
+### Follow-Up
+- Complete `ops/google-sensor-setup.md`: create a Google Cloud desktop OAuth client, add its client ID and secret to `.env.sensors.local`, then run `npm run sensors:oauth`.
+- Run `npm run sensors:refresh` once after authorization and verify Search Console and GA4 CSV rows.
+- Update the daily heartbeat prompt to run `npm run sensors:refresh` before browser fallback after the first successful authenticated refresh.
