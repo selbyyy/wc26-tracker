@@ -409,3 +409,47 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Follow-Up
 - Recheck homepage canonical selection, indexed-page count, and Argentina crawl state in the next daily loop.
 - If Google still selects non-www after recrawl processing, evaluate a permanent domain-layer redirect.
+
+## 2026-06-01 15:58 CST - Chances Positioning Pass
+
+### Inputs
+- User instruction: identify actionable follow-up work and evaluate whether the WC26 Chances domain should emphasize chances more strongly.
+- Existing product: team pages already contain a planning-model group forecast and route probability tree, but the homepage and team-page hero copy lead with schedules.
+- Search signal: the first visible Search Console impressions are Argentina odds variants.
+
+### Observations
+- The domain name and existing model support a clearer product position: chances first, schedule and route details second.
+- The dedicated schedule-by-team hub can continue serving schedule intent, so the homepage does not need to compete with it for the same job.
+- Existing model disclaimers are important because the probabilities are planning guidance, not official forecasts or betting-market prices.
+
+### Decision
+- Reposition the homepage around World Cup 2026 chances by team.
+- Surface the existing modelled advance chance on popular-team cards and in each team-page hero.
+- Keep explicit planning-model disclaimers and preserve confirmed schedule facts.
+
+### Actions Taken
+- Updated homepage metadata, hero copy, popular-team cards, and team-directory copy.
+- Updated team-page metadata and hero copy to lead with modelled advance chance.
+- Added `EXP-005` and recorded the SEO opportunity.
+
+### Files Changed
+- `app/page.tsx`
+- `app/teams/[slug]/page.tsx`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed, generating 57 static/SSG routes.
+- Local browser visual checks passed for the desktop homepage, desktop Argentina page, mobile homepage, and mobile Argentina page.
+
+### Expected Impact
+- WC26 Chances should present a more coherent reason to exist than a generic schedule site.
+- Team pages should better match emerging odds/chance search intent without presenting the planning model as official odds.
+
+### Follow-Up
+- Monitor whether chance/odds impressions begin migrating from the retired Argentina market URL to `/teams/argentina`.
+- Revisit title and copy variants only after the current recrawl has had time to process.
+- Retry pushing the local chances-positioning commit when the GitHub network path recovers; the first push failed with an HTTP/2 framing error and subsequent HTTP/1.1 retries stalled.

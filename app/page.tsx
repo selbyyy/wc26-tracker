@@ -10,18 +10,19 @@ import {
   getTeamMatches,
   groupStageMatches,
 } from '@/lib/schedule';
+import { getTeamGroupForecast } from '@/lib/probability-tree';
 
 export const metadata: Metadata = {
-  title: 'World Cup 2026 Schedule by Team: Cities, Dates, Stadiums',
+  title: 'World Cup 2026 Chances by Team: Routes, Cities, Schedule',
   description:
-    'Pick any World Cup 2026 team and see its confirmed group-stage schedule, host cities, stadiums, opponents, and possible knockout route.',
+    'Pick a World Cup 2026 team and see its modelled chances of advancing, confirmed schedule, host cities, and possible knockout route.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'World Cup 2026 Schedule by Team: Cities, Dates, Stadiums',
+    title: 'World Cup 2026 Chances by Team: Routes, Cities, Schedule',
     description:
-      'Find where each World Cup 2026 team plays, including confirmed cities, dates, stadiums, opponents, and possible knockout routes.',
+      'See each team\'s modelled chances of advancing, confirmed cities, dates, stadiums, and possible knockout routes.',
     url: '/',
     type: 'website',
   },
@@ -40,7 +41,9 @@ function teamCard(team: string) {
   const group = matches[0]?.group || '';
   const route = getRoundOf32Route(group);
   const cities = Array.from(new Set(matches.map((match) => match.city)));
-  return { team, matches, group, route, cities };
+  const forecast = getTeamGroupForecast(team);
+  const advanceChance = 100 - forecast.out;
+  return { team, matches, group, route, cities, advanceChance };
 }
 
 export default function Home() {
@@ -51,6 +54,11 @@ export default function Home() {
       question: 'How do I find a World Cup 2026 schedule by team?',
       answer:
         'Choose a team on WC26 Chances to see its confirmed group-stage opponents, dates, host cities, stadiums, and possible first knockout stop.',
+    },
+    {
+      question: 'What do the World Cup 2026 chances mean?',
+      answer:
+        'WC26 Chances uses a simple planning model to estimate how likely each team is to win its group, finish second, advance in third place, or go out. The model is a guide, not an official prediction or betting market.',
     },
     {
       question: 'Where does Argentina play in World Cup 2026?',
@@ -103,40 +111,40 @@ export default function Home() {
 
             <div>
               <p className="mb-4 inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
-                World Cup 2026 schedule
+                World Cup 2026 planning model
               </p>
               <h1 className="max-w-3xl text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
-                World Cup 2026 schedule by team.
+                World Cup 2026 chances, mapped by team.
               </h1>
               <p className="mt-6 max-w-2xl text-xl leading-8 text-white/85">
-                Choose a team and see where it plays: group games, host cities, stadiums, opponents, dates, and the
-                first possible knockout stop.
+                Choose a team to see its modelled chance of advancing, confirmed group games, and the cities that
+                open up along each possible knockout route.
               </p>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-md bg-white/15 p-4 backdrop-blur">
-                <span className="block text-3xl font-black">{groupStageMatches.length}</span>
-                <span className="text-sm font-bold text-white/75">group matches</span>
+                <span className="block text-3xl font-black">{allTeams.length}</span>
+                <span className="text-sm font-bold text-white/75">team chance models</span>
               </div>
               <div className="rounded-md bg-white/15 p-4 backdrop-blur">
                 <span className="block text-3xl font-black">{allMatches.length}</span>
                 <span className="text-sm font-bold text-white/75">scheduled games</span>
               </div>
               <div className="rounded-md bg-white/15 p-4 backdrop-blur">
-                <span className="block text-3xl font-black">{allTeams.length}</span>
-                <span className="text-sm font-bold text-white/75">teams listed</span>
+                <span className="block text-3xl font-black">{groupStageMatches.length}</span>
+                <span className="text-sm font-bold text-white/75">confirmed group games</span>
               </div>
             </div>
           </div>
 
           <div className="rounded-md border border-white/25 bg-white p-4 text-[#102033] shadow-2xl">
             <div className="mb-4 rounded-md bg-[#e52b2f] p-5 text-white">
-              <p className="text-sm font-black uppercase tracking-[0.16em] text-white/80">Start here</p>
-              <h2 className="mt-1 text-3xl font-black">Popular team schedules</h2>
+              <p className="text-sm font-black uppercase tracking-[0.16em] text-white/80">Start with a team</p>
+              <h2 className="mt-1 text-3xl font-black">Popular team chances</h2>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
-              {cards.map(({ team, group, matches, route }) => (
+              {cards.map(({ team, group, matches, route, advanceChance }) => (
                 <Link
                   href={`/teams/${generateSlug(team)}`}
                   key={team}
@@ -147,7 +155,7 @@ export default function Home() {
                       <h3 className="text-xl font-black">{team}</h3>
                       <p className="mt-1 text-xs font-black uppercase text-[#667085]">Group {group}</p>
                     </div>
-                    <span className="rounded-full bg-[#ffd447] px-3 py-1 text-xs font-black">Route</span>
+                    <span className="rounded-full bg-[#ffd447] px-3 py-1 text-xs font-black">{advanceChance}% advance</span>
                   </div>
                   <div className="mt-4 space-y-2">
                     {matches.map((match) => (
@@ -164,6 +172,9 @@ export default function Home() {
                 </Link>
               ))}
             </div>
+            <p className="mt-4 text-xs font-bold leading-5 text-[#667085]">
+              Advance chances come from a simple planning model, not an official forecast or betting market.
+            </p>
           </div>
         </div>
       </section>
@@ -171,9 +182,9 @@ export default function Home() {
       <section className="border-b-4 border-[#102033] bg-[#ffd447]">
         <div className="mx-auto max-w-7xl px-5 py-7 md:px-8">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">All team pages</p>
-          <h2 className="mt-2 text-3xl font-black">Find any World Cup 2026 team schedule</h2>
+          <h2 className="mt-2 text-3xl font-black">Find any World Cup 2026 team chance model</h2>
           <p className="mt-2 max-w-3xl text-base font-bold leading-7 text-[#3d3b23]">
-            Each page answers the same planning question: who they play, when they play, which cities they visit,
+            Each page starts with the chance of advancing, then maps who they play, which cities they visit,
             and where the bracket could send them next.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -202,7 +213,8 @@ export default function Home() {
           </div>
           <div className="grid gap-3">
             {[
-              ['World Cup 2026 schedule by team', '/world-cup-2026-schedule-by-team'],
+            ['World Cup 2026 schedule by team', '/world-cup-2026-schedule-by-team'],
+              ['World Cup 2026 chances by team', '/teams/argentina'],
               ['Where does Argentina play in World Cup 2026?', '/teams/argentina'],
               ['Where does USA play in World Cup 2026?', '/teams/usa'],
               ['World Cup 2026 cities by team', '/cities'],

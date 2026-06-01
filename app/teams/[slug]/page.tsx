@@ -36,8 +36,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const matches = getTeamMatches(team);
   const cities = Array.from(new Set(matches.map((match) => match.city)));
-  const title = `${team} World Cup 2026 Schedule: Dates, Cities, Stadiums`;
-  const description = `${team} plays its World Cup 2026 group games in ${formatList(cities)}. See match dates, opponents, stadiums, and possible knockout routes.`;
+  const title = `${team} World Cup 2026 Chances, Schedule & Knockout Route`;
+  const description = `See ${team}'s modelled World Cup 2026 chances, confirmed group games in ${formatList(cities)}, and possible knockout routes by city.`;
 
   return {
     title,
@@ -67,6 +67,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
   const matches = getTeamMatches(team);
   const group = getGroupForTeam(team);
   const groupForecast = getTeamGroupForecast(team);
+  const advanceChance = 100 - groupForecast.out;
   const probabilityTree = getTeamProbabilityTree(team);
   const cities = Array.from(new Set(matches.map((match) => match.city)));
   const firstMatch = matches[0];
@@ -145,19 +146,19 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
           <div className="grid gap-8 md:grid-cols-[1fr_420px] md:items-end">
             <div>
               <p className="inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
-                Group {group} schedule
+                {advanceChance}% modelled chance to advance
               </p>
               <h1 className="mt-4 text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
-                {team} plays in {cities.join(', ')}.
+                {team} World Cup 2026 chances.
               </h1>
               <p className="mt-5 max-w-3xl text-xl leading-8 text-white/85">
-                {team} has confirmed group games against {formatList(opponents)}. Start with the cities and dates
-                already locked in, then see where the route could go if {team} make it through.
+                The planning model gives {team} a {advanceChance}% chance to get out of Group {group}. Start with
+                the confirmed games against {formatList(opponents)}, then see which cities open up along each route.
               </p>
             </div>
 
             <div className="rounded-md bg-white p-5 text-[#102033] shadow-xl">
-              <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Quick answer</p>
+              <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Confirmed schedule</p>
               <p className="mt-2 text-lg font-black leading-7">
                 {team} plays its World Cup 2026 group games in {formatList(cities)}.
               </p>
@@ -200,7 +201,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
       <section className="border-y-4 border-[#102033] bg-[#ffd447]">
         <div className="mx-auto max-w-7xl px-5 py-8 md:px-8">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Route odds</p>
-          <h2 className="mt-2 text-4xl font-black">What are the likely paths?</h2>
+          <h2 className="mt-2 text-4xl font-black">How could {team} get through?</h2>
           <p className="mt-3 max-w-4xl text-lg leading-7 text-[#3d3b23]">
             This is a simple model built on top of the official bracket. Treat it as a planning guide, not a prediction
             that knows the future.
