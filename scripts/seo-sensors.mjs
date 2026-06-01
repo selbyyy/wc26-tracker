@@ -112,7 +112,23 @@ const totalImpressions = searchRows.reduce((sum, row) => sum + row.impressions, 
 const totalViews = analyticsRows.reduce((sum, row) => sum + row.views, 0);
 const totalCommercialClicks = analyticsRows.reduce((sum, row) => sum + row.commercialClicks, 0);
 const averageCtr = totalImpressions > 0 ? totalClicks / totalImpressions : 0;
+const averagePosition = totalImpressions > 0
+  ? searchRows.reduce((sum, row) => sum + (row.position * row.impressions), 0) / totalImpressions
+  : 0;
 const clickProgress = Math.min(totalClicks / firstClickTarget, 1);
+const topQueries = [...searchRows]
+  .sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions)
+  .slice(0, 12);
+const topPages = [...searchRows.reduce((pages, row) => {
+  const page = row.page || 'n/a';
+  const current = pages.get(page) ?? { page, clicks: 0, impressions: 0 };
+  current.clicks += row.clicks;
+  current.impressions += row.impressions;
+  pages.set(page, current);
+  return pages;
+}, new Map()).values()]
+  .sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions)
+  .slice(0, 12);
 
 function table(rows, columns) {
   if (rows.length === 0) return '_No rows matched this sensor._';
@@ -165,8 +181,27 @@ Generated: ${generatedAt}
 | Google organic clicks | ${totalClicks} |
 | Google impressions | ${totalImpressions} |
 | Average organic CTR | ${percent(averageCtr)} |
+| Average organic position | ${averagePosition.toFixed(1)} |
 | Analytics pageviews/sessions | ${totalViews} |
 | Commercial or route-alert clicks | ${totalCommercialClicks} |
+
+## Top Queries
+
+${table(topQueries, [
+  { label: 'Query', format: (row) => row.query || 'n/a' },
+  { label: 'Page', format: (row) => row.page || 'n/a' },
+  { label: 'Clicks', format: (row) => String(row.clicks) },
+  { label: 'Impressions', format: (row) => String(row.impressions) },
+  { label: 'Position', format: (row) => row.position.toFixed(1) },
+])}
+
+## Top Pages
+
+${table(topPages, [
+  { label: 'Page', format: (row) => row.page },
+  { label: 'Clicks', format: (row) => String(row.clicks) },
+  { label: 'Impressions', format: (row) => String(row.impressions) },
+])}
 
 ## High Impressions, Low CTR
 

@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 
 export const googleScopes = [
@@ -12,7 +13,14 @@ export function requiredEnv(name) {
 }
 
 export async function fetchJson(url, options = {}) {
-  const response = await fetch(url, options);
+  let response;
+
+  try {
+    response = await fetch(url, options);
+  } catch (error) {
+    return fetchJsonWithCurl(url, options, error);
+  }
+
   const body = await response.text();
   let payload;
 
@@ -27,6 +35,51 @@ export async function fetchJson(url, options = {}) {
   }
 
   return payload;
+}
+
+function fetchJsonWithCurl(url, options, fetchError) {
+  const method = options.method ?? 'GET';
+  const args = [
+    '--silent',
+    '--show-error',
+    '--fail-with-body',
+    '--max-time',
+    '30',
+    '--request',
+    method,
+  ];
+  const proxy = process.env.SENSOR_HTTP_PROXY?.trim()
+    || process.env.HTTPS_PROXY?.trim()
+    || macSystemProxy();
+
+  if (proxy) args.push('--proxy', proxy);
+  for (const [name, value] of Object.entries(options.headers ?? {})) {
+    args.push('--header', `${name}: ${value}`);
+  }
+  if (options.body !== undefined) args.push('--data', String(options.body));
+  args.push(url);
+
+  try {
+    const body = execFileSync('curl', args, { encoding: 'utf8' });
+    return body ? JSON.parse(body) : {};
+  } catch (curlError) {
+    const detail = curlError.stderr?.trim() || curlError.stdout?.trim() || curlError.message;
+    throw new Error(`Network request failed with fetch (${fetchError.cause?.code ?? fetchError.message}) and curl (${detail}).`);
+  }
+}
+
+function macSystemProxy() {
+  if (process.platform !== 'darwin') return '';
+
+  try {
+    const config = execFileSync('/usr/sbin/scutil', ['--proxy'], { encoding: 'utf8' });
+    const enabled = config.match(/HTTPSEnable : (\d+)/)?.[1] === '1';
+    const host = config.match(/HTTPSProxy : ([^\s]+)/)?.[1];
+    const port = config.match(/HTTPSPort : (\d+)/)?.[1];
+    return enabled && host && port ? `http://${host}:${port}` : '';
+  } catch {
+    return '';
+  }
 }
 
 export async function getAccessToken() {

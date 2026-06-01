@@ -50,6 +50,10 @@ The command:
 3. Writes local CSV inputs under `ops/sensor-inputs/`.
 4. Generates `ops/weekly-reports/seo-sensor-snapshot.md`.
 
+If direct terminal access to Google times out on macOS, the API helper retries
+through the active macOS HTTPS proxy. Set `SENSOR_HTTP_PROXY` in
+`.env.sensors.local` only when a non-system proxy should be used instead.
+
 ## Configuration
 
 Defaults are already set for WC26 Chances:

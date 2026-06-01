@@ -308,3 +308,65 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Complete `ops/google-sensor-setup.md`: create a Google Cloud desktop OAuth client, add its client ID and secret to `.env.sensors.local`, then run `npm run sensors:oauth`.
 - Run `npm run sensors:refresh` once after authorization and verify Search Console and GA4 CSV rows.
 - Update the daily heartbeat prompt to run `npm run sensors:refresh` before browser fallback after the first successful authenticated refresh.
+
+## 2026-06-01 11:04 CST - Daily 100-Click Growth Loop
+
+### Inputs
+- User instruction: Automated daily WC26 Chances growth loop for the first 100 organic clicks; run `npm run sensors:refresh` before browser fallback, inspect Search Console and GA4, safely iterate, and append company memory.
+- OAuth readiness: The one-time Google OAuth bootstrap completed after adding `selbyxiao@gmail.com` as an OAuth test user. `.env.sensors.local` contains the client ID, client secret, and refresh token locally; the ignored file was not committed.
+- Terminal network: Direct Node fetch and curl access to `oauth2.googleapis.com:443` timed out, while Chrome worked through the macOS system proxy. The Google API helper now falls back to curl and automatically discovers the active macOS HTTPS proxy.
+- Search Console API: `npm run sensors:refresh` wrote 8 query/page rows. The latest local source-of-truth window contains 0 clicks, 39 impressions, 0.0% CTR, and weighted average position 88.6.
+- Search Console top page: All 39 impressions belong to `https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup`, which live production redirects with 301 to `/teams/argentina`.
+- Search Console top queries: Visible API rows are all Argentina odds variants, led by `argentina to win world cup odds` (8 impressions), `argentina world cup winner odds` (7 impressions), and `odds on argentina to win world cup 2026` (7 impressions).
+- Search Console sitemap API: `https://www.wc26chances.com/sitemap.xml` is not pending, has 0 errors and 0 warnings, was last downloaded on 2026-05-31T22:07:55.446Z, and reports 52 submitted web pages with 0 indexed pages.
+- Analytics API: GA4 pull wrote 4 page rows with 4 pageviews and 2 tracked commercial clicks. The visible pages are `/`, `/scenarios`, `/teams/argentina`, and `/teams/mexico`. Revenue is not available.
+- Browser fallback: Chrome automation returned `cgWindowNotFound`, so URL Inspection and the live Pages indexing report could not be inspected or changed during this heartbeat.
+- Site health: Production returned 200 for the homepage, sitemap, and `/world-cup-2026-schedule-by-team`; the retired Argentina market URL returned 301 to `/teams/argentina`. The live sitemap contains 52 URLs.
+
+### Observations
+- The Google API sensor loop is now closed: daily refresh can retrieve Search Console and GA4 rows without browser inspection or manual CSV export.
+- The sprint remains at 0 / 100 organic clicks. Search impressions increased from the prior live browser total of 20 to 39 in the API source-of-truth window, but no current URL has earned an impression yet.
+- Indexing is the largest bottleneck. The sitemap is healthy but reports 0 indexed pages, and Google's only visible search surface is still the retired Argentina odds URL.
+- The live redirect is correct. Shipping duplicate odds content or another broad page today would create more crawl targets before Google has processed the existing sitemap.
+- GA4 page and CTA events are measurable through the API. The current 2 commercial clicks are useful instrumentation proof but are too early to treat as organic conversion evidence.
+
+### Decision
+- Do not ship a new content page today. Preserve the redirect and current experiment window while Google recrawls the sitemap.
+- Improve the unattended sensor path and generated snapshot so future loops automatically report weighted average position, top queries, and top pages.
+- Record the Argentina retired-URL recrawl issue as an active SEO opportunity.
+
+### Actions Taken
+- Ran `npm run sensors:refresh`, producing local ignored Search Console and GA4 CSV inputs and regenerating the sensor snapshot.
+- Added curl proxy fallback with automatic macOS HTTPS proxy discovery to `scripts/google-api-common.mjs`.
+- Added average organic position, top-query tables, and top-page tables to `scripts/seo-sensors.mjs`.
+- Queried the Search Console sitemap API and verified 52 submitted pages, 0 indexed pages, 0 errors, and 0 warnings.
+- Verified production HTTP status for homepage, sitemap, schedule-by-team hub, and retired Argentina market redirect.
+- Updated `ops/google-sensor-setup.md`, `ops/seo-opportunity-log.md`, and `ops/experiments.md`.
+- Attempted authenticated browser fallback for URL Inspection, but Chrome automation returned `cgWindowNotFound`.
+
+### Files Changed
+- `scripts/google-api-common.mjs`
+- `scripts/seo-sensors.mjs`
+- `ops/google-sensor-setup.md`
+- `ops/seo-opportunity-log.md`
+- `ops/experiments.md`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and wrote 8 Search Console rows, 4 GA4 rows, and `ops/weekly-reports/seo-sensor-snapshot.md`.
+- `node --check scripts/google-api-common.mjs` passed before the authenticated refresh.
+- `npm run lint` passed.
+- Production HTTP and sitemap checks passed.
+- No application page code changed, so `npm run build` was not rerun.
+
+### Expected Impact
+- Daily loops now have a reliable unattended measurement path even when browser automation is unavailable.
+- Automatic top-query, top-page, and average-position reporting should reduce manual interpretation and keep iteration decisions grounded in current data.
+- Waiting for recrawl avoids adding more crawl competition while the sitemap still reports 0 indexed pages.
+
+### Follow-Up
+- Recheck sitemap indexed count and whether `/teams/argentina` replaces the retired `/market/...` URL in Search Console.
+- Use URL Inspection browser fallback to request indexing for the homepage and `/teams/argentina` when Chrome automation becomes readable.
+- Continue monitoring whether `/world-cup-2026-schedule-by-team` begins earning impressions within the 2-to-7-day recrawl window.
+- Treat CTA clicks as instrumentation validation until organic traffic is distinguishable from operator testing.
