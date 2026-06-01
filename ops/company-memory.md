@@ -453,3 +453,7 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Monitor whether chance/odds impressions begin migrating from the retired Argentina market URL to `/teams/argentina`.
 - Revisit title and copy variants only after the current recrawl has had time to process.
 - Retry pushing the local chances-positioning commit when the GitHub network path recovers; the first push failed with an HTTP/2 framing error and subsequent HTTP/1.1 retries stalled.
+
+### Deployment Resolution
+- The terminal did not inherit the active macOS HTTPS proxy at `127.0.0.1:8118`.
+- Retried GitHub push with explicit `HTTPS_PROXY` and `HTTP_PROXY`, then verified the production homepage contains `World Cup 2026 chances, mapped by team` and `Popular team chances`.
