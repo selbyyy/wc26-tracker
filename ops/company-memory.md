@@ -370,3 +370,42 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Use URL Inspection browser fallback to request indexing for the homepage and `/teams/argentina` when Chrome automation becomes readable.
 - Continue monitoring whether `/world-cup-2026-schedule-by-team` begins earning impressions within the 2-to-7-day recrawl window.
 - Treat CTA clicks as instrumentation validation until organic traffic is distinguishable from operator testing.
+
+## 2026-06-01 15:34 CST - Manual URL Inspection Recovery
+
+### Inputs
+- User instruction: verify whether browser automation recovered and continue the prioritized URL indexing requests.
+- Chrome automation: readable and interactive again.
+- Search Console Overview: 5 indexed pages and 51 not indexed pages in the live UI.
+
+### Observations
+- The live Search Console UI provides a fresher indexing view than the sitemap API snapshot, which reported 0 indexed pages.
+- The www homepage is not indexed because Google currently selects `https://wc26chances.com/` as canonical even though the page declares `https://www.wc26chances.com/`.
+- Production HTTP checks show that non-www homepage and `/teams/argentina` requests already redirect to their www counterparts with HTTP 307; www pages return 200.
+- `/teams/argentina` is present in `https://www.wc26chances.com/sitemap.xml` and has been discovered by Google, but had not yet been crawled.
+
+### Decision
+- Request fresh crawls for the homepage and `/teams/argentina`.
+- Do not repeat the schedule-by-team hub request because it was already queued on 2026-05-31 and repeated submissions do not increase priority.
+- Monitor canonical consolidation before changing domain-layer redirect behavior.
+
+### Actions Taken
+- Submitted `https://www.wc26chances.com/` to the Search Console priority crawl queue.
+- Submitted `https://www.wc26chances.com/teams/argentina` to the Search Console priority crawl queue.
+- Recorded homepage canonical consolidation as an active SEO opportunity.
+
+### Files Changed
+- `ops/company-memory.md`
+- `ops/seo-opportunity-log.md`
+
+### Quality Gates
+- Search Console confirmed `Indexing requested` for both submitted URLs.
+- Production HTTP checks confirmed non-www redirects to www and www pages return 200.
+
+### Expected Impact
+- Google should recrawl the two highest-priority surfaces and reconsider the stale homepage canonical selection.
+- Argentina impressions should gradually migrate from the retired `/market/...` URL to `/teams/argentina`.
+
+### Follow-Up
+- Recheck homepage canonical selection, indexed-page count, and Argentina crawl state in the next daily loop.
+- If Google still selects non-www after recrawl processing, evaluate a permanent domain-layer redirect.
