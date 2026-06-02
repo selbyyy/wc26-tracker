@@ -582,3 +582,32 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Follow-Up
 - Check crawl, index, impressions, and query data in the daily growth loop.
 - Avoid repeat submissions unless the page changes materially; Search Console states repeated submissions do not increase priority.
+
+## 2026-06-02 10:55 CST - Community Promotion Scan
+
+### Inputs
+- User instruction: look for suitable Reddit, football, and travel communities for manual promotion.
+- Current product fit: the site helps fans understand confirmed schedules, host cities, and possible knockout routes by team.
+
+### Observations
+- Reddit `r/WorldCup2026Tickets` contains recent, directly relevant questions about booking trips around uncertain knockout-stage routes.
+- The best initial distribution motion is a small number of tailored, disclosed replies to existing planning questions.
+- Generic self-promotional posting in broad communities is higher-risk and less useful.
+
+### Decision
+- Create a human-reviewed community promotion backlog.
+- Prioritize one directly relevant `r/WorldCup2026Tickets` reply, then assess engagement before considering a second reply, standalone post, or broader communities.
+
+### Actions Taken
+- Added `ops/community-promotion-log.md` with candidate threads, community guidance, safety constraints, and measurement expectations.
+
+### Quality Gates
+- No external content was posted.
+- Candidate comments require human review and publication.
+
+### Expected Impact
+- Early referral visitors can validate whether the chances and route pages solve a real planning problem while organic indexing develops.
+
+### Follow-Up
+- Draft a tailored reply for the highest-priority Reddit thread.
+- Publish only after account-owner review and record referral outcomes in GA4.
