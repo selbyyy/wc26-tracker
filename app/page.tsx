@@ -104,6 +104,7 @@ export default function Home() {
             <nav className="flex flex-wrap items-center gap-3 text-sm font-black uppercase tracking-wide text-white/80">
               <span className="rounded-full bg-white px-4 py-2 text-[#0b7a3b]">WC26 Chances</span>
               <Link href="/teams/argentina" className="hover:text-[#ffd447]">Teams</Link>
+              <Link href="/world-cup-2026-chances-by-team" className="hover:text-[#ffd447]">Chances</Link>
               <Link href="/world-cup-2026-schedule-by-team" className="hover:text-[#ffd447]">Schedule</Link>
               <Link href="/cities" className="hover:text-[#ffd447]">Cities</Link>
               <Link href="/scenarios" className="hover:text-[#ffd447]">Routes</Link>
@@ -214,7 +215,7 @@ export default function Home() {
           <div className="grid gap-3">
             {[
             ['World Cup 2026 schedule by team', '/world-cup-2026-schedule-by-team'],
-              ['World Cup 2026 chances by team', '/teams/argentina'],
+              ['World Cup 2026 chances by team', '/world-cup-2026-chances-by-team'],
               ['Where does Argentina play in World Cup 2026?', '/teams/argentina'],
               ['Where does USA play in World Cup 2026?', '/teams/usa'],
               ['World Cup 2026 cities by team', '/cities'],

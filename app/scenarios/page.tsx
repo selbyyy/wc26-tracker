@@ -64,6 +64,7 @@ export default function ScenariosPage() {
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/70">
             <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#102033]">WC26 Chances</Link>
             <Link href="/teams/argentina" className="px-2 py-2 hover:text-[#ffd447]">Teams</Link>
+            <Link href="/world-cup-2026-chances-by-team" className="px-2 py-2 hover:text-[#ffd447]">Chances</Link>
             <Link href="/cities" className="px-2 py-2 hover:text-[#ffd447]">Cities</Link>
           </nav>
           <p className="inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">

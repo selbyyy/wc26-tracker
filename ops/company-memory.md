@@ -507,3 +507,53 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Recheck indexed-page count, homepage canonical selection, and whether Argentina/Japan impressions migrate to `/teams/...`.
 - If Google still prefers non-www after recrawl processing, evaluate replacing the temporary 307 domain redirect with a permanent 301 or 308.
 - Treat the next meaningful SEO action as an indexing decision unless query/page data shows a stronger opportunity.
+
+## 2026-06-02 10:24 CST - Chances Hub Crawl Promotion
+
+### Inputs
+- User instruction: do not only wait for recrawl; find concrete ways to promote impressions.
+- Current Search Console signal: 52 impressions, concentrated in retired Argentina and Japan odds URLs, with 5 indexed pages and 51 not indexed pages in the live UI.
+- Existing product: homepage and team pages now emphasize knockout-stage chances, but there was no dedicated chances comparison index.
+
+### Observations
+- A single focused comparison hub can strengthen topical clarity and give Google a crawl path to every team page without producing a batch of thin pages.
+- The existing model already provides the data needed for all 48 teams.
+- Google Search Central documents permanent redirects as strong canonical signals; the apex domain still uses a temporary HTTP 307 redirect to www and remains a separate external follow-up.
+
+### Decision
+- Add one high-value `/world-cup-2026-chances-by-team` index page.
+- Link it prominently from the homepage, team pages, schedule hub, and routes hub.
+- Include the page in the sitemap and submit it for indexing after deployment.
+
+### Actions Taken
+- Added a chances-by-team comparison hub with modelled knockout-stage probabilities, group breakdowns, model disclaimers, and FAQ schema.
+- Added major-hub internal links and updated site-level metadata to reflect the chances-first product position.
+- Added sitemap inclusion with daily change frequency and high priority.
+- Added `EXP-006` and recorded the SEO opportunity.
+
+### Files Changed
+- `app/world-cup-2026-chances-by-team/page.tsx`
+- `app/sitemap.ts`
+- `app/page.tsx`
+- `app/teams/[slug]/page.tsx`
+- `app/world-cup-2026-schedule-by-team/page.tsx`
+- `app/scenarios/page.tsx`
+- `app/layout.tsx`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed, generating 58 static/SSG routes.
+- Local browser visual checks passed for desktop and mobile chances-hub layouts.
+
+### Expected Impact
+- Google receives a clearer chances-by-team topic cluster and a direct internal crawl path to all team pages.
+- The new hub can compete for broad World Cup 2026 chances queries while retired odds URLs continue consolidating into team pages.
+
+### Follow-Up
+- Deploy, verify the hub and 53-URL sitemap, then request hub indexing in Search Console.
+- Continue monitoring whether retired odds URL impressions migrate to `/teams/...`.
+- Evaluate changing the domain-layer apex redirect from temporary 307 to permanent 301 or 308.

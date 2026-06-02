@@ -17,18 +17,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.wc26chances.com"),
   title: {
-    default: "WC26 Chances | World Cup 2026 Team Cities & Routes",
+    default: "WC26 Chances | World Cup 2026 Chances by Team",
     template: "%s | WC26 Chances",
   },
   description:
-    "Pick a World Cup 2026 team and instantly see its confirmed match cities, stadiums, dates, and possible knockout route.",
+    "Compare World Cup 2026 team chances, then map confirmed matches, cities, stadiums, and possible knockout routes.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "WC26 Chances | World Cup 2026 Team Cities & Routes",
+    title: "WC26 Chances | World Cup 2026 Chances by Team",
     description:
-      "Pick a team and instantly see its confirmed World Cup 2026 cities, stadiums, dates, and possible route.",
+      "Compare modelled World Cup 2026 team chances, then map confirmed cities, dates, stadiums, and possible routes.",
     url: "https://www.wc26chances.com",
     siteName: "WC26 Chances",
     type: "website",
@@ -41,7 +41,7 @@ const jsonLd = {
   name: "WC26 Chances",
   url: "https://www.wc26chances.com",
   description:
-    "World Cup 2026 team schedules, host city guides, and possible knockout routes for fans planning tickets and travel.",
+    "World Cup 2026 team chances, schedules, host city guides, and possible knockout routes for fans planning tickets and travel.",
   publisher: {
     "@type": "Organization",
     name: "WC26 Chances",
