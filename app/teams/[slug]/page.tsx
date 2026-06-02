@@ -146,7 +146,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
           <div className="grid gap-8 md:grid-cols-[1fr_420px] md:items-end">
             <div>
               <p className="inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
-                {advanceChance}% modelled chance to advance
+                {advanceChance}% modelled chance to reach the knockout stage
               </p>
               <h1 className="mt-4 text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
                 {team} World Cup 2026 chances.

@@ -15,14 +15,14 @@ import { getTeamGroupForecast } from '@/lib/probability-tree';
 export const metadata: Metadata = {
   title: 'World Cup 2026 Chances by Team: Routes, Cities, Schedule',
   description:
-    'Pick a World Cup 2026 team and see its modelled chances of advancing, confirmed schedule, host cities, and possible knockout route.',
+    'Pick a World Cup 2026 team and see its modelled chance of reaching the knockout stage, confirmed schedule, host cities, and possible route.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'World Cup 2026 Chances by Team: Routes, Cities, Schedule',
     description:
-      'See each team\'s modelled chances of advancing, confirmed cities, dates, stadiums, and possible knockout routes.',
+      'See each team\'s modelled chance of reaching the knockout stage, confirmed cities, dates, stadiums, and possible routes.',
     url: '/',
     type: 'website',
   },
@@ -117,7 +117,7 @@ export default function Home() {
                 World Cup 2026 chances, mapped by team.
               </h1>
               <p className="mt-6 max-w-2xl text-xl leading-8 text-white/85">
-                Choose a team to see its modelled chance of advancing, confirmed group games, and the cities that
+                Choose a team to see its modelled chance of reaching the knockout stage, confirmed group games, and the cities that
                 open up along each possible knockout route.
               </p>
             </div>
@@ -155,7 +155,7 @@ export default function Home() {
                       <h3 className="text-xl font-black">{team}</h3>
                       <p className="mt-1 text-xs font-black uppercase text-[#667085]">Group {group}</p>
                     </div>
-                    <span className="rounded-full bg-[#ffd447] px-3 py-1 text-xs font-black">{advanceChance}% advance</span>
+                    <span className="rounded-full bg-[#ffd447] px-3 py-1 text-xs font-black">{advanceChance}% reach knockouts</span>
                   </div>
                   <div className="mt-4 space-y-2">
                     {matches.map((match) => (
@@ -173,7 +173,7 @@ export default function Home() {
               ))}
             </div>
             <p className="mt-4 text-xs font-bold leading-5 text-[#667085]">
-              Advance chances come from a simple planning model, not an official forecast or betting market.
+              Knockout-stage chances come from a simple planning model, not an official forecast or betting market.
             </p>
           </div>
         </div>

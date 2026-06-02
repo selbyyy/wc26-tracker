@@ -457,3 +457,53 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Deployment Resolution
 - The terminal did not inherit the active macOS HTTPS proxy at `127.0.0.1:8118`.
 - Retried GitHub push with explicit `HTTPS_PROXY` and `HTTP_PROXY`, then verified the production homepage contains `World Cup 2026 chances, mapped by team` and `Popular team chances`.
+
+## 2026-06-02 10:02 CST - Daily 100-Click Growth Loop
+
+### Inputs
+- Automated daily growth loop for the first 100 organic clicks.
+- `npm run sensors:refresh` completed successfully and regenerated the Search Console and GA4 snapshot.
+- Authenticated Search Console browser inspection was available as a live indexing fallback.
+
+### Observations
+- Sprint progress remains 0 / 100 organic clicks.
+- Search Console API reports 52 impressions, 0 clicks, 0.0% CTR, and weighted average position 87.5. Impressions increased from 39 to 52 since the prior daily run.
+- The visible queries remain odds intent. Argentina odds variants account for 47 impressions; Japan odds variants now account for 5 impressions.
+- Search impressions still belong to retired `/market/...` URLs. Production verifies that Argentina and Japan retired URLs both return 301 redirects to their `/teams/...` replacements.
+- GA4 API access is working. It reports 4 page rows, 4 pageviews, and 2 tracked commercial clicks. Revenue is unavailable. Current CTA activity remains too early to treat as organic conversion evidence.
+- Live Search Console Overview reports 5 indexed pages and 51 not indexed pages. The production sitemap returns 200 and contains 52 URLs.
+- Production homepage, sitemap, `/teams/argentina`, and `/world-cup-2026-schedule-by-team` return 200. The non-www homepage still redirects to www with HTTP 307.
+- User feedback identified an avoidable product ambiguity: `modelled chance to advance` can be read as tournament-winning probability rather than group-stage progression.
+
+### Decision
+- Keep indexing and retired-URL recrawl as the primary bottleneck. Do not create additional crawl targets today.
+- Ship a narrow copy clarification: state that the displayed model percentage is the chance to reach the knockout stage.
+- Continue monitoring whether impressions migrate from retired market URLs to team pages after Google processes the redirects and recent crawl requests.
+
+### Actions Taken
+- Ran `npm run sensors:refresh`, producing 11 Search Console rows and 4 GA4 rows.
+- Verified live Search Console indexed-page count through authenticated Chrome inspection.
+- Verified production HTTP behavior and the 52-URL sitemap.
+- Replaced ambiguous `advance` labels with explicit knockout-stage language on the homepage and team pages.
+- Added the clarification to `ops/seo-opportunity-log.md`.
+
+### Files Changed
+- `app/page.tsx`
+- `app/teams/[slug]/page.tsx`
+- `ops/seo-opportunity-log.md`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed, generating 57 static/SSG routes.
+
+### Expected Impact
+- Users should understand that the headline model percentage is a group-stage progression estimate, not a title-winning probability.
+- Avoiding new URLs keeps crawl attention on the existing team pages while Google processes redirects.
+
+### Follow-Up
+- Recheck indexed-page count, homepage canonical selection, and whether Argentina/Japan impressions migrate to `/teams/...`.
+- If Google still prefers non-www after recrawl processing, evaluate replacing the temporary 307 domain redirect with a permanent 301 or 308.
+- Treat the next meaningful SEO action as an indexing decision unless query/page data shows a stronger opportunity.
