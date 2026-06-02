@@ -557,3 +557,28 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Deploy, verify the hub and 53-URL sitemap, then request hub indexing in Search Console.
 - Continue monitoring whether retired odds URL impressions migrate to `/teams/...`.
 - Evaluate changing the domain-layer apex redirect from temporary 307 to permanent 301 or 308.
+
+## 2026-06-02 10:37 CST - Chances Hub Priority Crawl Request
+
+### Inputs
+- Production verification: `/world-cup-2026-chances-by-team` is live and the sitemap contains 53 URLs.
+- Search Console URL Inspection initially reported `URL is not on Google` and `URL is unknown to Google`.
+
+### Decision
+- Request indexing for the new chances hub immediately after deployment.
+
+### Actions Taken
+- Submitted `https://www.wc26chances.com/world-cup-2026-chances-by-team` through Search Console URL Inspection.
+- Search Console confirmed `Indexing requested`: the URL was added to a priority crawl queue.
+
+### Quality Gates
+- Production hub responded successfully.
+- Production sitemap contains the new hub.
+- Search Console live indexing request passed.
+
+### Expected Impact
+- Google has an explicit priority-crawl request for the new chances hub in addition to sitemap discovery and internal links.
+
+### Follow-Up
+- Check crawl, index, impressions, and query data in the daily growth loop.
+- Avoid repeat submissions unless the page changes materially; Search Console states repeated submissions do not increase priority.
