@@ -751,5 +751,5 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - If Vercel's domain-level redirect takes precedence, the repo config still documents the desired permanent behavior and the next fix is in Vercel domain settings.
 
 ### Follow-Up
-- After deployment, verify whether `https://wc26chances.com/` and apex old market URLs now return HTTP 308.
-- If production still returns 307, change the primary-domain or redirect setting in the Vercel dashboard/domain layer.
+- Production verification after deploy still returns HTTP 307 for `https://wc26chances.com/`, so Vercel's domain-level redirect appears to take precedence over repo-level host redirects.
+- Change the primary-domain or redirect setting in the Vercel dashboard/domain layer so apex to www uses a permanent redirect.
