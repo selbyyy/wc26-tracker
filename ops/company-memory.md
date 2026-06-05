@@ -611,3 +611,52 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Follow-Up
 - Draft a tailored reply for the highest-priority Reddit thread.
 - Publish only after account-owner review and record referral outcomes in GA4.
+
+## 2026-06-03 10:56 CST - Daily 100-Click Growth Loop
+
+### Inputs
+- Automated daily growth loop for the first 100 organic clicks.
+- `npm run sensors:refresh` completed successfully.
+- Read business goals, loop policy, quality gates, experiments, SEO opportunity log, 100-click sprint, and recent company memory.
+
+### Observations
+- Sprint progress remains 0 / 100 organic clicks.
+- Search Console API reports 62 impressions, 0 clicks, 0.0% CTR, and weighted average position 86.2.
+- Impressions increased from 52 to 62 since the prior daily run, but all impressions still belong to retired `/market/...` URLs.
+- Top page remains `https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup` with 57 impressions. Japan has 5 impressions.
+- Production verifies both retired Argentina and Japan market URLs return HTTP 301 redirects to their `/teams/...` replacements.
+- GA4 API access is working. It reports 9 page rows, 15 pageviews/sessions, and 2 tracked commercial or route-alert clicks.
+- The new chances hub appears in GA4 with 1 session and 0 pageviews in the page report, but has no Search Console impressions yet.
+- Production sitemap returns 200 and contains 53 URLs. Robots allows crawling and points to the www sitemap.
+- The apex domain still redirects to the www domain with HTTP 307, which remains the main domain-layer canonical weakness.
+- Authenticated browser coverage inspection was unavailable in this run because the Chrome automation layer could not attach to a visible Chrome window.
+
+### Decision
+- Do not ship another content or metadata change today. The current bottleneck is Google recrawl/indexing, not missing on-page copy.
+- Preserve the existing 301 redirects and give Google time to migrate old market impressions to team pages.
+- Update the daily automation prompt so future runs also read `ops/community-promotion-log.md` and can track human-reviewed promotion opportunities.
+
+### Actions Taken
+- Ran `npm run sensors:refresh`, producing 11 Search Console rows and 9 GA4 page rows.
+- Verified production retired-URL redirects, robots, and 53-URL sitemap.
+- Updated the `wc26-chances-daily-growth-loop` heartbeat prompt to include community-promotion monitoring while explicitly prohibiting automatic external posting.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md`.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `git diff --check` passed before recording this memory entry.
+- Production redirect checks passed for retired Argentina and Japan market URLs.
+- Production sitemap check passed with 53 URLs.
+- No site code changed, so `npm run lint` and `npm run build` were not rerun.
+
+### Expected Impact
+- The loop preserves a clean experiment window while Google processes redirects, sitemap discovery, and the manual indexing request for the chances hub.
+- Tomorrow's automation will include the community promotion backlog as a monitored growth channel without risking automated Reddit posting.
+
+### Follow-Up
+- Recheck whether impressions migrate from retired market URLs to `/teams/argentina`, `/teams/japan`, or `/world-cup-2026-chances-by-team`.
+- Recheck indexed-page count through authenticated browser inspection when Chrome automation is available.
+- If the apex 307 remains after another recrawl window, fix it at the Vercel/domain layer to use a permanent redirect to `https://www.wc26chances.com/`.
