@@ -2,6 +2,8 @@
 
 Goal: reach the first 100 Google organic clicks for WC26 Chances, then use the sensor report to decide what to scale.
 
+See `ops/world-cup-growth-milestones.md` for the tournament-calendar version of this sprint. As of June 5, 2026, the original June 10 target is a stretch target because the site is still in indexing/canonical migration.
+
 ## Target
 
 - Primary metric: 100 Google Search Console clicks.

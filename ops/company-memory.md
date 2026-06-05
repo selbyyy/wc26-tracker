@@ -758,3 +758,37 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Used the Vercel project Domains UI to change `wc26chances.com` from `307 Temporary Redirect` to `308 Permanent Redirect` targeting `www.wc26chances.com`.
 - Verified production `https://wc26chances.com/` now returns HTTP 308 to `https://www.wc26chances.com/`.
 - Verified the apex old-market chain is now `308` apex -> www old-market URL, then app-level `301` -> `/teams/argentina`, then HTTP 200.
+
+## 2026-06-05 10:53 CST - Tournament-Aligned Growth Milestones
+
+### Inputs
+- User asked to match the 100-click path with the World Cup schedule and back-solve milestones.
+- Current baseline: 0 clicks, 80 impressions, average position 77.9, and recent apex canonical fix from 307 to 308.
+- Local schedule data covers group stage from June 11 to June 27, Round of 32 from June 28 to July 3, Round of 16 from July 4 to July 7, quarterfinals from July 9 to July 11, semifinals July 14-15, third place July 18, and final July 19.
+
+### Observations
+- Search demand will not be linear. It should spike around opening matches, major-team match days, final group matches, and knockout-route certainty.
+- The original June 10 100-click milestone is now a stretch target because current rankings are too low and most impressions remain on retired market URLs.
+
+### Decision
+- Add a tournament-calendar milestone plan and treat June 27 to July 3 as the base-case window for the first 100 Google organic clicks.
+
+### Actions Taken
+- Added `ops/world-cup-growth-milestones.md`.
+- Linked the 100-click sprint to the new tournament-calendar milestone plan.
+
+### Files Changed
+- `ops/world-cup-growth-milestones.md`
+- `ops/100-click-sprint.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- Planning/documentation-only change.
+- No production code changed.
+
+### Expected Impact
+- Daily growth loop can judge progress against tournament demand windows instead of a stale pre-kickoff linear target.
+
+### Follow-Up
+- Use the June 10, June 15, June 23, June 27, and July 3 checkpoints in future daily reports.
+- If clicks are still 0 by June 23, shift effort from page edits to indexing diagnostics and human-reviewed distribution.
