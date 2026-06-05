@@ -792,3 +792,47 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Follow-Up
 - Use the June 10, June 15, June 23, June 27, and July 3 checkpoints in future daily reports.
 - If clicks are still 0 by June 23, shift effort from page edits to indexing diagnostics and human-reviewed distribution.
+
+## 2026-06-05 11:09 CST - Community Validation and Commercial CTA Execution
+
+### Inputs
+- User reported the first Reddit comment was published on the same day it was drafted, but it has not received replies.
+- Current GA4 signal: 2 commercial or route-alert clicks, too little to evaluate revenue intent.
+- Existing team-page CTAs were generic ticket and route-alert cards placed below the route odds section.
+
+### Observations
+- Lack of Reddit replies does not invalidate the channel; the measurable signal should be referral sessions, page engagement, and CTA clicks.
+- Team pages are the highest-intent commercial surface because they already contain confirmed cities, match dates, route uncertainty, and a clear fan identity.
+- Current team CTAs do not expose hotel intent and do not track CTA-panel views, so click-through rate cannot be calculated cleanly.
+
+### Decision
+- Use team pages as the first commercial validation surface.
+- Replace generic team CTAs with a specific three-action planning panel: tickets, hotels, and route alerts.
+- Keep all ticket and hotel language neutral and avoid unsupported availability or affiliate claims.
+
+### Actions Taken
+- Added `PlanningActionPanel`, which tracks `planning_action_panel_view`, `ticket_planning_click`, `hotel_planning_click`, and `route_alert_click`.
+- Replaced team-page ticket/alert cards with the new planning panel.
+- Prefilled route-alert emails with the team and confirmed cities.
+- Updated `EXP-007`, `ops/seo-opportunity-log.md`, and the community promotion log.
+
+### Files Changed
+- `app/components/PlanningActionPanel.tsx`
+- `app/teams/[slug]/page.tsx`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/community-promotion-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed, generating 58 static/SSG routes.
+
+### Expected Impact
+- Community or search visitors landing on team pages now see a concrete planning next step instead of a generic CTA.
+- GA4 can measure panel views and split commercial intent into ticket, hotel, and route-alert actions.
+
+### Follow-Up
+- In the next sensor run, compare `planning_action_panel_view` against ticket, hotel, and alert clicks.
+- If Reddit still has no referral traffic, test a second highly relevant community reply instead of reposting the same link.

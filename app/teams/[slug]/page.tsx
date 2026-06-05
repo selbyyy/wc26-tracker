@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { CommercialCta } from '@/app/components/CommercialCta';
+import { PlanningActionPanel } from '@/app/components/PlanningActionPanel';
 import { generateSlug } from '@/lib/slug';
 import {
   getAllTeams,
@@ -224,20 +224,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-8 md:grid-cols-2 md:px-8">
-        <CommercialCta
-          context={`team-${slug}-tickets`}
-          title={`Looking for ${team} tickets?`}
-          body={`Use the confirmed ${team} cities here first, then check FIFA's official ticket page for current availability.`}
-          kind="tickets"
-        />
-        <CommercialCta
-          context={`team-${slug}-alerts`}
-          title={`Want ${team} route updates?`}
-          body={`Tell us you care about ${team}, and we will shape alerts around the cities that matter next.`}
-          kind="alerts"
-        />
-      </section>
+      <PlanningActionPanel context={`team-${slug}-planning-actions`} team={team} cities={cities} />
 
       <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
         <div className="grid gap-5 md:grid-cols-[1.2fr_0.8fr]">
