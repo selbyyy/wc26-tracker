@@ -711,3 +711,45 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Recheck whether `/teams/panama` receives repeat schedule impressions.
 - Recheck whether impressions migrate from retired market URLs to `/teams/argentina`, `/teams/japan`, or `/world-cup-2026-chances-by-team`.
 - Fix the apex 307 at the Vercel/domain layer if canonical ambiguity persists.
+
+## 2026-06-05 10:13 CST - Redirect Canonical Audit
+
+### Inputs
+- User asked why migration is taking so long and whether something is wrong.
+- Current Search Console signal: retired `/market/...` URLs still hold most impressions.
+- Production checks were run against old market URLs, team pages, sitemap, robots, and apex-domain variants.
+
+### Observations
+- `https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup` returns HTTP 301 to `/teams/argentina`, then HTTP 200.
+- `https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup` returns HTTP 301 to `/teams/japan`.
+- `/teams/argentina`, `/teams/japan`, and `/teams/panama` have self-canonical tags on the www domain.
+- `robots.txt` allows crawling and points to the www sitemap. The sitemap contains 53 URLs and includes the relevant team and hub pages.
+- `https://wc26chances.com/...` still returns HTTP 307 to the www host before app-level redirects run. This is a weaker temporary redirect signal and is the main canonical risk found.
+
+### Decision
+- Add explicit Vercel permanent host redirects in repo config so the intended canonical rule is versioned with the app.
+- Do not change page copy or duplicate old market pages; the app-level old market redirects are correct.
+
+### Actions Taken
+- Added `vercel.json` rules:
+  - apex old market URL -> corresponding www team URL with HTTP 308.
+  - all other apex paths -> matching www path with HTTP 308.
+- Added this canonical issue to `ops/seo-opportunity-log.md`.
+
+### Files Changed
+- `vercel.json`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed, generating 58 static/SSG routes.
+
+### Expected Impact
+- Strengthens canonical consolidation from apex to www and reduces ambiguity while Google processes old URL redirects.
+- If Vercel's domain-level redirect takes precedence, the repo config still documents the desired permanent behavior and the next fix is in Vercel domain settings.
+
+### Follow-Up
+- After deployment, verify whether `https://wc26chances.com/` and apex old market URLs now return HTTP 308.
+- If production still returns 307, change the primary-domain or redirect setting in the Vercel dashboard/domain layer.
