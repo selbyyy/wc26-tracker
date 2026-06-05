@@ -660,3 +660,54 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Recheck whether impressions migrate from retired market URLs to `/teams/argentina`, `/teams/japan`, or `/world-cup-2026-chances-by-team`.
 - Recheck indexed-page count through authenticated browser inspection when Chrome automation is available.
 - If the apex 307 remains after another recrawl window, fix it at the Vercel/domain layer to use a permanent redirect to `https://www.wc26chances.com/`.
+
+## 2026-06-05 10:04 CST - Daily 100-Click Growth Loop
+
+### Inputs
+- Automated daily growth loop for the first 100 organic clicks.
+- `npm run sensors:refresh` completed successfully.
+- Read business goals, loop policy, quality gates, experiments, SEO opportunity log, community promotion log, 100-click sprint, and recent company memory.
+
+### Observations
+- Sprint progress remains 0 / 100 organic clicks.
+- Search Console API reports 80 impressions, 0 clicks, 0.0% CTR, and weighted average position 77.9.
+- Impressions increased from 62 to 80 since the prior recorded daily run.
+- Retired market URLs still hold nearly all impressions: Argentina has 66 impressions and Japan has 12 impressions.
+- A new non-retired signal appeared: `/teams/panama` received 2 impressions for `panama world cup schedule` and `panama world cup games`, at average positions 47 and 61.
+- One Japan query is an AI-agent style market prompt with 6 impressions and average position 7.7. It is not a normal fan search query and should not drive copy changes.
+- GA4 API access is working. It reports 9 page rows, 15 pageviews/sessions, and 2 tracked commercial or route-alert clicks.
+- Production verifies retired Argentina and Japan market URLs return HTTP 301 redirects to `/teams/argentina` and `/teams/japan`.
+- Production `/teams/panama` returns HTTP 200, the sitemap returns 53 URLs and includes Panama, the schedule hub, and the chances hub, and robots allows crawling.
+- The apex domain still redirects to the www domain with HTTP 307.
+- Authenticated browser indexing inspection was not used in this run; API sensors succeeded, and terminal production checks covered sitemap, robots, and redirects.
+
+### Decision
+- Do not ship site code today. The biggest bottleneck remains crawl/index migration from retired market URLs, not missing on-page content.
+- Record Panama schedule intent as a watched SEO opportunity, but wait for repeat impressions before modifying the Panama page or adding special internal-link treatment.
+- Keep community promotion human-reviewed; no external posts were made automatically.
+
+### Actions Taken
+- Ran `npm run sensors:refresh`, producing 16 Search Console rows and 9 GA4 page rows.
+- Verified production retired-URL redirects, Panama page availability, robots, and 53-URL sitemap.
+- Added a Panama schedule-intent watchlist row to `ops/seo-opportunity-log.md`.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md`.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- Production redirect checks passed for retired Argentina and Japan market URLs.
+- Production Panama page check passed with HTTP 200.
+- Production sitemap check passed with 53 URLs and expected URLs present.
+- No site code changed, so `npm run lint` and `npm run build` were not rerun.
+
+### Expected Impact
+- Preserves the current recrawl experiment while capturing the first useful schedule-query signal on a live team page.
+- Avoids overfitting to 2 Panama impressions or to an AI-agent style Japan market prompt.
+
+### Follow-Up
+- Recheck whether `/teams/panama` receives repeat schedule impressions.
+- Recheck whether impressions migrate from retired market URLs to `/teams/argentina`, `/teams/japan`, or `/world-cup-2026-chances-by-team`.
+- Fix the apex 307 at the Vercel/domain layer if canonical ambiguity persists.
