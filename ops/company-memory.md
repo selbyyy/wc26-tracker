@@ -753,3 +753,8 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Follow-Up
 - Production verification after deploy still returns HTTP 307 for `https://wc26chances.com/`, so Vercel's domain-level redirect appears to take precedence over repo-level host redirects.
 - Change the primary-domain or redirect setting in the Vercel dashboard/domain layer so apex to www uses a permanent redirect.
+
+### Dashboard Resolution
+- Used the Vercel project Domains UI to change `wc26chances.com` from `307 Temporary Redirect` to `308 Permanent Redirect` targeting `www.wc26chances.com`.
+- Verified production `https://wc26chances.com/` now returns HTTP 308 to `https://www.wc26chances.com/`.
+- Verified the apex old-market chain is now `308` apex -> www old-market URL, then app-level `301` -> `/teams/argentina`, then HTTP 200.
