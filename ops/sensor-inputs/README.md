@@ -33,6 +33,14 @@ Expected columns can use GA4/Plausible-style names:
 - `Engagement rate`, `Engaged sessions`, or `Average engagement time`
 - `Commercial clicks`, `Outbound clicks`, `Key events`, or `Conversions`
 
+## `analytics-events.csv`
+
+Expected columns can use:
+
+- `Page` or `Page path`
+- `Event` or `Event name`
+- `Count` or `Event count`
+
 Run:
 
 ```bash
@@ -47,5 +55,7 @@ The report includes:
 - Total Google clicks and impressions.
 - Average organic CTR.
 - Analytics pageview/session totals.
+- Planning action panel views.
 - Commercial or route-alert click totals.
+- Commercial event summaries by page.
 - Query/page opportunities for the next AI loop change.

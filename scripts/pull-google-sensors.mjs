@@ -6,6 +6,7 @@ const root = process.cwd();
 const inputDir = resolve(root, 'ops/sensor-inputs');
 const searchConsolePath = resolve(inputDir, 'search-console.csv');
 const analyticsPagesPath = resolve(inputDir, 'analytics-pages.csv');
+const analyticsEventsPath = resolve(inputDir, 'analytics-events.csv');
 const siteUrl = process.env.GSC_SITE_URL?.trim() || 'https://www.wc26chances.com/';
 const ga4PropertyId = process.env.GA4_PROPERTY_ID?.trim() || '539351001';
 const accessToken = await getAccessToken();
@@ -80,7 +81,7 @@ async function pullAnalytics() {
         filter: {
           fieldName: 'eventName',
           inListFilter: {
-            values: ['ticket_planning_click', 'hotel_planning_click', 'route_alert_click'],
+            values: ['planning_action_panel_view', 'ticket_planning_click', 'hotel_planning_click', 'route_alert_click'],
           },
         },
       },
@@ -88,11 +89,16 @@ async function pullAnalytics() {
     }),
   ]);
 
+  const eventRows = [];
   const clicksByPage = new Map();
   for (const row of eventsPayload.rows ?? []) {
     const page = row.dimensionValues?.[0]?.value ?? '';
+    const eventName = row.dimensionValues?.[1]?.value ?? '';
     const count = Number(row.metricValues?.[0]?.value ?? 0);
-    clicksByPage.set(page, (clicksByPage.get(page) ?? 0) + count);
+    eventRows.push({ page, eventName, count });
+    if (eventName.endsWith('_click')) {
+      clicksByPage.set(page, (clicksByPage.get(page) ?? 0) + count);
+    }
   }
 
   const rows = (pagesPayload.rows ?? []).map((row) => {
@@ -112,6 +118,12 @@ async function pullAnalytics() {
     { label: 'Sessions', value: (row) => row.sessions },
     { label: 'Engagement rate', value: (row) => row.engagementRate },
     { label: 'Commercial clicks', value: (row) => row.commercialClicks },
+  ]);
+
+  writeCsv(analyticsEventsPath, eventRows, [
+    { label: 'Page', value: (row) => row.page },
+    { label: 'Event', value: (row) => row.eventName },
+    { label: 'Count', value: (row) => row.count },
   ]);
 }
 

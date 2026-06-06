@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path';
 const root = process.cwd();
 const searchConsolePath = resolve(root, 'ops/sensor-inputs/search-console.csv');
 const analyticsPagesPath = resolve(root, 'ops/sensor-inputs/analytics-pages.csv');
+const analyticsEventsPath = resolve(root, 'ops/sensor-inputs/analytics-events.csv');
 const outputPath = resolve(root, 'ops/weekly-reports/seo-sensor-snapshot.md');
 const firstClickTarget = 100;
 
@@ -75,6 +76,7 @@ function pick(row, keys) {
 
 const searchConsoleInput = readCsvInput(searchConsolePath);
 const analyticsPagesInput = readCsvInput(analyticsPagesPath);
+const analyticsEventsInput = readCsvInput(analyticsEventsPath);
 
 const searchRows = searchConsoleInput.rows.map((row) => ({
   query: pick(row, ['query', 'top_queries']),
@@ -90,6 +92,12 @@ const analyticsRows = analyticsPagesInput.rows.map((row) => ({
   views: numberValue(pick(row, ['views', 'pageviews', 'screen_page_views', 'sessions'])),
   engagement: numberValue(pick(row, ['engagement_rate', 'engaged_sessions', 'average_engagement_time'])),
   commercialClicks: numberValue(pick(row, ['commercial_clicks', 'outbound_clicks', 'key_events', 'conversions'])),
+}));
+
+const analyticsEventRows = analyticsEventsInput.rows.map((row) => ({
+  page: pick(row, ['page', 'path', 'landing_page', 'page_path']),
+  event: pick(row, ['event', 'event_name', 'eventname']),
+  count: numberValue(pick(row, ['count', 'event_count', 'events'])),
 }));
 
 const highImpressionLowCtr = searchRows
@@ -111,6 +119,18 @@ const totalClicks = searchRows.reduce((sum, row) => sum + row.clicks, 0);
 const totalImpressions = searchRows.reduce((sum, row) => sum + row.impressions, 0);
 const totalViews = analyticsRows.reduce((sum, row) => sum + row.views, 0);
 const totalCommercialClicks = analyticsRows.reduce((sum, row) => sum + row.commercialClicks, 0);
+const totalPlanningPanelViews = analyticsEventRows
+  .filter((row) => row.event === 'planning_action_panel_view')
+  .reduce((sum, row) => sum + row.count, 0);
+const eventSummary = [...analyticsEventRows.reduce((events, row) => {
+  const key = `${row.page || 'n/a'}|${row.event || 'n/a'}`;
+  const current = events.get(key) ?? { page: row.page || 'n/a', event: row.event || 'n/a', count: 0 };
+  current.count += row.count;
+  events.set(key, current);
+  return events;
+}, new Map()).values()]
+  .sort((a, b) => b.count - a.count || a.page.localeCompare(b.page))
+  .slice(0, 12);
 const averageCtr = totalImpressions > 0 ? totalClicks / totalImpressions : 0;
 const averagePosition = totalImpressions > 0
   ? searchRows.reduce((sum, row) => sum + (row.position * row.impressions), 0) / totalImpressions
@@ -165,6 +185,7 @@ Generated: ${generatedAt}
 
 - Search Console: \`${searchConsolePath.replace(`${root}/`, '')}\` (${inputSummary(searchConsoleInput, searchRows.length)})
 - Analytics pages: \`${analyticsPagesPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsPagesInput, analyticsRows.length)})
+- Analytics events: \`${analyticsEventsPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsEventsInput, analyticsEventRows.length)})
 
 ## Input Readiness
 
@@ -172,6 +193,7 @@ Generated: ${generatedAt}
 | --- | --- | --- |
 | Search Console | ${inputSummary(searchConsoleInput, searchRows.length)} | ${inputAction(searchConsoleInput, searchRows.length, 'ops/sensor-inputs/search-console.csv')} |
 | Analytics pages | ${inputSummary(analyticsPagesInput, analyticsRows.length)} | ${inputAction(analyticsPagesInput, analyticsRows.length, 'ops/sensor-inputs/analytics-pages.csv')} |
+| Analytics events | ${inputSummary(analyticsEventsInput, analyticsEventRows.length)} | ${inputAction(analyticsEventsInput, analyticsEventRows.length, 'ops/sensor-inputs/analytics-events.csv')} |
 
 ## Traffic Summary
 
@@ -183,6 +205,7 @@ Generated: ${generatedAt}
 | Average organic CTR | ${percent(averageCtr)} |
 | Average organic position | ${averagePosition.toFixed(1)} |
 | Analytics pageviews/sessions | ${totalViews} |
+| Planning action panel views | ${totalPlanningPanelViews} |
 | Commercial or route-alert clicks | ${totalCommercialClicks} |
 
 ## Top Queries
@@ -229,6 +252,14 @@ ${table(trafficNoCommercialAction, [
   { label: 'Views', format: (row) => String(row.views) },
   { label: 'Commercial clicks', format: (row) => String(row.commercialClicks) },
   { label: 'Engagement signal', format: (row) => String(row.engagement) },
+])}
+
+## Commercial Event Summary
+
+${table(eventSummary, [
+  { label: 'Page', format: (row) => row.page },
+  { label: 'Event', format: (row) => row.event },
+  { label: 'Count', format: (row) => String(row.count) },
 ])}
 
 ## AI Loop Handoff

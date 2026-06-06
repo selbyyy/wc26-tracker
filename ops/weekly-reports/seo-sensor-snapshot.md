@@ -1,11 +1,12 @@
 # SEO Sensor Snapshot
 
-Generated: 2026-06-05
+Generated: 2026-06-06
 
 ## Inputs
 
 - Search Console: `ops/sensor-inputs/search-console.csv` (present, 16 rows)
 - Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 9 rows)
+- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 2 rows)
 
 ## Input Readiness
 
@@ -13,6 +14,7 @@ Generated: 2026-06-05
 | --- | --- | --- |
 | Search Console | present, 16 rows | Ready for opportunity analysis. |
 | Analytics pages | present, 9 rows | Ready for opportunity analysis. |
+| Analytics events | present, 2 rows | Ready for opportunity analysis. |
 
 ## Traffic Summary
 
@@ -24,6 +26,7 @@ Generated: 2026-06-05
 | Average organic CTR | 0.0% |
 | Average organic position | 77.9 |
 | Analytics pageviews/sessions | 15 |
+| Planning action panel views | 0 |
 | Commercial or route-alert clicks | 2 |
 
 ## Top Queries
@@ -62,6 +65,13 @@ _No rows matched this sensor._
 ## Traffic With No Commercial Action
 
 _No rows matched this sensor._
+
+## Commercial Event Summary
+
+| Page |Event |Count |
+| --- |--- |--- |
+| / |route_alert_click |1 |
+| / |ticket_planning_click |1 |
 
 ## AI Loop Handoff
 
