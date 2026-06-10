@@ -948,6 +948,12 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Increases sitemap from 53 production URLs in the previous loop to 142 local URLs after this change.
 
 ### Follow-Up
-- Push and deploy this change, then resubmit or request indexing for `/matches`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/cities/dallas`, and `/cities/los-angeles`.
+- Resubmit or request indexing for `/matches`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/cities/dallas`, and `/cities/los-angeles`.
 - Refresh Google OAuth by rerunning `npm run sensors:oauth` if the next `npm run sensors:refresh` exposes an `invalid_grant` or revoked-token response.
 - Future daily loops should read `ops/world-cup-growth-milestones.md` alongside the core ops files because the June 10 target is now an indexing-phase checkpoint rather than a realistic 100-click deadline.
+
+### Deployment Update
+- Committed as `725761f` (`add match and city landing pages`) and pushed to `origin/main`.
+- Production `/matches/argentina-vs-algeria-world-cup-2026-match-19` returned HTTP 200 after deployment.
+- Production `/cities/dallas` returned HTTP 200 after deployment.
+- Production `sitemap.xml` now reports 142 URLs and includes both the Argentina match page and Dallas city page.
