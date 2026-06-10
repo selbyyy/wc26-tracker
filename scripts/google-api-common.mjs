@@ -66,7 +66,6 @@ function fetchJsonWithCurl(url, options, fetchError) {
     const detail = [
       curlError.stdout?.trim(),
       curlError.stderr?.trim(),
-      curlError.message,
     ].filter(Boolean).join(' ');
     throw new Error(`Network request failed with fetch (${fetchError.cause?.code ?? fetchError.message}) and curl (${detail}).`);
   }

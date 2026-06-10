@@ -69,7 +69,8 @@ Add either variable to `.env.sensors.local` only if the property changes.
 
 - `Missing GOOGLE_OAUTH_CLIENT_ID`: create `.env.sensors.local` and add the
   OAuth desktop client credentials.
-- `invalid_grant`: run `npm run sensors:oauth` again.
+- `invalid_grant` or `Token has been expired or revoked`: run
+  `npm run sensors:oauth` again to replace the old refresh token.
 - Search Console permission error: authorize with the account that can open the
   `https://www.wc26chances.com/` property.
 - GA4 permission error: authorize with an account that has access to property

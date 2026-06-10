@@ -893,7 +893,7 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Ran `npm run sensors:refresh` first, as required by the daily loop.
 
 ### Observations
-- `npm run sensors:refresh` failed before Search Console or GA4 data could refresh. The failure happened during Google OAuth token refresh: fetch timed out and curl returned HTTP 400.
+- `npm run sensors:refresh` failed before Search Console or GA4 data could refresh. The failure happened during Google OAuth token refresh; the actionable Google error is `invalid_grant` / `Token has been expired or revoked`.
 - Fallback `npm run sensors:seo` regenerated the snapshot from existing local CSV inputs, so the displayed metrics are stale but still the latest available local source: 0 / 100 organic clicks, 80 impressions, 0.0% CTR, average position 77.9, 15 analytics pageviews/sessions, 0 planning action panel views, and 2 commercial or route-alert clicks.
 - The stale Search Console sample still shows most impressions on retired `/market/...` URLs, with only 2 impressions on a live team page (`/teams/panama`).
 - Given the tournament starts immediately, waiting for broad hub pages to migrate is too slow. More specific entry pages now matter: exact matchups and host-city travel pages.
@@ -914,6 +914,7 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Added match and city detail URLs to `sitemap.xml`.
 - Updated `EXP-008` and added SEO opportunity rows for exact matchup intent, host-city travel intent, and sensor OAuth diagnostics.
 - Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` from fallback local CSV data.
+- Tightened Google API fallback errors so future token-refresh failures do not print local OAuth request parameters into terminal output.
 
 ### Files Changed
 - `lib/schedule.ts`
@@ -957,3 +958,4 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Production `/matches/argentina-vs-algeria-world-cup-2026-match-19` returned HTTP 200 after deployment.
 - Production `/cities/dallas` returned HTTP 200 after deployment.
 - Production `sitemap.xml` now reports 142 URLs and includes both the Argentina match page and Dallas city page.
+- A post-deploy sensor retry confirmed the OAuth blocker is an expired or revoked refresh token. User action needed: rerun `npm run sensors:oauth` locally and approve the Google read-only scopes again.
