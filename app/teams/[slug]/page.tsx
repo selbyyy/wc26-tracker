@@ -7,6 +7,7 @@ import {
   getAllTeams,
   getCountryFlag,
   getGroupForTeam,
+  getGroupStageMatchSlug,
   getTeamBySlugFromSchedule,
   getTeamMatches,
 } from '@/lib/schedule';
@@ -140,6 +141,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/75">
             <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#0b7a3b]">WC26 Chances</Link>
             <Link href="/world-cup-2026-chances-by-team" className="px-2 py-2 hover:text-[#ffd447]">Chances</Link>
+            <Link href="/matches" className="px-2 py-2 hover:text-[#ffd447]">Matches</Link>
             <Link href="/cities" className="px-2 py-2 hover:text-[#ffd447]">Cities</Link>
             <Link href="/scenarios" className="px-2 py-2 hover:text-[#ffd447]">Routes</Link>
           </nav>
@@ -165,12 +167,16 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
               </p>
               <div className="mt-3 space-y-3">
                 {matches.map((match) => (
-                  <div key={match.id} className="rounded-md border-2 border-[#eef0e8] bg-[#fffaf0] p-4">
+                  <Link
+                    key={match.id}
+                    href={`/matches/${getGroupStageMatchSlug(match)}`}
+                    className="block rounded-md border-2 border-[#eef0e8] bg-[#fffaf0] p-4 hover:border-[#e52b2f]"
+                  >
                     <p className="text-lg font-black">{match.city}</p>
                     <p className="mt-1 text-sm font-bold text-[#506070]">
                       {match.date} · {match.time} · vs {match.home === team ? match.away : match.home}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -181,7 +187,11 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
       <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
         <div className="grid gap-4 md:grid-cols-3">
           {matches.map((match) => (
-            <div key={match.id} className="rounded-md border-2 border-[#102033] bg-white p-5 shadow-[6px_6px_0_#ffd447]">
+            <Link
+              key={match.id}
+              href={`/matches/${getGroupStageMatchSlug(match)}`}
+              className="rounded-md border-2 border-[#102033] bg-white p-5 shadow-[6px_6px_0_#ffd447] hover:bg-[#fffaf0]"
+            >
               <div className="flex items-center justify-between">
                 <span className="rounded-full bg-[#e52b2f] px-3 py-1 text-xs font-black uppercase text-white">
                   Match {match.id}
@@ -194,7 +204,10 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
               <p className="mt-3 rounded-md bg-[#fffaf0] px-3 py-2 text-sm font-black">
                 {match.date} · {match.time}
               </p>
-            </div>
+              <p className="mt-3 text-xs font-black uppercase text-[#667085]">
+                Open match page
+              </p>
+            </Link>
           ))}
         </div>
       </section>

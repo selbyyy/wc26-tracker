@@ -145,8 +145,29 @@ export function getTeamBySlugFromSchedule(slug: string) {
   return getAllTeams().find((team) => generateSlug(team) === slug);
 }
 
+export function getCitySlug(city: string) {
+  return generateSlug(city);
+}
+
+export function getAllCities() {
+  return Array.from(new Set(allMatches.map((match) => match.city)))
+    .sort((a, b) => a.localeCompare(b));
+}
+
+export function getCityBySlug(slug: string) {
+  return getAllCities().find((city) => getCitySlug(city) === slug);
+}
+
 export function getCityMatches(city: string) {
   return allMatches.filter((match) => match.city === city);
+}
+
+export function getGroupStageMatchSlug(match: Match) {
+  return `${generateSlug(`${match.home} vs ${match.away}`)}-world-cup-2026-match-${match.id}`;
+}
+
+export function getGroupStageMatchBySlug(slug: string) {
+  return groupStageMatches.find((match) => getGroupStageMatchSlug(match) === slug);
 }
 
 export function getGroupForTeam(teamName: string) {

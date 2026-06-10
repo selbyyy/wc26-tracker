@@ -1,7 +1,13 @@
 // app/sitemap.ts
 import { MetadataRoute } from 'next';
 import { generateSlug } from '@/lib/slug';
-import { getAllTeams } from '@/lib/schedule';
+import {
+  getAllCities,
+  getAllTeams,
+  getCitySlug,
+  getGroupStageMatchSlug,
+  groupStageMatches,
+} from '@/lib/schedule';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.wc26chances.com';
@@ -18,6 +24,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/matches`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/world-cup-2026-schedule-by-team`,
@@ -42,6 +54,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.85,
+    })),
+    ...groupStageMatches.map((match) => ({
+      url: `${baseUrl}/matches/${getGroupStageMatchSlug(match)}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.82,
+    })),
+    ...getAllCities().map((city) => ({
+      url: `${baseUrl}/cities/${getCitySlug(city)}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.86,
     })),
   ];
 

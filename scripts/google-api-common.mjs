@@ -63,7 +63,11 @@ function fetchJsonWithCurl(url, options, fetchError) {
     const body = execFileSync('curl', args, { encoding: 'utf8' });
     return body ? JSON.parse(body) : {};
   } catch (curlError) {
-    const detail = curlError.stderr?.trim() || curlError.stdout?.trim() || curlError.message;
+    const detail = [
+      curlError.stdout?.trim(),
+      curlError.stderr?.trim(),
+      curlError.message,
+    ].filter(Boolean).join(' ');
     throw new Error(`Network request failed with fetch (${fetchError.cause?.code ?? fetchError.message}) and curl (${detail}).`);
   }
 }

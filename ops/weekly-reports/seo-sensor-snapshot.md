@@ -1,6 +1,6 @@
 # SEO Sensor Snapshot
 
-Generated: 2026-06-06
+Generated: 2026-06-10
 
 ## Inputs
 

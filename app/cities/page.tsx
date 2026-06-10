@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { CommercialCta } from '../components/CommercialCta';
 import { generateSlug } from '@/lib/slug';
-import { allMatches } from '@/lib/schedule';
+import { allMatches, getCitySlug, getGroupStageMatchSlug } from '@/lib/schedule';
 
 export const metadata: Metadata = {
   title: 'World Cup 2026 Cities by Team: Matches, Stadiums, Routes',
@@ -89,6 +89,7 @@ export default function CitiesPage() {
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/75">
             <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#e52b2f]">WC26 Chances</Link>
             <Link href="/teams/argentina" className="px-2 py-2 hover:text-[#ffd447]">Teams</Link>
+            <Link href="/matches" className="px-2 py-2 hover:text-[#ffd447]">Matches</Link>
             <Link href="/scenarios" className="px-2 py-2 hover:text-[#ffd447]">Routes</Link>
           </nav>
           <p className="inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
@@ -142,14 +143,18 @@ export default function CitiesPage() {
 
                 <div className="mt-5 space-y-3">
                   {matches.slice(0, 5).map((match) => (
-                    <div key={match.id} className="rounded-md bg-[#fffaf0] p-3">
+                    <Link
+                      key={match.id}
+                      href={match.stage === 'Group Stage' ? `/matches/${getGroupStageMatchSlug(match)}` : `/cities/${getCitySlug(city)}`}
+                      className="block rounded-md bg-[#fffaf0] p-3 hover:bg-[#ffd447]/35"
+                    >
                       <p className="text-sm font-black">
                         Match {match.id}: {match.home} vs {match.away}
                       </p>
                       <p className="mt-1 text-xs font-bold text-[#506070]">
                         {match.stage} · {match.date} · {match.stadium}
                       </p>
-                    </div>
+                    </Link>
                   ))}
                 </div>
 
@@ -158,6 +163,12 @@ export default function CitiesPage() {
                     + {matches.length - 5} more group or knockout games
                   </p>
                 )}
+                <Link
+                  href={`/cities/${getCitySlug(city)}`}
+                  className="mt-5 inline-flex rounded-full bg-[#0b7a3b] px-4 py-2 text-sm font-black text-white hover:bg-[#e52b2f]"
+                >
+                  Open {city} guide
+                </Link>
               </div>
             );
           })}

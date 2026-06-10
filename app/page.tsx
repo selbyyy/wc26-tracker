@@ -5,6 +5,7 @@ import { generateSlug } from '@/lib/slug';
 import {
   allMatches,
   getAllTeams,
+  getCitySlug,
   getCityMatches,
   getRoundOf32Route,
   getTeamMatches,
@@ -105,6 +106,7 @@ export default function Home() {
               <span className="rounded-full bg-white px-4 py-2 text-[#0b7a3b]">WC26 Chances</span>
               <Link href="/teams/argentina" className="hover:text-[#ffd447]">Teams</Link>
               <Link href="/world-cup-2026-chances-by-team" className="hover:text-[#ffd447]">Chances</Link>
+              <Link href="/matches" className="hover:text-[#ffd447]">Matches</Link>
               <Link href="/world-cup-2026-schedule-by-team" className="hover:text-[#ffd447]">Schedule</Link>
               <Link href="/cities" className="hover:text-[#ffd447]">Cities</Link>
               <Link href="/scenarios" className="hover:text-[#ffd447]">Routes</Link>
@@ -214,8 +216,9 @@ export default function Home() {
           </div>
           <div className="grid gap-3">
             {[
-            ['World Cup 2026 schedule by team', '/world-cup-2026-schedule-by-team'],
+              ['World Cup 2026 schedule by team', '/world-cup-2026-schedule-by-team'],
               ['World Cup 2026 chances by team', '/world-cup-2026-chances-by-team'],
+              ['World Cup 2026 matches by date', '/matches'],
               ['Where does Argentina play in World Cup 2026?', '/teams/argentina'],
               ['Where does USA play in World Cup 2026?', '/teams/usa'],
               ['World Cup 2026 cities by team', '/cities'],
@@ -248,7 +251,7 @@ export default function Home() {
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {cityHighlights.map(({ city, matches }) => (
-              <Link href="/cities" key={city} className="rounded-md border-2 border-[#eef0e8] bg-[#fffaf0] p-5 hover:border-[#0b7a3b]">
+              <Link href={`/cities/${getCitySlug(city)}`} key={city} className="rounded-md border-2 border-[#eef0e8] bg-[#fffaf0] p-5 hover:border-[#0b7a3b]">
                 <p className="text-xs font-black uppercase text-[#667085]">{matches.length} games</p>
                 <h3 className="mt-1 text-2xl font-black">{city}</h3>
                 <div className="mt-4 space-y-2 text-sm">

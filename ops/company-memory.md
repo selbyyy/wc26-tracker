@@ -884,3 +884,70 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Follow-Up
 - If `planning_action_panel_view` remains 0 after 72 hours, prioritize distribution to team pages instead of changing CTA wording.
 - If Search Console remains unchanged through June 10, use the tournament milestone plan's indexing-phase decision rule and continue community discovery.
+
+## 2026-06-10 21:20 CST - Match and City Landing Page Expansion
+
+### Inputs
+- User asked to continue the WC26 Chances growth loop after the prior diagnosis that the real bottleneck is acquisition entry pages.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, 100-click sprint, tournament growth milestones, and recent company memory.
+- Ran `npm run sensors:refresh` first, as required by the daily loop.
+
+### Observations
+- `npm run sensors:refresh` failed before Search Console or GA4 data could refresh. The failure happened during Google OAuth token refresh: fetch timed out and curl returned HTTP 400.
+- Fallback `npm run sensors:seo` regenerated the snapshot from existing local CSV inputs, so the displayed metrics are stale but still the latest available local source: 0 / 100 organic clicks, 80 impressions, 0.0% CTR, average position 77.9, 15 analytics pageviews/sessions, 0 planning action panel views, and 2 commercial or route-alert clicks.
+- The stale Search Console sample still shows most impressions on retired `/market/...` URLs, with only 2 impressions on a live team page (`/teams/panama`).
+- Given the tournament starts immediately, waiting for broad hub pages to migrate is too slow. More specific entry pages now matter: exact matchups and host-city travel pages.
+
+### Decision
+- Shift today's action from passive indexing wait to high-intent acquisition entry expansion.
+- Add static pages for confirmed group-stage matchups and host-city detail pages, then connect them through internal links and sitemap.
+- Improve sensor error diagnostics so the next Google token refresh failure exposes the actionable Google response body instead of only `curl 400`.
+
+### Actions Taken
+- Added schedule helpers for city slugs, city lookup, group-stage match slugs, and group-stage match lookup.
+- Added `/matches` as a group-stage match index.
+- Added 72 static `/matches/[slug]` pages for confirmed group-stage matchups.
+- Added 16 static `/cities/[slug]` host-city detail pages.
+- Linked new match pages from team pages and city cards.
+- Linked new city detail pages from the homepage city highlights and city index.
+- Added `Matches` navigation links across major hubs.
+- Added match and city detail URLs to `sitemap.xml`.
+- Updated `EXP-008` and added SEO opportunity rows for exact matchup intent, host-city travel intent, and sensor OAuth diagnostics.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` from fallback local CSV data.
+
+### Files Changed
+- `lib/schedule.ts`
+- `app/matches/page.tsx`
+- `app/matches/[slug]/page.tsx`
+- `app/cities/[slug]/page.tsx`
+- `app/page.tsx`
+- `app/cities/page.tsx`
+- `app/teams/[slug]/page.tsx`
+- `app/world-cup-2026-schedule-by-team/page.tsx`
+- `app/world-cup-2026-chances-by-team/page.tsx`
+- `app/scenarios/page.tsx`
+- `app/sitemap.ts`
+- `scripts/google-api-common.mjs`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` failed during OAuth token refresh, so fresh Search Console and GA4 data are blocked until OAuth is refreshed.
+- `npm run sensors:seo` passed using existing local CSV inputs.
+- `npm run lint` passed.
+- `npm run build` passed and generated 147 static pages.
+- Browser verification passed for `/matches`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, and `/cities/dallas`.
+- Local sitemap check passed with 142 URLs and includes the Argentina match page plus Dallas city page.
+- `git diff --check` passed.
+
+### Expected Impact
+- Gives Google more precise pages for kickoff and group-stage search behavior: exact match queries, city schedule queries, hotel/trip planning queries, and team-specific match pages.
+- Creates new commercial surfaces for city hotel intent and match ticket/hotel intent without making unsupported availability or pricing claims.
+- Increases sitemap from 53 production URLs in the previous loop to 142 local URLs after this change.
+
+### Follow-Up
+- Push and deploy this change, then resubmit or request indexing for `/matches`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/cities/dallas`, and `/cities/los-angeles`.
+- Refresh Google OAuth by rerunning `npm run sensors:oauth` if the next `npm run sensors:refresh` exposes an `invalid_grant` or revoked-token response.
+- Future daily loops should read `ops/world-cup-growth-milestones.md` alongside the core ops files because the June 10 target is now an indexing-phase checkpoint rather than a realistic 100-click deadline.

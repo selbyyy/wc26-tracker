@@ -76,6 +76,7 @@ export default function ChancesByTeamPage() {
         <div className="mx-auto max-w-7xl px-5 py-6 md:px-8 md:py-10">
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/75">
             <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#0b7a3b]">WC26 Chances</Link>
+            <Link href="/matches" className="px-2 py-2 hover:text-[#ffd447]">Matches</Link>
             <Link href="/world-cup-2026-schedule-by-team" className="px-2 py-2 hover:text-[#ffd447]">Schedule</Link>
             <Link href="/cities" className="px-2 py-2 hover:text-[#ffd447]">Cities</Link>
             <Link href="/scenarios" className="px-2 py-2 hover:text-[#ffd447]">Routes</Link>
