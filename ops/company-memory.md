@@ -959,3 +959,45 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Production `/cities/dallas` returned HTTP 200 after deployment.
 - Production `sitemap.xml` now reports 142 URLs and includes both the Argentina match page and Dallas city page.
 - A post-deploy sensor retry confirmed the OAuth blocker is an expired or revoked refresh token. User action needed: rerun `npm run sensors:oauth` locally and approve the Google read-only scopes again.
+
+## 2026-06-10 12:53 CST - OAuth Restored and Fresh Sensor Check
+
+### Inputs
+- User reran `npm run sensors:oauth` and reported the authorization completed.
+- Ran `npm run sensors:refresh` to verify Search Console and GA4 API access.
+
+### Observations
+- Google API refresh is working again.
+- Search Console CSV now has 23 rows, analytics page CSV has 10 rows, and analytics event CSV has 5 rows.
+- 100-click sprint progress remains 0 / 100 clicks.
+- Google impressions increased from 80 to 126, CTR remains 0.0%, and weighted average position is 82.4.
+- Retired market URLs still hold most impressions: old Argentina market URL has 105 impressions, old Japan market URL has 12, and old Ivory Coast market URL has 2.
+- Live pages are beginning to appear: `/teams/argentina` has 3 impressions and `/teams/usa` has 2 impressions.
+- GA4 reports 17 pageviews/sessions and 4 planning action panel views: Argentina 2, Mexico 1, USA 1.
+- Commercial or route-alert clicks remain 2, both from the homepage.
+- Production old Ivory Coast market URL correctly returns HTTP 301 to `/teams/ivory-coast`, then HTTP 200.
+
+### Decision
+- Do not change page copy based on today's data. The meaningful signal is still crawl/index migration and early discovery of live pages, not CTR optimization.
+- Keep the match/city landing-page expansion as the next acquisition bet and monitor whether those URLs appear in Search Console after deployment.
+
+### Actions Taken
+- Verified `npm run sensors:refresh` after OAuth restore.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh API data.
+- Verified production redirect coverage for the newly visible old Ivory Coast market URL.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed.
+- Production old Ivory Coast market redirect passed: 301 to `/teams/ivory-coast`, then 200.
+
+### Expected Impact
+- Restores the daily measurement loop.
+- Confirms the site is moving from only retired-market impressions toward some live team-page visibility, though clicks remain at zero.
+
+### Follow-Up
+- Watch whether `/matches`, `/matches/[slug]`, and `/cities/[slug]` enter Search Console within the next 48-72 hours.
+- If clicks are still 0 while impressions exceed 300-500, prioritize title/description tests on live pages with impressions.
