@@ -1058,3 +1058,64 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - If impressions reach 300-500 with 0 clicks, start title/meta tests on live pages with impressions.
 - If acquisition rows show Reddit/referral traffic with engagement, draft one more human-reviewed community reply targeted to the specific page that received visits.
 - When automation field details are accessible, update the heartbeat prompt to explicitly include `ops/world-cup-growth-milestones.md` and acquisition-source review.
+
+## 2026-06-14 12:36 CST - Daily Growth Loop, URL Inspection Sensor, and Indexing Diagnosis
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, 100-click sprint, tournament milestones, and recent company memory.
+- Ran `npm run sensors:refresh` with Google Search Console, GA4, acquisition-source, and URL Inspection API access.
+
+### Observations
+- Google API access is working.
+- Search Console CSV has 29 rows, GA4 page CSV has 31 rows, GA4 event CSV has 22 rows, GA4 acquisition CSV has 39 rows, and URL Inspection CSV has 7 rows.
+- 100-click sprint progress remains 0 / 100 clicks.
+- Google impressions increased from 142 to 153, CTR remains 0.0%, and weighted average position improved slightly from 82.0 to 81.4.
+- The June 10 milestone range was 0-5 clicks and 200-500 impressions. Current clicks are still within the indexing-phase range, but impressions remain below the 200-500 checkpoint.
+- Retired market URLs still dominate Search Console: old Argentina market URL has 122 impressions and old Japan market URL has 13.
+- Live team pages are present but weak: `/teams/argentina` has 12 impressions, `/teams/usa` has 2, and `/teams/panama` has 2.
+- GA4 reports 24 pageviews/sessions, 34 planning action panel views, and 2 commercial or route-alert clicks.
+- Bing organic sessions are now visible on team and match pages, including several `/matches/[slug]` URLs. No Reddit/referral source is visible yet.
+- Production sitemap returns 142 URLs and includes `/matches`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, and `/cities/dallas`.
+- URL Inspection shows `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` are submitted and indexed.
+- URL Inspection shows `/matches/argentina-vs-algeria-world-cup-2026-match-19` and `/cities/dallas` are discovered but currently not indexed.
+- URL Inspection shows the old Argentina market URL is a page with redirect and Google canonicalizes it to `/teams/argentina`.
+- URL Inspection still shows the homepage canonical selected as `https://wc26chances.com/`, but production apex now returns a 308 redirect to `https://www.wc26chances.com/`, so this appears to be stale crawl state rather than a current redirect defect.
+
+### Decision
+- Do not change site copy or commercial CTAs today. The biggest bottleneck is still Google indexing and residual old-market visibility, not on-page conversion.
+- Improve the sensor layer so future daily loops can distinguish no-click pages, indexed pages, discovered-but-not-indexed pages, redirects, and stale canonical issues without manual browser inspection.
+
+### Actions Taken
+- Added URL Inspection API pulling to `scripts/pull-google-sensors.mjs`, writing `ops/sensor-inputs/url-inspection.csv`.
+- Added URL Inspection reporting to `scripts/seo-sensors.mjs`.
+- Added a high-impression zero-click page sensor so page-level no-click bottlenecks are visible even when query-level impressions are split.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md`.
+- Updated EXP-008 and the SEO opportunity log with the new indexing diagnosis.
+- Updated the heartbeat automation prompt to explicitly include tournament milestones, acquisition-source review, and URL Inspection status.
+
+### Files Changed
+- `scripts/pull-google-sensors.mjs`
+- `scripts/seo-sensors.mjs`
+- `ops/sensor-inputs/README.md`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and produced Search Console, analytics page, analytics event, analytics acquisition, and URL Inspection CSVs.
+- `node --check scripts/pull-google-sensors.mjs` passed.
+- `node --check scripts/seo-sensors.mjs` passed.
+- `git diff --check` passed before this memory entry.
+- Production sitemap check passed with 142 URLs and expected match/city URLs present.
+- Production apex redirect check passed: `https://wc26chances.com/` returns 308 to `https://www.wc26chances.com/`.
+
+### Expected Impact
+- Daily loops can now diagnose whether lack of clicks is caused by no indexing, low rankings, poor CTR, or weak commercial action.
+- The current diagnosis is more precise: core pages are indexed, but the new match/city inventory has not crossed into Google index yet; Bing has already discovered and sent sessions to that inventory.
+
+### Follow-Up
+- Watch whether the inspected match and city URLs move from `Discovered - currently not indexed` to `Submitted and indexed`.
+- If match/city pages remain discovered but not indexed for another 3-5 daily runs, increase internal links from indexed team/chances pages to a smaller set of priority match/city pages instead of expanding more inventory.
+- If impressions pass 300-500 with CTR still 0.0%, run title/meta tests on the live pages that already have impressions.

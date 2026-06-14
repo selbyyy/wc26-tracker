@@ -6,6 +6,7 @@ const searchConsolePath = resolve(root, 'ops/sensor-inputs/search-console.csv');
 const analyticsPagesPath = resolve(root, 'ops/sensor-inputs/analytics-pages.csv');
 const analyticsEventsPath = resolve(root, 'ops/sensor-inputs/analytics-events.csv');
 const analyticsAcquisitionPath = resolve(root, 'ops/sensor-inputs/analytics-acquisition.csv');
+const urlInspectionPath = resolve(root, 'ops/sensor-inputs/url-inspection.csv');
 const outputPath = resolve(root, 'ops/weekly-reports/seo-sensor-snapshot.md');
 const firstClickTarget = 100;
 
@@ -79,6 +80,7 @@ const searchConsoleInput = readCsvInput(searchConsolePath);
 const analyticsPagesInput = readCsvInput(analyticsPagesPath);
 const analyticsEventsInput = readCsvInput(analyticsEventsPath);
 const analyticsAcquisitionInput = readCsvInput(analyticsAcquisitionPath);
+const urlInspectionInput = readCsvInput(urlInspectionPath);
 
 const searchRows = searchConsoleInput.rows.map((row) => ({
   query: pick(row, ['query', 'top_queries']),
@@ -110,8 +112,21 @@ const analyticsAcquisitionRows = analyticsAcquisitionInput.rows.map((row) => ({
   sessions: numberValue(pick(row, ['sessions'])),
 }));
 
+const urlInspectionRows = urlInspectionInput.rows.map((row) => ({
+  url: pick(row, ['url']),
+  coverageState: pick(row, ['coverage_state', 'coveragestate']),
+  indexingState: pick(row, ['indexing_state', 'indexingstate']),
+  pageFetchState: pick(row, ['page_fetch_state', 'pagefetchstate']),
+  robotsTxtState: pick(row, ['robotstxt_state', 'robotstxtstate']),
+  userCanonical: pick(row, ['user_canonical', 'usercanonical']),
+  googleCanonical: pick(row, ['google_canonical', 'googlecanonical']),
+  lastCrawlTime: pick(row, ['last_crawl_time', 'lastcrawltime']),
+  sitemap: pick(row, ['sitemap']),
+  error: pick(row, ['error']),
+}));
+
 const highImpressionLowCtr = searchRows
-  .filter((row) => row.impressions >= 100 && row.ctr > 0 && row.ctr < 0.03)
+  .filter((row) => row.impressions >= 100 && row.ctr < 0.03)
   .sort((a, b) => b.impressions - a.impressions)
   .slice(0, 12);
 
@@ -172,15 +187,23 @@ const topPages = [...searchRows.reduce((pages, row) => {
 }, new Map()).values()]
   .sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions)
   .slice(0, 12);
+const highImpressionPagesNoClicks = topPages
+  .filter((row) => row.impressions >= 50 && row.clicks === 0)
+  .sort((a, b) => b.impressions - a.impressions)
+  .slice(0, 12);
 
 function table(rows, columns) {
   if (rows.length === 0) return '_No rows matched this sensor._';
 
   const header = `| ${columns.map((column) => column.label).join(' |')} |`;
   const divider = `| ${columns.map(() => '---').join(' |')} |`;
-  const body = rows.map((row) => `| ${columns.map((column) => column.format(row)).join(' |')} |`);
+  const body = rows.map((row) => `| ${columns.map((column) => markdownCell(column.format(row))).join(' |')} |`);
 
   return [header, divider, ...body].join('\n');
+}
+
+function markdownCell(value) {
+  return String(value ?? '').replaceAll('|', '/').replaceAll(/\s*\n\s*/g, ' ');
 }
 
 function percent(value) {
@@ -210,6 +233,7 @@ Generated: ${generatedAt}
 - Analytics pages: \`${analyticsPagesPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsPagesInput, analyticsRows.length)})
 - Analytics events: \`${analyticsEventsPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsEventsInput, analyticsEventRows.length)})
 - Analytics acquisition: \`${analyticsAcquisitionPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsAcquisitionInput, analyticsAcquisitionRows.length)})
+- URL inspection: \`${urlInspectionPath.replace(`${root}/`, '')}\` (${inputSummary(urlInspectionInput, urlInspectionRows.length)})
 
 ## Input Readiness
 
@@ -219,6 +243,7 @@ Generated: ${generatedAt}
 | Analytics pages | ${inputSummary(analyticsPagesInput, analyticsRows.length)} | ${inputAction(analyticsPagesInput, analyticsRows.length, 'ops/sensor-inputs/analytics-pages.csv')} |
 | Analytics events | ${inputSummary(analyticsEventsInput, analyticsEventRows.length)} | ${inputAction(analyticsEventsInput, analyticsEventRows.length, 'ops/sensor-inputs/analytics-events.csv')} |
 | Analytics acquisition | ${inputSummary(analyticsAcquisitionInput, analyticsAcquisitionRows.length)} | ${inputAction(analyticsAcquisitionInput, analyticsAcquisitionRows.length, 'ops/sensor-inputs/analytics-acquisition.csv')} |
+| URL inspection | ${inputSummary(urlInspectionInput, urlInspectionRows.length)} | ${inputAction(urlInspectionInput, urlInspectionRows.length, 'ops/sensor-inputs/url-inspection.csv')} |
 
 ## Traffic Summary
 
@@ -249,6 +274,14 @@ ${table(topPages, [
   { label: 'Page', format: (row) => row.page },
   { label: 'Clicks', format: (row) => String(row.clicks) },
   { label: 'Impressions', format: (row) => String(row.impressions) },
+])}
+
+## High-Impression Pages With No Clicks
+
+${table(highImpressionPagesNoClicks, [
+  { label: 'Page', format: (row) => row.page },
+  { label: 'Impressions', format: (row) => String(row.impressions) },
+  { label: 'Clicks', format: (row) => String(row.clicks) },
 ])}
 
 ## High Impressions, Low CTR
@@ -297,6 +330,18 @@ ${table(acquisitionSummary, [
   { label: 'Views', format: (row) => String(row.views) },
 ])}
 
+## URL Inspection Summary
+
+${table(urlInspectionRows, [
+  { label: 'URL', format: (row) => row.url },
+  { label: 'Coverage', format: (row) => row.coverageState || 'n/a' },
+  { label: 'Indexing', format: (row) => row.indexingState || 'n/a' },
+  { label: 'Fetch', format: (row) => row.pageFetchState || 'n/a' },
+  { label: 'Google canonical', format: (row) => row.googleCanonical || 'n/a' },
+  { label: 'Last crawl', format: (row) => row.lastCrawlTime || 'n/a' },
+  { label: 'Error', format: (row) => row.error ? row.error.slice(0, 140) : '' },
+])}
+
 ## AI Loop Handoff
 
 - Add one row to \`ops/seo-opportunity-log.md\` before changing a page from this report.
@@ -304,6 +349,7 @@ ${table(acquisitionSummary, [
 - Favor page expansion and internal links for ranking 8-20 rows.
 - Favor CTA placement or offer changes for traffic with no commercial action.
 - Use acquisition source rows to validate human-reviewed community promotion before scaling another external channel.
+- Use URL inspection rows to separate indexing blockers from content or CTR problems.
 `;
 
 mkdirSync(dirname(outputPath), { recursive: true });

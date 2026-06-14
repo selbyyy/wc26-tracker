@@ -51,6 +51,21 @@ Expected columns can use:
 - `Views`, `Pageviews`, or `Screen page views`
 - `Sessions`
 
+## `url-inspection.csv`
+
+Expected columns can use:
+
+- `URL`
+- `Coverage state`
+- `Indexing state`
+- `Page fetch state`
+- `Robots.txt state`
+- `User canonical`
+- `Google canonical`
+- `Last crawl time`
+- `Sitemap`
+- `Error`
+
 Run:
 
 ```bash
@@ -69,4 +84,5 @@ The report includes:
 - Commercial or route-alert click totals.
 - Commercial event summaries by page.
 - Acquisition source summaries by page.
+- URL Inspection coverage, canonical, and fetch status for priority URLs.
 - Query/page opportunities for the next AI loop change.

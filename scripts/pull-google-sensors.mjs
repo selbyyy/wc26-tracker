@@ -8,8 +8,23 @@ const searchConsolePath = resolve(inputDir, 'search-console.csv');
 const analyticsPagesPath = resolve(inputDir, 'analytics-pages.csv');
 const analyticsEventsPath = resolve(inputDir, 'analytics-events.csv');
 const analyticsAcquisitionPath = resolve(inputDir, 'analytics-acquisition.csv');
+const urlInspectionPath = resolve(inputDir, 'url-inspection.csv');
 const siteUrl = process.env.GSC_SITE_URL?.trim() || 'https://www.wc26chances.com/';
 const ga4PropertyId = process.env.GA4_PROPERTY_ID?.trim() || '539351001';
+const defaultInspectionUrls = [
+  'https://www.wc26chances.com/',
+  'https://www.wc26chances.com/teams/argentina',
+  'https://www.wc26chances.com/teams/usa',
+  'https://www.wc26chances.com/world-cup-2026-chances-by-team',
+  'https://www.wc26chances.com/matches/argentina-vs-algeria-world-cup-2026-match-19',
+  'https://www.wc26chances.com/cities/dallas',
+  'https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup',
+];
+const inspectionUrls = (process.env.URL_INSPECTION_URLS?.trim()
+  ? process.env.URL_INSPECTION_URLS.split(',')
+  : defaultInspectionUrls)
+  .map((url) => url.trim())
+  .filter(Boolean);
 const accessToken = await getAccessToken();
 const headers = {
   authorization: `Bearer ${accessToken}`,
@@ -54,6 +69,62 @@ async function pullSearchConsole() {
     { label: 'Impressions', value: (row) => row.impressions },
     { label: 'CTR', value: (row) => row.ctr },
     { label: 'Position', value: (row) => row.position },
+  ]);
+}
+
+async function inspectUrl(inspectionUrl) {
+  try {
+    const payload = await post('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
+      inspectionUrl,
+      siteUrl,
+    });
+    const result = payload.inspectionResult?.indexStatusResult ?? {};
+
+    return {
+      url: inspectionUrl,
+      coverageState: result.coverageState ?? '',
+      indexingState: result.indexingState ?? '',
+      pageFetchState: result.pageFetchState ?? '',
+      robotsTxtState: result.robotsTxtState ?? '',
+      userCanonical: result.userCanonical ?? '',
+      googleCanonical: result.googleCanonical ?? '',
+      lastCrawlTime: result.lastCrawlTime ?? '',
+      sitemap: (result.sitemap ?? []).join(' | '),
+      error: '',
+    };
+  } catch (error) {
+    return {
+      url: inspectionUrl,
+      coverageState: '',
+      indexingState: '',
+      pageFetchState: '',
+      robotsTxtState: '',
+      userCanonical: '',
+      googleCanonical: '',
+      lastCrawlTime: '',
+      sitemap: '',
+      error: error.message,
+    };
+  }
+}
+
+async function pullUrlInspection() {
+  const rows = [];
+  for (const inspectionUrl of inspectionUrls) {
+    rows.push(await inspectUrl(inspectionUrl));
+  }
+
+  writeCsv(urlInspectionPath, rows, [
+    { label: 'URL', value: (row) => row.url },
+    { label: 'Coverage state', value: (row) => row.coverageState },
+    { label: 'Indexing state', value: (row) => row.indexingState },
+    { label: 'Page fetch state', value: (row) => row.pageFetchState },
+    { label: 'Robots.txt state', value: (row) => row.robotsTxtState },
+    { label: 'User canonical', value: (row) => row.userCanonical },
+    { label: 'Google canonical', value: (row) => row.googleCanonical },
+    { label: 'Last crawl time', value: (row) => row.lastCrawlTime },
+    { label: 'Sitemap', value: (row) => row.sitemap },
+    { label: 'Error', value: (row) => row.error },
   ]);
 }
 
@@ -157,5 +228,5 @@ async function pullAnalytics() {
   ]);
 }
 
-await Promise.all([pullSearchConsole(), pullAnalytics()]);
+await Promise.all([pullSearchConsole(), pullAnalytics(), pullUrlInspection()]);
 console.log('Google sensor refresh complete.');
