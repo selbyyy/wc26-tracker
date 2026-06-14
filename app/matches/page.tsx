@@ -63,6 +63,7 @@ export default function MatchesPage() {
         <div className="mx-auto max-w-7xl px-5 py-6 md:px-8 md:py-10">
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/70">
             <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#102033]">WC26 Chances</Link>
+            <Link href="/world-cup-2026-games-today" className="px-2 py-2 hover:text-[#ffd447]">Today</Link>
             <Link href="/world-cup-2026-chances-by-team" className="px-2 py-2 hover:text-[#ffd447]">Chances</Link>
             <Link href="/world-cup-2026-schedule-by-team" className="px-2 py-2 hover:text-[#ffd447]">Schedule</Link>
             <Link href="/cities" className="px-2 py-2 hover:text-[#ffd447]">Cities</Link>
@@ -91,6 +92,24 @@ export default function MatchesPage() {
               <span className="text-sm font-bold text-white/70">group-stage window</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="border-b-4 border-[#102033] bg-[#ffd447]">
+        <div className="mx-auto grid max-w-7xl gap-5 px-5 py-7 md:grid-cols-[1fr_auto] md:items-center md:px-8">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Need the current slate?</p>
+            <h2 className="mt-2 text-3xl font-black">Open today&apos;s World Cup 2026 games first.</h2>
+            <p className="mt-2 max-w-3xl text-base font-bold leading-7 text-[#3d3b23]">
+              The today page filters this match index down to the games scheduled now and the coming match days.
+            </p>
+          </div>
+          <Link
+            href="/world-cup-2026-games-today"
+            className="inline-flex justify-center rounded-full bg-[#102033] px-6 py-3 text-sm font-black text-white hover:bg-[#e52b2f]"
+          >
+            Games today
+          </Link>
         </div>
       </section>
 

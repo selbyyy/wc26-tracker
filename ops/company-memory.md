@@ -1119,3 +1119,67 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Watch whether the inspected match and city URLs move from `Discovered - currently not indexed` to `Submitted and indexed`.
 - If match/city pages remain discovered but not indexed for another 3-5 daily runs, increase internal links from indexed team/chances pages to a smaller set of priority match/city pages instead of expanding more inventory.
 - If impressions pass 300-500 with CTR still 0.0%, run title/meta tests on the live pages that already have impressions.
+
+## 2026-06-14 13:08 CST - Tournament-Live Recovery Page
+
+### Inputs
+- User escalation: World Cup has started and Google organic clicks are still 0.
+- Ran `npm run sensors:refresh` before changing pages.
+- Reviewed the latest SEO sensor snapshot, URL Inspection status, tournament milestones, 100-click sprint, community promotion log, and current homepage/match index.
+
+### Observations
+- Google API access is working.
+- Search Console now has 30 rows.
+- 100-click sprint progress remains 0 / 100 Google organic clicks.
+- Google impressions increased only from 153 to 154, CTR remains 0.0%, and weighted average position remains 81.4.
+- The only newly visible Search Console page is `/cities/san-francisco-bay-area` with 1 impression.
+- Google still mostly shows retired market URLs rather than current tournament pages.
+- URL Inspection still shows priority match and city pages as discovered but not indexed.
+- GA4 still shows 24 pageviews/sessions, 34 planning action panel views, and 2 commercial or route-alert clicks.
+- Bing organic has already reached match pages, which means the match inventory is crawlable and useful, but Google has not caught up.
+
+### Decision
+- Do not wait passively for Google. The site needs a sharper tournament-live landing page that can satisfy "games today" intent and be used for human-reviewed distribution.
+- Keep the page factual and schedule-only. Do not claim live scores, live odds, or official status.
+
+### Actions Taken
+- Added `/world-cup-2026-games-today` as a dynamic page for today's scheduled games plus coming match days.
+- Added internal links from the homepage hero/navigation area and `/matches` to the new today page.
+- Added the new today page to `sitemap.xml`, increasing local sitemap URL count from 142 to 143.
+- Added the today page and a current Japan/Netherlands match page to default URL Inspection monitoring.
+- Added EXP-009 and a SEO opportunity log row for tournament-live current-slate intent.
+- Added a human-reviewed community reply draft for fresh match-day/ticket/travel questions.
+- Updated the 100-click sprint to reflect the missed June 10 target and the tournament-live recovery order.
+
+### Files Changed
+- `app/world-cup-2026-games-today/page.tsx`
+- `lib/tournament-day.ts`
+- `app/page.tsx`
+- `app/matches/page.tsx`
+- `app/sitemap.ts`
+- `scripts/pull-google-sensors.mjs`
+- `ops/100-click-sprint.md`
+- `ops/community-promotion-log.md`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed before page changes.
+- `npm run lint` passed.
+- `npm run build` passed.
+- `node --check scripts/pull-google-sensors.mjs` passed.
+- `git diff --check` passed before this memory entry.
+- Browser verification passed for `/world-cup-2026-games-today` on desktop and mobile viewport.
+- Local sitemap check passed: 143 URLs and `world-cup-2026-games-today` present.
+
+### Expected Impact
+- Gives users and communities a direct current-slate landing page instead of sending them to a broad homepage.
+- Improves internal linking toward today's matches and cities.
+- Creates a monitored indexing target for the tournament-live phase.
+
+### Follow-Up
+- After deploy, request URL Inspection/indexing for `/world-cup-2026-games-today`.
+- Use the community draft only in fresh, relevant threads where the link materially helps.
+- If the today page is not indexed after several runs, keep using it for direct/community/Bing traffic while internal links concentrate on already indexed team/chances pages.

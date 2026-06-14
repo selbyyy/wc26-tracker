@@ -4,7 +4,7 @@ Generated: 2026-06-14
 
 ## Inputs
 
-- Search Console: `ops/sensor-inputs/search-console.csv` (present, 29 rows)
+- Search Console: `ops/sensor-inputs/search-console.csv` (present, 30 rows)
 - Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 31 rows)
 - Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 22 rows)
 - Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 39 rows)
@@ -14,7 +14,7 @@ Generated: 2026-06-14
 
 | Input | Status | Next action |
 | --- | --- | --- |
-| Search Console | present, 29 rows | Ready for opportunity analysis. |
+| Search Console | present, 30 rows | Ready for opportunity analysis. |
 | Analytics pages | present, 31 rows | Ready for opportunity analysis. |
 | Analytics events | present, 22 rows | Ready for opportunity analysis. |
 | Analytics acquisition | present, 39 rows | Ready for opportunity analysis. |
@@ -26,7 +26,7 @@ Generated: 2026-06-14
 | --- | --- |
 | 100-click sprint progress | 0 / 100 (0.0%) |
 | Google organic clicks | 0 |
-| Google impressions | 153 |
+| Google impressions | 154 |
 | Average organic CTR | 0.0% |
 | Average organic position | 81.4 |
 | Analytics pageviews/sessions | 24 |
@@ -60,6 +60,7 @@ Generated: 2026-06-14
 | https://www.wc26chances.com/market/will-ivory-coast-win-the-2026-fifa-world-cup |0 |2 |
 | https://www.wc26chances.com/teams/panama |0 |2 |
 | https://www.wc26chances.com/teams/usa |0 |2 |
+| https://www.wc26chances.com/cities/san-francisco-bay-area |0 |1 |
 
 ## High-Impression Pages With No Clicks
 

@@ -13,9 +13,11 @@ const siteUrl = process.env.GSC_SITE_URL?.trim() || 'https://www.wc26chances.com
 const ga4PropertyId = process.env.GA4_PROPERTY_ID?.trim() || '539351001';
 const defaultInspectionUrls = [
   'https://www.wc26chances.com/',
+  'https://www.wc26chances.com/world-cup-2026-games-today',
   'https://www.wc26chances.com/teams/argentina',
   'https://www.wc26chances.com/teams/usa',
   'https://www.wc26chances.com/world-cup-2026-chances-by-team',
+  'https://www.wc26chances.com/matches/netherlands-vs-japan-world-cup-2026-match-10',
   'https://www.wc26chances.com/matches/argentina-vs-algeria-world-cup-2026-match-19',
   'https://www.wc26chances.com/cities/dallas',
   'https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup',

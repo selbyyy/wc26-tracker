@@ -20,6 +20,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticUrls = [
     {
+      url: `${baseUrl}/world-cup-2026-games-today`,
+      lastModified: new Date(),
+      changeFrequency: 'always' as const,
+      priority: 1.0,
+    },
+    {
       url: `${baseUrl}/cities`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,

@@ -15,6 +15,19 @@ send unsolicited promotional messages.
 | 2026-06-02 | Reddit `r/WorldCup2026Tickets` | [For those who attended previous World Cups, what's one thing you wish you'd known before buying tickets?](https://www.reddit.com/r/WorldCup2026Tickets/comments/1tr8w5b/for_those_who_attended_previous_world_cups_whats/) | Fans are exchanging practical trip-planning advice | Use as audience research. Participate only if adding firsthand or clearly sourced advice; do not force a product link | Low | Monitor |
 | 2026-06-02 | Reddit `r/worldcup` | [2026 FIFA World Cup Ticket & Travel Information Thread](https://www.reddit.com/r/worldcup/comments/1n6p3l5/2026_fifa_world_cup_ticket_travel_information/) | Broad ticket and travel planning discussion | Monitor for route-planning questions and answer only when the tool is directly useful | Medium | Monitor |
 | 2026-06-02 | Reddit `r/usmnt` | [Knockout Stage Scenarios](https://www.reddit.com/r/usmnt/comments/1qf4jsq/knockout_stage_scenarios/) | US fans are discussing possible knockout paths | Prepare a USA-specific answer if a fresh planning question appears; do not revive an old thread solely to promote | Low | Monitor |
+| 2026-06-14 | Reddit / football travel communities | Fresh match-day or "what games are today?" questions | Fans need the current slate quickly now that the tournament is live | Answer the exact day's schedule first, then disclose and link `/world-cup-2026-games-today` only if it saves the reader work | High | Human-reviewed draft ready |
+
+## Drafts
+
+### 2026-06-14 current-slate reply
+
+Use only in a fresh thread where someone is asking what games are on, how to plan today's slate, or where a team is playing next.
+
+```text
+If it helps, today's useful planning view is: who plays, kickoff label, city, stadium, and links out to the team/city pages. I put a simple current-slate page here: https://www.wc26chances.com/world-cup-2026-games-today
+
+No live scores or betting odds, just the schedule and travel-planning links so you can decide which match/city to dig into.
+```
 
 ## Community Map
 
