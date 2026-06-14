@@ -1180,6 +1180,8 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Creates a monitored indexing target for the tournament-live phase.
 
 ### Follow-Up
-- After deploy, request URL Inspection/indexing for `/world-cup-2026-games-today`.
+- Production check after deploy passed: `https://www.wc26chances.com/world-cup-2026-games-today` returns 200 and contains the expected title.
+- Search Console UI automation for Request Indexing was attempted after deploy, but Google Search Console navigation timed out in Chrome automation. Manual URL Inspection or a later browser retry is still needed.
+- Request URL Inspection/indexing for `/world-cup-2026-games-today`.
 - Use the community draft only in fresh, relevant threads where the link materially helps.
 - If the today page is not indexed after several runs, keep using it for direct/community/Bing traffic while internal links concentrate on already indexed team/chances pages.
