@@ -29,6 +29,6 @@ send unsolicited promotional messages.
 
 ## Measurement
 
-- Use GA4 referral traffic and CTA events to evaluate whether community participation brings qualified visitors.
+- Use GA4 acquisition source rows, referral traffic, and CTA events to evaluate whether community participation brings qualified visitors.
 - Record each published URL, destination page, publication time, and any GA4 referral signal.
 - Continue only if replies remain useful to the community and referral visitors engage with team or route pages.

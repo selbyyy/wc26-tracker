@@ -41,6 +41,16 @@ Expected columns can use:
 - `Event` or `Event name`
 - `Count` or `Event count`
 
+## `analytics-acquisition.csv`
+
+Expected columns can use:
+
+- `Page` or `Page path`
+- `Source / medium` or `Source medium`
+- `Channel` or `Default channel group`
+- `Views`, `Pageviews`, or `Screen page views`
+- `Sessions`
+
 Run:
 
 ```bash
@@ -58,4 +68,5 @@ The report includes:
 - Planning action panel views.
 - Commercial or route-alert click totals.
 - Commercial event summaries by page.
+- Acquisition source summaries by page.
 - Query/page opportunities for the next AI loop change.

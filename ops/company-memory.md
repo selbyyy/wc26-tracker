@@ -1001,3 +1001,60 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Follow-Up
 - Watch whether `/matches`, `/matches/[slug]`, and `/cities/[slug]` enter Search Console within the next 48-72 hours.
 - If clicks are still 0 while impressions exceed 300-500, prioritize title/description tests on live pages with impressions.
+
+## 2026-06-11 10:17 CST - Daily Growth Loop and Acquisition Sensor
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, 100-click sprint, tournament milestones, and recent company memory.
+- Ran `npm run sensors:refresh` with restored Google OAuth credentials.
+
+### Observations
+- Google API access is working.
+- Search Console CSV has 26 rows, analytics page CSV has 18 rows, analytics event CSV has 13 rows.
+- 100-click sprint progress remains 0 / 100 clicks.
+- Google impressions increased from 126 to 142, CTR remains 0.0%, and weighted average position improved slightly from 82.4 to 82.0.
+- The June 10 milestone range was 0-5 clicks and 200-500 impressions. Current clicks are within the indexing-phase range, but impressions are still below the 200-500 checkpoint.
+- Retired market URLs still dominate Search Console: old Argentina market URL has 115 impressions and old Japan market URL has 12.
+- Live team-page discovery is improving slowly: `/teams/argentina` has 9 impressions, `/teams/usa` has 2, and `/teams/panama` has 2.
+- No `/matches`, `/matches/[slug]`, or `/cities/[slug]` pages appear in Search Console yet; this is expected within 24 hours of deployment.
+- GA4 reports 17 pageviews/sessions, 13 planning action panel views, and 2 commercial or route-alert clicks.
+- The team planning panel is now being viewed across Argentina plus several newly visited team pages, but it has not produced new ticket, hotel, or route-alert clicks.
+- Production sitemap returns 142 URLs and includes `/matches` plus `/cities/dallas`.
+- New acquisition source rows show early organic sessions outside Search Console clicks: `google / organic` to `/teams/argentina` and `/world-cup-2026-chances-by-team`, plus `bing / organic` sessions across multiple team pages. No Reddit/referral source is visible yet.
+
+### Decision
+- Do not change page titles, copy, redirects, or CTAs today. The data still points to crawl/index migration and discovery, not CTR or conversion copy.
+- Improve the sensor layer instead by adding acquisition source reporting, so future community-promotion decisions are based on source/medium data rather than page/event rows alone.
+
+### Actions Taken
+- Added GA4 acquisition pulling to `scripts/pull-google-sensors.mjs`, writing `ops/sensor-inputs/analytics-acquisition.csv`.
+- Added acquisition parsing and an "Acquisition Source Summary" section to `scripts/seo-sensors.mjs`.
+- Updated `ops/sensor-inputs/README.md` and the community promotion measurement note.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md`.
+- Tried to view the heartbeat automation configuration; the app rendered the card, but the tool did not return editable field details, so no automation update was made.
+
+### Files Changed
+- `scripts/pull-google-sensors.mjs`
+- `scripts/seo-sensors.mjs`
+- `ops/sensor-inputs/README.md`
+- `ops/community-promotion-log.md`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and produced Search Console, analytics page, analytics event, and analytics acquisition CSVs.
+- `node --check scripts/pull-google-sensors.mjs` passed.
+- `node --check scripts/seo-sensors.mjs` passed.
+- `git diff --check` passed.
+- Production sitemap check passed with 142 URLs and expected match/city URLs present.
+
+### Expected Impact
+- Future daily loops can distinguish direct, Google organic, Bing organic, and referral/community traffic by page.
+- This makes Reddit or other human-reviewed promotion testable without changing external posting policy.
+
+### Follow-Up
+- Watch for `/matches` and `/cities/[slug]` entering Search Console within 48-72 hours.
+- If impressions reach 300-500 with 0 clicks, start title/meta tests on live pages with impressions.
+- If acquisition rows show Reddit/referral traffic with engagement, draft one more human-reviewed community reply targeted to the specific page that received visits.
+- When automation field details are accessible, update the heartbeat prompt to explicitly include `ops/world-cup-growth-milestones.md` and acquisition-source review.

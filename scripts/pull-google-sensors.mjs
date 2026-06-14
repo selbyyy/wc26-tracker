@@ -7,6 +7,7 @@ const inputDir = resolve(root, 'ops/sensor-inputs');
 const searchConsolePath = resolve(inputDir, 'search-console.csv');
 const analyticsPagesPath = resolve(inputDir, 'analytics-pages.csv');
 const analyticsEventsPath = resolve(inputDir, 'analytics-events.csv');
+const analyticsAcquisitionPath = resolve(inputDir, 'analytics-acquisition.csv');
 const siteUrl = process.env.GSC_SITE_URL?.trim() || 'https://www.wc26chances.com/';
 const ga4PropertyId = process.env.GA4_PROPERTY_ID?.trim() || '539351001';
 const accessToken = await getAccessToken();
@@ -62,7 +63,7 @@ async function pullAnalytics() {
     endDate: process.env.GA4_END_DATE?.trim() || 'yesterday',
   }];
   const url = `https://analyticsdata.googleapis.com/v1beta/properties/${ga4PropertyId}:runReport`;
-  const [pagesPayload, eventsPayload] = await Promise.all([
+  const [pagesPayload, eventsPayload, acquisitionPayload] = await Promise.all([
     post(url, {
       dateRanges,
       dimensions: [{ name: 'pagePath' }],
@@ -85,6 +86,19 @@ async function pullAnalytics() {
           },
         },
       },
+      limit: '10000',
+    }),
+    post(url, {
+      dateRanges,
+      dimensions: [
+        { name: 'pagePath' },
+        { name: 'sessionSourceMedium' },
+        { name: 'sessionDefaultChannelGroup' },
+      ],
+      metrics: [
+        { name: 'screenPageViews' },
+        { name: 'sessions' },
+      ],
       limit: '10000',
     }),
   ]);
@@ -124,6 +138,22 @@ async function pullAnalytics() {
     { label: 'Page', value: (row) => row.page },
     { label: 'Event', value: (row) => row.eventName },
     { label: 'Count', value: (row) => row.count },
+  ]);
+
+  const acquisitionRows = (acquisitionPayload.rows ?? []).map((row) => ({
+    page: row.dimensionValues?.[0]?.value ?? '',
+    sourceMedium: row.dimensionValues?.[1]?.value ?? '',
+    channel: row.dimensionValues?.[2]?.value ?? '',
+    views: row.metricValues?.[0]?.value ?? 0,
+    sessions: row.metricValues?.[1]?.value ?? 0,
+  }));
+
+  writeCsv(analyticsAcquisitionPath, acquisitionRows, [
+    { label: 'Page', value: (row) => row.page },
+    { label: 'Source / medium', value: (row) => row.sourceMedium },
+    { label: 'Channel', value: (row) => row.channel },
+    { label: 'Views', value: (row) => row.views },
+    { label: 'Sessions', value: (row) => row.sessions },
   ]);
 }
 

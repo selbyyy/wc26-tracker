@@ -5,6 +5,7 @@ const root = process.cwd();
 const searchConsolePath = resolve(root, 'ops/sensor-inputs/search-console.csv');
 const analyticsPagesPath = resolve(root, 'ops/sensor-inputs/analytics-pages.csv');
 const analyticsEventsPath = resolve(root, 'ops/sensor-inputs/analytics-events.csv');
+const analyticsAcquisitionPath = resolve(root, 'ops/sensor-inputs/analytics-acquisition.csv');
 const outputPath = resolve(root, 'ops/weekly-reports/seo-sensor-snapshot.md');
 const firstClickTarget = 100;
 
@@ -77,6 +78,7 @@ function pick(row, keys) {
 const searchConsoleInput = readCsvInput(searchConsolePath);
 const analyticsPagesInput = readCsvInput(analyticsPagesPath);
 const analyticsEventsInput = readCsvInput(analyticsEventsPath);
+const analyticsAcquisitionInput = readCsvInput(analyticsAcquisitionPath);
 
 const searchRows = searchConsoleInput.rows.map((row) => ({
   query: pick(row, ['query', 'top_queries']),
@@ -98,6 +100,14 @@ const analyticsEventRows = analyticsEventsInput.rows.map((row) => ({
   page: pick(row, ['page', 'path', 'landing_page', 'page_path']),
   event: pick(row, ['event', 'event_name', 'eventname']),
   count: numberValue(pick(row, ['count', 'event_count', 'events'])),
+}));
+
+const analyticsAcquisitionRows = analyticsAcquisitionInput.rows.map((row) => ({
+  page: pick(row, ['page', 'path', 'landing_page', 'page_path']),
+  sourceMedium: pick(row, ['source__medium', 'source_medium', 'session_source_medium', 'sourcemedium']),
+  channel: pick(row, ['channel', 'session_default_channel_group', 'default_channel_group']),
+  views: numberValue(pick(row, ['views', 'pageviews', 'screen_page_views'])),
+  sessions: numberValue(pick(row, ['sessions'])),
 }));
 
 const highImpressionLowCtr = searchRows
@@ -130,6 +140,19 @@ const eventSummary = [...analyticsEventRows.reduce((events, row) => {
   return events;
 }, new Map()).values()]
   .sort((a, b) => b.count - a.count || a.page.localeCompare(b.page))
+  .slice(0, 12);
+const acquisitionSummary = [...analyticsAcquisitionRows.reduce((sources, row) => {
+  const sourceMedium = row.sourceMedium || 'n/a';
+  const channel = row.channel || 'n/a';
+  const page = row.page || 'n/a';
+  const key = `${sourceMedium}|${channel}|${page}`;
+  const current = sources.get(key) ?? { sourceMedium, channel, page, views: 0, sessions: 0 };
+  current.views += row.views;
+  current.sessions += row.sessions;
+  sources.set(key, current);
+  return sources;
+}, new Map()).values()]
+  .sort((a, b) => b.sessions - a.sessions || b.views - a.views || a.sourceMedium.localeCompare(b.sourceMedium))
   .slice(0, 12);
 const averageCtr = totalImpressions > 0 ? totalClicks / totalImpressions : 0;
 const averagePosition = totalImpressions > 0
@@ -186,6 +209,7 @@ Generated: ${generatedAt}
 - Search Console: \`${searchConsolePath.replace(`${root}/`, '')}\` (${inputSummary(searchConsoleInput, searchRows.length)})
 - Analytics pages: \`${analyticsPagesPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsPagesInput, analyticsRows.length)})
 - Analytics events: \`${analyticsEventsPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsEventsInput, analyticsEventRows.length)})
+- Analytics acquisition: \`${analyticsAcquisitionPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsAcquisitionInput, analyticsAcquisitionRows.length)})
 
 ## Input Readiness
 
@@ -194,6 +218,7 @@ Generated: ${generatedAt}
 | Search Console | ${inputSummary(searchConsoleInput, searchRows.length)} | ${inputAction(searchConsoleInput, searchRows.length, 'ops/sensor-inputs/search-console.csv')} |
 | Analytics pages | ${inputSummary(analyticsPagesInput, analyticsRows.length)} | ${inputAction(analyticsPagesInput, analyticsRows.length, 'ops/sensor-inputs/analytics-pages.csv')} |
 | Analytics events | ${inputSummary(analyticsEventsInput, analyticsEventRows.length)} | ${inputAction(analyticsEventsInput, analyticsEventRows.length, 'ops/sensor-inputs/analytics-events.csv')} |
+| Analytics acquisition | ${inputSummary(analyticsAcquisitionInput, analyticsAcquisitionRows.length)} | ${inputAction(analyticsAcquisitionInput, analyticsAcquisitionRows.length, 'ops/sensor-inputs/analytics-acquisition.csv')} |
 
 ## Traffic Summary
 
@@ -262,12 +287,23 @@ ${table(eventSummary, [
   { label: 'Count', format: (row) => String(row.count) },
 ])}
 
+## Acquisition Source Summary
+
+${table(acquisitionSummary, [
+  { label: 'Source / medium', format: (row) => row.sourceMedium },
+  { label: 'Channel', format: (row) => row.channel },
+  { label: 'Page', format: (row) => row.page },
+  { label: 'Sessions', format: (row) => String(row.sessions) },
+  { label: 'Views', format: (row) => String(row.views) },
+])}
+
 ## AI Loop Handoff
 
 - Add one row to \`ops/seo-opportunity-log.md\` before changing a page from this report.
 - Favor title/meta/internal-link changes for high-impression low-CTR rows.
 - Favor page expansion and internal links for ranking 8-20 rows.
 - Favor CTA placement or offer changes for traffic with no commercial action.
+- Use acquisition source rows to validate human-reviewed community promotion before scaling another external channel.
 `;
 
 mkdirSync(dirname(outputPath), { recursive: true });
