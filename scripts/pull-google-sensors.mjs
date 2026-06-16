@@ -11,6 +11,7 @@ const analyticsAcquisitionPath = resolve(inputDir, 'analytics-acquisition.csv');
 const urlInspectionPath = resolve(inputDir, 'url-inspection.csv');
 const siteUrl = process.env.GSC_SITE_URL?.trim() || 'https://www.wc26chances.com/';
 const ga4PropertyId = process.env.GA4_PROPERTY_ID?.trim() || '539351001';
+const inspectionTimeoutMs = Number(process.env.URL_INSPECTION_TIMEOUT_MS?.trim() || 15000);
 const defaultInspectionUrls = [
   'https://www.wc26chances.com/',
   'https://www.wc26chances.com/world-cup-2026-games-today',
@@ -75,10 +76,18 @@ async function pullSearchConsole() {
 }
 
 async function inspectUrl(inspectionUrl) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), inspectionTimeoutMs);
+
   try {
-    const payload = await post('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
-      inspectionUrl,
-      siteUrl,
+    const payload = await fetchJson('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
+      method: 'POST',
+      headers,
+      signal: controller.signal,
+      body: JSON.stringify({
+        inspectionUrl,
+        siteUrl,
+      }),
     });
     const result = payload.inspectionResult?.indexStatusResult ?? {};
 
@@ -105,8 +114,12 @@ async function inspectUrl(inspectionUrl) {
       googleCanonical: '',
       lastCrawlTime: '',
       sitemap: '',
-      error: error.message,
+      error: error.name === 'AbortError'
+        ? `URL Inspection timed out after ${inspectionTimeoutMs}ms`
+        : error.message,
     };
+  } finally {
+    clearTimeout(timeout);
   }
 }
 

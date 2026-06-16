@@ -10,7 +10,7 @@ import {
   tournamentTodayLabel,
 } from '@/lib/tournament-day';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'World Cup 2026 Games Today: Match Schedule, Teams, Cities',

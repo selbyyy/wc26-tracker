@@ -1185,3 +1185,69 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Request URL Inspection/indexing for `/world-cup-2026-games-today`.
 - Use the community draft only in fresh, relevant threads where the link materially helps.
 - If the today page is not indexed after several runs, keep using it for direct/community/Bing traffic while internal links concentrate on already indexed team/chances pages.
+
+## 2026-06-16 10:32 CST - Daily Growth Loop and Today Page Discovery Fix
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh` with Google Search Console, GA4 page/event/acquisition, and URL Inspection API access.
+
+### Observations
+- Google API access is working.
+- Search Console CSV has 30 rows, GA4 page CSV has 33 rows, GA4 event CSV has 23 rows, GA4 acquisition CSV has 43 rows, and URL Inspection CSV has 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions increased from 154 to 156, CTR remains 0.0%, and weighted average position is 81.3.
+- The current result is far behind the Jun 15 milestone target of 5-20 clicks and 500-1,500 impressions.
+- Retired market URLs still dominate Search Console: old Argentina market URL has 122 impressions, old Japan market URL has 14.
+- Live page visibility remains weak: `/teams/argentina` has 12 impressions, `/teams/usa` has 2, `/teams/panama` has 2, and `/cities/san-francisco-bay-area` has 2.
+- GA4 reports 24 pageviews/sessions, 40 planning action panel views, and 2 commercial or route-alert clicks.
+- Acquisition rows show small but broad non-Google organic discovery from Bing, DuckDuckGo, Yahoo, Ecosia, and cn.bing.com, including team and match pages.
+- URL Inspection shows `/world-cup-2026-games-today` is `URL is unknown to Google`.
+- URL Inspection shows priority match pages and `/cities/dallas` are still discovered but not indexed.
+- URL Inspection shows `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` remain submitted and indexed.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+- Production today page returns 200, but before this run's fix it served `cache-control: private, no-cache, no-store`, because the page was force dynamic.
+
+### Decision
+- The main bottleneck remains discovery/indexing, not CTR or commercial conversion.
+- Fix the today page's crawlability and route internal links from indexed pages before adding more new content.
+- Stabilize the URL Inspection sensor so slow Google inspection responses do not stall future daily loops.
+
+### Actions Taken
+- Changed `/world-cup-2026-games-today` from `force-dynamic` to hourly revalidation, making it static with a 1-hour revalidate in the production build.
+- Added prominent Today links from indexed or indexable surfaces: team pages, `/world-cup-2026-chances-by-team`, and `/world-cup-2026-schedule-by-team`.
+- Added a current-slate callout on the chances hub and schedule hub.
+- Added a per-URL timeout to URL Inspection pulls; timed-out inspections now write an error row instead of blocking the full refresh.
+- Updated EXP-009 and the SEO opportunity log with the 2026-06-16 `URL is unknown to Google` diagnosis and internal-link/cache response fix.
+
+### Files Changed
+- `app/world-cup-2026-games-today/page.tsx`
+- `app/world-cup-2026-chances-by-team/page.tsx`
+- `app/world-cup-2026-schedule-by-team/page.tsx`
+- `app/teams/[slug]/page.tsx`
+- `scripts/pull-google-sensors.mjs`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed.
+- `npm run lint` passed.
+- `npm run build` passed.
+- Build output confirms `/world-cup-2026-games-today` is now static with 1h revalidation.
+- `node --check scripts/pull-google-sensors.mjs` passed.
+- `node --check scripts/seo-sensors.mjs` passed.
+- `git diff --check` passed before this memory entry.
+- Production sitemap check passed with 143 URLs and the today page present.
+
+### Expected Impact
+- Gives Google more paths from already indexed pages to discover the today page.
+- Removes an unnecessary no-store response from the today page, making it a cleaner crawl target.
+- Keeps the daily loop from becoming brittle when URL Inspection API calls are slow.
+
+### Follow-Up
+- After deploy, verify the today page no longer returns `no-store` in production headers.
+- Request indexing for `/world-cup-2026-games-today` manually or retry Search Console browser automation.
+- If the today page is still unknown to Google after the next daily run, add a smaller "today games" link block above the fold on `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team`, then stop adding new pages until indexing improves.

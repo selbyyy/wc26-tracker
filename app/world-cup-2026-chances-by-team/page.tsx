@@ -76,6 +76,7 @@ export default function ChancesByTeamPage() {
         <div className="mx-auto max-w-7xl px-5 py-6 md:px-8 md:py-10">
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/75">
             <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#0b7a3b]">WC26 Chances</Link>
+            <Link href="/world-cup-2026-games-today" className="px-2 py-2 hover:text-[#ffd447]">Today</Link>
             <Link href="/matches" className="px-2 py-2 hover:text-[#ffd447]">Matches</Link>
             <Link href="/world-cup-2026-schedule-by-team" className="px-2 py-2 hover:text-[#ffd447]">Schedule</Link>
             <Link href="/cities" className="px-2 py-2 hover:text-[#ffd447]">Cities</Link>
@@ -95,6 +96,21 @@ export default function ChancesByTeamPage() {
       </section>
 
       <section className="border-b-4 border-[#102033] bg-[#ffd447]">
+        <div className="mx-auto grid max-w-7xl gap-5 border-b-2 border-[#102033]/20 px-5 py-7 md:grid-cols-[1fr_auto] md:items-center md:px-8">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Tournament is live</p>
+            <h2 className="mt-2 text-3xl font-black">Need the current match slate?</h2>
+            <p className="mt-2 max-w-3xl text-base font-bold leading-7 text-[#3d3b23]">
+              Start with today&apos;s scheduled games, then open the teams below to compare routes and knockout chances.
+            </p>
+          </div>
+          <Link
+            href="/world-cup-2026-games-today"
+            className="inline-flex justify-center rounded-full bg-[#102033] px-6 py-3 text-sm font-black text-white hover:bg-[#e52b2f]"
+          >
+            Games today
+          </Link>
+        </div>
         <div className="mx-auto max-w-7xl px-5 py-7 md:px-8">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Popular teams</p>
           <div className="mt-4 flex flex-wrap gap-2">

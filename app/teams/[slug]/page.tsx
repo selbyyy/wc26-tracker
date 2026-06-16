@@ -140,6 +140,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
         <div className="mx-auto max-w-7xl px-5 py-6 md:px-8 md:py-8">
           <nav className="mb-8 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide text-white/75">
             <Link href="/" className="rounded-full bg-white px-4 py-2 text-[#0b7a3b]">WC26 Chances</Link>
+            <Link href="/world-cup-2026-games-today" className="px-2 py-2 hover:text-[#ffd447]">Today</Link>
             <Link href="/world-cup-2026-chances-by-team" className="px-2 py-2 hover:text-[#ffd447]">Chances</Link>
             <Link href="/matches" className="px-2 py-2 hover:text-[#ffd447]">Matches</Link>
             <Link href="/cities" className="px-2 py-2 hover:text-[#ffd447]">Cities</Link>
