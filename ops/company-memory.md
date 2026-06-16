@@ -1248,6 +1248,6 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Keeps the daily loop from becoming brittle when URL Inspection API calls are slow.
 
 ### Follow-Up
-- After deploy, verify the today page no longer returns `no-store` in production headers.
+- Post-deploy verification passed: `/world-cup-2026-games-today` now returns `cache-control: public, max-age=0, must-revalidate` and `x-vercel-cache: PRERENDER/HIT`, not `private no-store`.
 - Request indexing for `/world-cup-2026-games-today` manually or retry Search Console browser automation.
 - If the today page is still unknown to Google after the next daily run, add a smaller "today games" link block above the fold on `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team`, then stop adding new pages until indexing improves.
