@@ -1251,3 +1251,50 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Post-deploy verification passed: `/world-cup-2026-games-today` now returns `cache-control: public, max-age=0, must-revalidate` and `x-vercel-cache: PRERENDER/HIT`, not `private no-store`.
 - Request indexing for `/world-cup-2026-games-today` manually or retry Search Console browser automation.
 - If the today page is still unknown to Google after the next daily run, add a smaller "today games" link block above the fold on `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team`, then stop adding new pages until indexing improves.
+
+## 2026-06-17 15:24 CST - Daily Growth Loop Blocked by Expired Google OAuth Token
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh`.
+- Tried authenticated Chrome Search Console fallback after API refresh failed.
+- Checked production `/world-cup-2026-games-today` and production sitemap.
+
+### Observations
+- Google API refresh failed before pulling new GSC/GA4 data.
+- Exact API blocker: Google token refresh returned `invalid_grant` / `Token has been expired or revoked`.
+- Chrome Search Console fallback also failed: the Search Console URL Inspection page timed out during Google navigation before readable page data was available.
+- No fresh Search Console, GA4, acquisition, or URL Inspection data was collected today.
+- Stale latest usable snapshot remains 2026-06-16: 0 / 100 Google clicks, 156 impressions, 0.0% CTR, average position 81.3, 24 pageviews/sessions, 40 planning panel views, and 2 commercial or route-alert clicks.
+- Stale 2026-06-16 URL Inspection status: `/world-cup-2026-games-today` was `URL is unknown to Google`; priority match and Dallas city pages were discovered but not indexed.
+- Production `/world-cup-2026-games-today` currently returns 200 with `x-nextjs-prerender: 1`, `x-vercel-cache: STALE`, and public cache headers.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+
+### Decision
+- Do not make SEO/content changes based on stale metrics.
+- Treat today's run as blocked on measurement credentials, with site health OK.
+- Improve the sensor error message so the next invalid refresh token failure gives the exact recovery command.
+
+### Actions Taken
+- Updated `scripts/google-api-common.mjs` to catch `invalid_grant` and throw a direct action message: run `npm run sensors:oauth` from the repo root, approve Search Console and Analytics read-only access, then rerun `npm run sensors:refresh`.
+- Cleaned up the attempted Chrome fallback session.
+
+### Files Changed
+- `scripts/google-api-common.mjs`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` failed with `invalid_grant`; no fresh measurement was available.
+- Authenticated browser fallback attempted but timed out in Google Search Console navigation.
+- Production today page check passed.
+- Production sitemap check passed with 143 URLs and the today page present.
+
+### Expected Impact
+- Next credential failure will be faster to diagnose and repair.
+- The site remains crawlable, but the daily AI loop cannot measure progress again until OAuth is refreshed.
+
+### Follow-Up
+- Required user action: run `npm run sensors:oauth` from `/Users/selby/Documents/wc26chances.com 复活`, complete Google authorization, then run `npm run sensors:refresh`.
+- After OAuth is restored, check whether `/world-cup-2026-games-today` has moved from `URL is unknown to Google` to discovered or indexed.
+- If it remains unknown after fresh data, add a smaller above-the-fold "today games" link block to indexed priority pages.

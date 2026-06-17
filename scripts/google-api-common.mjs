@@ -86,16 +86,26 @@ function macSystemProxy() {
 }
 
 export async function getAccessToken() {
-  const payload = await fetchJson('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      client_id: requiredEnv('GOOGLE_OAUTH_CLIENT_ID'),
-      client_secret: requiredEnv('GOOGLE_OAUTH_CLIENT_SECRET'),
-      refresh_token: requiredEnv('GOOGLE_OAUTH_REFRESH_TOKEN'),
-      grant_type: 'refresh_token',
-    }),
-  });
+  let payload;
+
+  try {
+    payload = await fetchJson('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: requiredEnv('GOOGLE_OAUTH_CLIENT_ID'),
+        client_secret: requiredEnv('GOOGLE_OAUTH_CLIENT_SECRET'),
+        refresh_token: requiredEnv('GOOGLE_OAUTH_REFRESH_TOKEN'),
+        grant_type: 'refresh_token',
+      }),
+    });
+  } catch (error) {
+    const message = String(error.message ?? error);
+    if (message.includes('invalid_grant') || message.includes('Token has been expired or revoked')) {
+      throw new Error('Google OAuth refresh token expired or was revoked. Run `npm run sensors:oauth` from the repo root, approve Search Console and Analytics read-only access, then rerun `npm run sensors:refresh`.');
+    }
+    throw error;
+  }
 
   if (!payload.access_token) throw new Error('Google token refresh did not return an access token.');
   return payload.access_token;
