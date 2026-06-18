@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
 const root = process.cwd();
@@ -64,6 +64,7 @@ function readCsvInput(path) {
   const exists = existsSync(path);
   return {
     exists,
+    updatedAt: exists ? statSync(path).mtime.toISOString() : '',
     rows: exists ? parseCsv(readFileSync(path, 'utf8')) : [],
   };
 }
@@ -222,6 +223,10 @@ function inputAction(input, rowCount, fileName) {
   return 'Ready for opportunity analysis.';
 }
 
+function inputUpdatedAt(input) {
+  return input.updatedAt ? input.updatedAt : 'n/a';
+}
+
 const generatedAt = new Date().toISOString().slice(0, 10);
 const report = `# SEO Sensor Snapshot
 
@@ -229,21 +234,21 @@ Generated: ${generatedAt}
 
 ## Inputs
 
-- Search Console: \`${searchConsolePath.replace(`${root}/`, '')}\` (${inputSummary(searchConsoleInput, searchRows.length)})
-- Analytics pages: \`${analyticsPagesPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsPagesInput, analyticsRows.length)})
-- Analytics events: \`${analyticsEventsPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsEventsInput, analyticsEventRows.length)})
-- Analytics acquisition: \`${analyticsAcquisitionPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsAcquisitionInput, analyticsAcquisitionRows.length)})
-- URL inspection: \`${urlInspectionPath.replace(`${root}/`, '')}\` (${inputSummary(urlInspectionInput, urlInspectionRows.length)})
+- Search Console: \`${searchConsolePath.replace(`${root}/`, '')}\` (${inputSummary(searchConsoleInput, searchRows.length)}; updated ${inputUpdatedAt(searchConsoleInput)})
+- Analytics pages: \`${analyticsPagesPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsPagesInput, analyticsRows.length)}; updated ${inputUpdatedAt(analyticsPagesInput)})
+- Analytics events: \`${analyticsEventsPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsEventsInput, analyticsEventRows.length)}; updated ${inputUpdatedAt(analyticsEventsInput)})
+- Analytics acquisition: \`${analyticsAcquisitionPath.replace(`${root}/`, '')}\` (${inputSummary(analyticsAcquisitionInput, analyticsAcquisitionRows.length)}; updated ${inputUpdatedAt(analyticsAcquisitionInput)})
+- URL inspection: \`${urlInspectionPath.replace(`${root}/`, '')}\` (${inputSummary(urlInspectionInput, urlInspectionRows.length)}; updated ${inputUpdatedAt(urlInspectionInput)})
 
 ## Input Readiness
 
-| Input | Status | Next action |
-| --- | --- | --- |
-| Search Console | ${inputSummary(searchConsoleInput, searchRows.length)} | ${inputAction(searchConsoleInput, searchRows.length, 'ops/sensor-inputs/search-console.csv')} |
-| Analytics pages | ${inputSummary(analyticsPagesInput, analyticsRows.length)} | ${inputAction(analyticsPagesInput, analyticsRows.length, 'ops/sensor-inputs/analytics-pages.csv')} |
-| Analytics events | ${inputSummary(analyticsEventsInput, analyticsEventRows.length)} | ${inputAction(analyticsEventsInput, analyticsEventRows.length, 'ops/sensor-inputs/analytics-events.csv')} |
-| Analytics acquisition | ${inputSummary(analyticsAcquisitionInput, analyticsAcquisitionRows.length)} | ${inputAction(analyticsAcquisitionInput, analyticsAcquisitionRows.length, 'ops/sensor-inputs/analytics-acquisition.csv')} |
-| URL inspection | ${inputSummary(urlInspectionInput, urlInspectionRows.length)} | ${inputAction(urlInspectionInput, urlInspectionRows.length, 'ops/sensor-inputs/url-inspection.csv')} |
+| Input | Status | Last updated | Next action |
+| --- | --- | --- | --- |
+| Search Console | ${inputSummary(searchConsoleInput, searchRows.length)} | ${inputUpdatedAt(searchConsoleInput)} | ${inputAction(searchConsoleInput, searchRows.length, 'ops/sensor-inputs/search-console.csv')} |
+| Analytics pages | ${inputSummary(analyticsPagesInput, analyticsRows.length)} | ${inputUpdatedAt(analyticsPagesInput)} | ${inputAction(analyticsPagesInput, analyticsRows.length, 'ops/sensor-inputs/analytics-pages.csv')} |
+| Analytics events | ${inputSummary(analyticsEventsInput, analyticsEventRows.length)} | ${inputUpdatedAt(analyticsEventsInput)} | ${inputAction(analyticsEventsInput, analyticsEventRows.length, 'ops/sensor-inputs/analytics-events.csv')} |
+| Analytics acquisition | ${inputSummary(analyticsAcquisitionInput, analyticsAcquisitionRows.length)} | ${inputUpdatedAt(analyticsAcquisitionInput)} | ${inputAction(analyticsAcquisitionInput, analyticsAcquisitionRows.length, 'ops/sensor-inputs/analytics-acquisition.csv')} |
+| URL inspection | ${inputSummary(urlInspectionInput, urlInspectionRows.length)} | ${inputUpdatedAt(urlInspectionInput)} | ${inputAction(urlInspectionInput, urlInspectionRows.length, 'ops/sensor-inputs/url-inspection.csv')} |
 
 ## Traffic Summary
 

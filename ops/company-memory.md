@@ -1298,3 +1298,57 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Required user action: run `npm run sensors:oauth` from `/Users/selby/Documents/wc26chances.com 复活`, complete Google authorization, then run `npm run sensors:refresh`.
 - After OAuth is restored, check whether `/world-cup-2026-games-today` has moved from `URL is unknown to Google` to discovered or indexed.
 - If it remains unknown after fresh data, add a smaller above-the-fold "today games" link block to indexed priority pages.
+
+## 2026-06-18 11:13 CST - Daily Growth Loop Still Blocked, Sensor Freshness Improved
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh`.
+- Attempted authenticated browser fallback through the available desktop app state.
+- Re-ran local `npm run sensors:seo` against the existing CSV inputs.
+- Checked production `/world-cup-2026-games-today` and production sitemap.
+
+### Observations
+- Google API refresh is still blocked before new data is pulled.
+- Exact API blocker: Google OAuth refresh token expired or was revoked; the script now reports the direct recovery command.
+- Authenticated browser fallback was unavailable today because Chrome had no controllable window; desktop state returned `cgWindowNotFound`.
+- No fresh Search Console, GA4, acquisition, or URL Inspection data was collected today.
+- The regenerated snapshot is explicitly stale: all Google/GA input CSVs were last updated on 2026-06-16 UTC.
+- Stale latest metrics remain 0 / 100 Google clicks, 156 impressions, 0.0% CTR, average position 81.3, 24 pageviews/sessions, 40 planning panel views, and 2 commercial or route-alert clicks.
+- Stale 2026-06-16 URL Inspection status still has `/world-cup-2026-games-today` as `URL is unknown to Google`.
+- Production `/world-cup-2026-games-today` currently returns 200 with `x-nextjs-prerender: 1`, `x-vercel-cache: STALE`, and public cache headers.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+
+### Decision
+- Do not change SEO copy, CTAs, or page inventory today because the measurement layer is stale.
+- Make a safe sensor/reporting improvement so future stale-data situations are obvious in the generated snapshot.
+- Treat the biggest current bottleneck as measurement credentials first, then Google discovery/indexing once fresh URL Inspection data is restored.
+
+### Actions Taken
+- Updated `scripts/seo-sensors.mjs` so the generated snapshot shows the filesystem update time for every CSV input.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md`; it now shows the report was generated on 2026-06-18 while all sensor inputs remain from 2026-06-16.
+
+### Files Changed
+- `scripts/seo-sensors.mjs`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` failed with the expected expired/revoked Google OAuth token message.
+- Browser fallback attempted but unavailable because Chrome had no controllable window.
+- `npm run sensors:seo` passed and regenerated the snapshot from existing local CSVs.
+- `node --check scripts/seo-sensors.mjs` passed.
+- `npm run lint` passed.
+- `git diff --check` passed before this memory entry.
+- Production today page check passed.
+- Production sitemap check passed with 143 URLs and the today page present.
+
+### Expected Impact
+- Daily loop reports will no longer blur together a fresh report date and stale sensor inputs.
+- The next operator can immediately see whether the numbers are live or merely a reprocessing of older CSVs.
+
+### Follow-Up
+- Required user action remains: run `npm run sensors:oauth` from `/Users/selby/Documents/wc26chances.com 复活`, complete Google authorization, then run `npm run sensors:refresh`.
+- After OAuth is restored, inspect `/world-cup-2026-games-today`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, and `/cities/dallas` again through URL Inspection.
+- If the today page is still unknown to Google with fresh data, add a compact above-the-fold today-games link block to indexed priority pages and request indexing manually.

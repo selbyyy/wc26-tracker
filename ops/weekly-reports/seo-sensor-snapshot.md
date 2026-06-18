@@ -1,24 +1,24 @@
 # SEO Sensor Snapshot
 
-Generated: 2026-06-16
+Generated: 2026-06-18
 
 ## Inputs
 
-- Search Console: `ops/sensor-inputs/search-console.csv` (present, 30 rows)
-- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 33 rows)
-- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 23 rows)
-- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 43 rows)
-- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows)
+- Search Console: `ops/sensor-inputs/search-console.csv` (present, 30 rows; updated 2026-06-16T02:24:25.619Z)
+- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 33 rows; updated 2026-06-16T02:24:37.655Z)
+- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 23 rows; updated 2026-06-16T02:24:37.656Z)
+- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 43 rows; updated 2026-06-16T02:24:37.656Z)
+- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-06-16T02:26:57.605Z)
 
 ## Input Readiness
 
-| Input | Status | Next action |
-| --- | --- | --- |
-| Search Console | present, 30 rows | Ready for opportunity analysis. |
-| Analytics pages | present, 33 rows | Ready for opportunity analysis. |
-| Analytics events | present, 23 rows | Ready for opportunity analysis. |
-| Analytics acquisition | present, 43 rows | Ready for opportunity analysis. |
-| URL inspection | present, 9 rows | Ready for opportunity analysis. |
+| Input | Status | Last updated | Next action |
+| --- | --- | --- | --- |
+| Search Console | present, 30 rows | 2026-06-16T02:24:25.619Z | Ready for opportunity analysis. |
+| Analytics pages | present, 33 rows | 2026-06-16T02:24:37.655Z | Ready for opportunity analysis. |
+| Analytics events | present, 23 rows | 2026-06-16T02:24:37.656Z | Ready for opportunity analysis. |
+| Analytics acquisition | present, 43 rows | 2026-06-16T02:24:37.656Z | Ready for opportunity analysis. |
+| URL inspection | present, 9 rows | 2026-06-16T02:26:57.605Z | Ready for opportunity analysis. |
 
 ## Traffic Summary
 
