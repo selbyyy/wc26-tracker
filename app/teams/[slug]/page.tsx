@@ -185,6 +185,33 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
+      <section className="border-b-4 border-[#102033] bg-[#ffd447]">
+        <div className="mx-auto grid max-w-7xl gap-5 px-5 py-6 md:grid-cols-[1fr_auto] md:items-center md:px-8">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Tournament is live</p>
+            <h2 className="mt-2 text-3xl font-black">Check today&apos;s games before planning {team}&apos;s route.</h2>
+            <p className="mt-2 max-w-3xl text-base font-bold leading-7 text-[#3d3b23]">
+              The current-slate page shows today&apos;s listed matches, kickoff times, cities, stadiums, and links back
+              to the team and match pages that matter next.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/world-cup-2026-games-today"
+              className="inline-flex justify-center rounded-full bg-[#102033] px-6 py-3 text-sm font-black text-white hover:bg-[#e52b2f]"
+            >
+              Games today
+            </Link>
+            <Link
+              href="/matches"
+              className="inline-flex justify-center rounded-full border-2 border-[#102033] bg-white px-6 py-3 text-sm font-black text-[#102033] hover:bg-[#102033] hover:text-white"
+            >
+              All matches
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
         <div className="grid gap-4 md:grid-cols-3">
           {matches.map((match) => (
