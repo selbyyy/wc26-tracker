@@ -1471,3 +1471,62 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Required user action remains: run `npm run sensors:oauth` from `/Users/selby/Documents/wc26chances.com 复活`, complete Google authorization, then run `npm run sensors:refresh`.
 - After OAuth is restored, inspect `/world-cup-2026-games-today`, `/teams/usa`, `/teams/argentina`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, and `/cities/dallas`.
 - If OAuth is not restored by the next daily loop, do not make more page changes; only monitor production health and prepare human-reviewed community responses.
+
+## 2026-06-21 01:45 CST - OAuth Restored, Today Page Discovered Not Indexed
+
+### Inputs
+- User reported OAuth authorization was done.
+- Ran `npm run sensors:refresh`.
+- Reviewed the regenerated Search Console, GA4 pages, GA4 events, GA4 acquisition, and URL Inspection snapshot.
+- Checked production `/world-cup-2026-games-today`, production sitemap, and production robots.txt.
+
+### Observations
+- Google API access is working again.
+- Search Console CSV has 35 rows, GA4 pages has 47 rows, GA4 events has 34 rows, GA4 acquisition has 78 rows, and URL Inspection has 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions increased from 156 to 164, CTR remains 0.0%, and weighted average position improved slightly from 81.3 to 80.8.
+- Analytics pageviews/sessions increased from 24 to 31.
+- Planning action panel views increased from 40 to 71.
+- Commercial or route-alert clicks increased from 2 to 3.
+- Retired market URLs still dominate Google impressions: old Argentina market URL has 122 impressions and old Japan market URL has 16.
+- Live page visibility is improving slowly: `/teams/argentina` has 14 impressions, `/cities/san-francisco-bay-area` has 5, and `/teams/usa` has 3.
+- New striking-distance query appeared: `what are plausible knockout matchups for argentina in the 2026 world cup and where would they be played?` on `/teams/argentina` at position 8.0 with 1 impression.
+- Bing organic is sending more qualified team traffic, especially `/teams/usa` with 7 sessions and `/teams/mexico` with 4 sessions.
+- URL Inspection shows `/world-cup-2026-games-today` moved from `URL is unknown to Google` to `Discovered - currently not indexed`.
+- Priority match pages and `/cities/dallas` remain discovered but not indexed.
+- `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` remain submitted and indexed.
+- Production `/world-cup-2026-games-today` returns 200 with `x-nextjs-prerender: 1`, `x-vercel-cache: HIT`, and public cache headers.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+- Production robots.txt allows crawling and points to the sitemap.
+
+### Decision
+- Do not make more product/page changes today. The 2026-06-19 team-page internal-link change appears to have helped discovery, and additional link stacking would add noise before indexing updates.
+- The biggest bottleneck is now indexing, not crawlability or analytics access.
+- Next best action is manual URL Inspection/request indexing for `/world-cup-2026-games-today` and the priority discovered-not-indexed match/city pages.
+
+### Actions Taken
+- Updated EXP-009 with the restored sensor result.
+- Updated the 2026-06-19 SEO opportunity result: today page is now discovered but not indexed.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh Google and GA4 data.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and regenerated Search Console, GA4 pages, GA4 events, GA4 acquisition, URL Inspection, and the snapshot.
+- Production today page check passed.
+- Production sitemap check passed with 143 URLs and the today page present.
+- Production robots.txt check passed.
+
+### Expected Impact
+- Restored observability closes the biggest operational blocker.
+- Logging the today page's movement from unknown to discovered gives the AI loop a clean next decision point: wait/request indexing rather than continuing to add links.
+- Current commercial signal remains weak but not zero: 3 commercial or route-alert clicks against 31 pageviews/sessions.
+
+### Follow-Up
+- Manually request indexing in Google Search Console for `/world-cup-2026-games-today`.
+- Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
+- If `/teams/argentina` receives more route-query impressions, expand the route FAQ or title only after repeat impressions appear, not from a single 1-impression row.
