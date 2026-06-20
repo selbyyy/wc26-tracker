@@ -1413,3 +1413,61 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Required user action remains: run `npm run sensors:oauth` from `/Users/selby/Documents/wc26chances.com 复活`, complete Google authorization, then run `npm run sensors:refresh`.
 - After OAuth is restored, inspect `/world-cup-2026-games-today`, `/teams/argentina`, `/teams/usa`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, and `/cities/dallas`.
 - If the today page is still unknown after this team-page link pass and a manual URL Inspection request, stop adding internal links and prioritize human-reviewed distribution to fresh match-day questions.
+
+## 2026-06-20 10:08 CST - Daily Growth Loop OAuth Blocker, Refresh Fallback Automated
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh`.
+- Re-ran local sensor processing through the updated refresh runner.
+- Checked production `/world-cup-2026-games-today`, sitemap, and robots.txt.
+- Used public search fallback to check whether the today page or related WC26 pages appear in visible search results.
+
+### Observations
+- Google API refresh is still blocked before new data is pulled.
+- Exact API blocker: Google OAuth refresh token expired or was revoked.
+- No fresh Search Console, GA4, acquisition, or URL Inspection data was collected today.
+- Snapshot was regenerated on 2026-06-20, but all Google/GA input CSVs remain from 2026-06-16 UTC.
+- Stale latest metrics remain 0 / 100 Google clicks, 156 impressions, 0.0% CTR, average position 81.3, 24 pageviews/sessions, 40 planning panel views, and 2 commercial or route-alert clicks.
+- Stale 2026-06-16 URL Inspection status still has `/world-cup-2026-games-today` as `URL is unknown to Google`.
+- Public search fallback still did not surface `/world-cup-2026-games-today` directly.
+- Public search fallback did surface WC26 team, city, and match pages; the USA result includes the new Games today callout text from the 2026-06-19 team-page change.
+- Production `/world-cup-2026-games-today` currently returns 200 with `x-nextjs-prerender: 1`, `x-vercel-cache: STALE`, and public cache headers.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+- Production robots.txt allows crawling and points to the sitemap.
+
+### Decision
+- Do not add more SEO page changes today. The next meaningful external blocker is OAuth restoration and manual URL Inspection/request indexing.
+- Improve the sensor automation instead: `npm run sensors:refresh` should regenerate the best available snapshot even when the Google pull fails, while still exiting non-zero so the stale-data condition remains visible.
+
+### Actions Taken
+- Added `scripts/refresh-sensors.mjs`.
+- Updated `package.json` so `npm run sensors:refresh` runs the new refresh runner.
+- Verified the new runner fails on the expired OAuth token, then automatically regenerates `ops/weekly-reports/seo-sensor-snapshot.md` from the latest local CSVs and prints a stale-input warning.
+
+### Files Changed
+- `package.json`
+- `scripts/refresh-sensors.mjs`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` failed with the expected expired/revoked Google OAuth token message and regenerated the fallback snapshot.
+- `node --check scripts/refresh-sensors.mjs` passed.
+- `npm run lint` passed.
+- `npm run build` passed; build generated 148 static pages and kept `/world-cup-2026-games-today` on 1h revalidation.
+- `git diff --check` passed before this memory entry.
+- Production today page check passed.
+- Production sitemap check passed with 143 URLs and the today page present.
+- Production robots.txt check passed.
+
+### Expected Impact
+- Future daily loops will always have an updated snapshot file, even during Google OAuth outages.
+- The command still fails when fresh Google data is unavailable, so automation cannot silently treat stale CSVs as live metrics.
+- This reduces manual recovery work without masking the credential blocker.
+
+### Follow-Up
+- Required user action remains: run `npm run sensors:oauth` from `/Users/selby/Documents/wc26chances.com 复活`, complete Google authorization, then run `npm run sensors:refresh`.
+- After OAuth is restored, inspect `/world-cup-2026-games-today`, `/teams/usa`, `/teams/argentina`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, and `/cities/dallas`.
+- If OAuth is not restored by the next daily loop, do not make more page changes; only monitor production health and prepare human-reviewed community responses.

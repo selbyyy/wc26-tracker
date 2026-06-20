@@ -10,7 +10,7 @@
     "sensors:seo": "node scripts/seo-sensors.mjs",
     "sensors:oauth": "node --env-file-if-exists=.env.sensors.local scripts/google-oauth-bootstrap.mjs",
     "sensors:pull-google": "node --env-file-if-exists=.env.sensors.local scripts/pull-google-sensors.mjs",
-    "sensors:refresh": "npm run sensors:pull-google && npm run sensors:seo"
+    "sensors:refresh": "node --env-file-if-exists=.env.sensors.local scripts/refresh-sensors.mjs"
   },
   "dependencies": {
     "next": "16.1.6",
