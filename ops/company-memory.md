@@ -1530,3 +1530,58 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Manually request indexing in Google Search Console for `/world-cup-2026-games-today`.
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If `/teams/argentina` receives more route-query impressions, expand the route FAQ or title only after repeat impressions appear, not from a single 1-impression row.
+
+## 2026-06-21 10:07 CST - Daily Growth Loop, Indexing Bottleneck Unchanged
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh`.
+- Reviewed the regenerated Search Console, GA4 pages, GA4 events, GA4 acquisition, and URL Inspection snapshot.
+- Checked production `/world-cup-2026-games-today`, production sitemap, and production robots.txt.
+
+### Observations
+- Google API access remains working.
+- Search Console CSV has 35 rows, GA4 pages has 47 rows, GA4 events has 34 rows, GA4 acquisition has 76 rows, and URL Inspection has 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions remain 164, CTR remains 0.0%, and weighted average position remains 80.8.
+- Analytics pageviews/sessions increased from 31 to 32.
+- Planning action panel views increased from 71 to 73.
+- Commercial or route-alert clicks remain 3.
+- Retired market URLs still dominate Google impressions: old Argentina market URL has 122 impressions and old Japan market URL has 16.
+- Live page visibility remains low: `/teams/argentina` has 14 impressions, `/cities/san-francisco-bay-area` has 5, and `/teams/usa` has 3.
+- URL Inspection status is unchanged from the prior restored run: `/world-cup-2026-games-today`, priority match pages, and `/cities/dallas` are discovered but not indexed.
+- `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` remain submitted and indexed.
+- Bing and Yahoo organic continue to send more team-page sessions than Google organic.
+- Production `/world-cup-2026-games-today` returns 200 with `x-nextjs-prerender: 1`, `x-vercel-cache: HIT`, and public cache headers.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+- Production robots.txt allows crawling and points to the sitemap.
+
+### Decision
+- Do not make product or SEO page changes today. The signal is unchanged and additional internal-link/page edits would add noise.
+- Treat the current bottleneck as Google indexing of already-discovered pages.
+- Continue to prioritize manual URL Inspection/request indexing for the current-slate and priority match/city pages.
+
+### Actions Taken
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh sensor timestamps and unchanged Search Console totals.
+- Recorded this daily loop in company memory.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and regenerated Search Console, GA4 pages, GA4 events, GA4 acquisition, URL Inspection, and the snapshot.
+- Production today page check passed.
+- Production sitemap check passed with 143 URLs and the today page present.
+- Production robots.txt check passed.
+- `git diff --check` passed before this memory entry.
+
+### Expected Impact
+- Keeps the AI loop state accurate without creating unnecessary page churn.
+- Confirms the operational blocker has moved from credentials to indexing.
+
+### Follow-Up
+- Manually request indexing in Google Search Console for `/world-cup-2026-games-today`.
+- Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
+- If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.

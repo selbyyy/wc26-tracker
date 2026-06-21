@@ -1,24 +1,24 @@
 # SEO Sensor Snapshot
 
-Generated: 2026-06-20
+Generated: 2026-06-21
 
 ## Inputs
 
-- Search Console: `ops/sensor-inputs/search-console.csv` (present, 35 rows; updated 2026-06-20T17:42:56.919Z)
-- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 47 rows; updated 2026-06-20T17:43:07.247Z)
-- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 34 rows; updated 2026-06-20T17:43:07.248Z)
-- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 78 rows; updated 2026-06-20T17:43:07.248Z)
-- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-06-20T17:45:26.935Z)
+- Search Console: `ops/sensor-inputs/search-console.csv` (present, 35 rows; updated 2026-06-21T02:04:15.953Z)
+- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 47 rows; updated 2026-06-21T02:04:27.081Z)
+- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 34 rows; updated 2026-06-21T02:04:27.082Z)
+- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 76 rows; updated 2026-06-21T02:04:27.083Z)
+- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-06-21T02:06:47.112Z)
 
 ## Input Readiness
 
 | Input | Status | Last updated | Next action |
 | --- | --- | --- | --- |
-| Search Console | present, 35 rows | 2026-06-20T17:42:56.919Z | Ready for opportunity analysis. |
-| Analytics pages | present, 47 rows | 2026-06-20T17:43:07.247Z | Ready for opportunity analysis. |
-| Analytics events | present, 34 rows | 2026-06-20T17:43:07.248Z | Ready for opportunity analysis. |
-| Analytics acquisition | present, 78 rows | 2026-06-20T17:43:07.248Z | Ready for opportunity analysis. |
-| URL inspection | present, 9 rows | 2026-06-20T17:45:26.935Z | Ready for opportunity analysis. |
+| Search Console | present, 35 rows | 2026-06-21T02:04:15.953Z | Ready for opportunity analysis. |
+| Analytics pages | present, 47 rows | 2026-06-21T02:04:27.081Z | Ready for opportunity analysis. |
+| Analytics events | present, 34 rows | 2026-06-21T02:04:27.082Z | Ready for opportunity analysis. |
+| Analytics acquisition | present, 76 rows | 2026-06-21T02:04:27.083Z | Ready for opportunity analysis. |
+| URL inspection | present, 9 rows | 2026-06-21T02:06:47.112Z | Ready for opportunity analysis. |
 
 ## Traffic Summary
 
@@ -29,8 +29,8 @@ Generated: 2026-06-20
 | Google impressions | 164 |
 | Average organic CTR | 0.0% |
 | Average organic position | 80.8 |
-| Analytics pageviews/sessions | 31 |
-| Planning action panel views | 71 |
+| Analytics pageviews/sessions | 32 |
+| Planning action panel views | 73 |
 | Commercial or route-alert clicks | 3 |
 
 ## Top Queries
@@ -87,17 +87,17 @@ _No rows matched this sensor._
 
 | Page |Event |Count |
 | --- |--- |--- |
-| /teams/usa |planning_action_panel_view |10 |
+| /teams/usa |planning_action_panel_view |11 |
 | /teams/mexico |planning_action_panel_view |6 |
 | /teams/turkiye |planning_action_panel_view |5 |
 | /teams/argentina |planning_action_panel_view |4 |
 | /teams/australia |planning_action_panel_view |4 |
 | /teams/algeria |planning_action_panel_view |3 |
 | /teams/bosnia-herzegovina |planning_action_panel_view |3 |
+| /teams/canada |planning_action_panel_view |3 |
 | /teams/iran |planning_action_panel_view |3 |
 | /teams/portugal |planning_action_panel_view |3 |
 | /teams/south-africa |planning_action_panel_view |3 |
-| /teams/canada |planning_action_panel_view |2 |
 | /teams/cape-verde |planning_action_panel_view |2 |
 
 ## Acquisition Source Summary
@@ -113,9 +113,9 @@ _No rows matched this sensor._
 | google / organic |Organic Search |/world-cup-2026-chances-by-team |3 |1 |
 | bing / organic |Organic Search |/teams/australia |3 |0 |
 | bing / organic |Organic Search |/teams/turkiye |3 |0 |
+| yahoo / organic |Organic Search |/teams/usa |3 |0 |
 | bing / organic |Organic Search |/teams/cape-verde |2 |1 |
-| (not set) |Unassigned |/teams/canada |2 |0 |
-| (not set) |Unassigned |/teams/usa |2 |0 |
+| bing / organic |Organic Search |/scenarios |2 |0 |
 
 ## URL Inspection Summary
 
