@@ -1,24 +1,24 @@
 # SEO Sensor Snapshot
 
-Generated: 2026-06-21
+Generated: 2026-06-22
 
 ## Inputs
 
-- Search Console: `ops/sensor-inputs/search-console.csv` (present, 35 rows; updated 2026-06-21T02:04:15.953Z)
-- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 47 rows; updated 2026-06-21T02:04:27.081Z)
-- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 34 rows; updated 2026-06-21T02:04:27.082Z)
-- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 76 rows; updated 2026-06-21T02:04:27.083Z)
-- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-06-21T02:06:47.112Z)
+- Search Console: `ops/sensor-inputs/search-console.csv` (present, 36 rows; updated 2026-06-22T02:04:55.021Z)
+- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 52 rows; updated 2026-06-22T02:05:06.066Z)
+- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 38 rows; updated 2026-06-22T02:05:06.067Z)
+- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 88 rows; updated 2026-06-22T02:05:06.067Z)
+- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-06-22T02:07:26.508Z)
 
 ## Input Readiness
 
 | Input | Status | Last updated | Next action |
 | --- | --- | --- | --- |
-| Search Console | present, 35 rows | 2026-06-21T02:04:15.953Z | Ready for opportunity analysis. |
-| Analytics pages | present, 47 rows | 2026-06-21T02:04:27.081Z | Ready for opportunity analysis. |
-| Analytics events | present, 34 rows | 2026-06-21T02:04:27.082Z | Ready for opportunity analysis. |
-| Analytics acquisition | present, 76 rows | 2026-06-21T02:04:27.083Z | Ready for opportunity analysis. |
-| URL inspection | present, 9 rows | 2026-06-21T02:06:47.112Z | Ready for opportunity analysis. |
+| Search Console | present, 36 rows | 2026-06-22T02:04:55.021Z | Ready for opportunity analysis. |
+| Analytics pages | present, 52 rows | 2026-06-22T02:05:06.066Z | Ready for opportunity analysis. |
+| Analytics events | present, 38 rows | 2026-06-22T02:05:06.067Z | Ready for opportunity analysis. |
+| Analytics acquisition | present, 88 rows | 2026-06-22T02:05:06.067Z | Ready for opportunity analysis. |
+| URL inspection | present, 9 rows | 2026-06-22T02:07:26.508Z | Ready for opportunity analysis. |
 
 ## Traffic Summary
 
@@ -26,11 +26,11 @@ Generated: 2026-06-21
 | --- | --- |
 | 100-click sprint progress | 0 / 100 (0.0%) |
 | Google organic clicks | 0 |
-| Google impressions | 164 |
+| Google impressions | 166 |
 | Average organic CTR | 0.0% |
 | Average organic position | 80.8 |
-| Analytics pageviews/sessions | 32 |
-| Planning action panel views | 73 |
+| Analytics pageviews/sessions | 38 |
+| Planning action panel views | 83 |
 | Commercial or route-alert clicks | 3 |
 
 ## Top Queries
@@ -45,7 +45,7 @@ Generated: 2026-06-21
 | market question: will the japan win the 2026 men's world cup? description: if japan wins the 2026 men's world cup, then the market resolves to yes. resolution time: 2026-07-19 14:00:00+00:00 today's date: 2026-06-01. return p(yes) as json: {"probability": ..., "reasoning": ...} |https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |0 |6 |7.7 |
 | odds on argentina to win world cup |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |6 |92.3 |
 | argentina odds to win world cup |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |5 |75.6 |
-| world cup sf games |https://www.wc26chances.com/cities/san-francisco-bay-area |0 |4 |82.0 |
+| world cup sf games |https://www.wc26chances.com/cities/san-francisco-bay-area |0 |5 |85.0 |
 | argentina world cup 2026 |https://www.wc26chances.com/teams/argentina |0 |3 |71.7 |
 | argentina world cup games |https://www.wc26chances.com/teams/argentina |0 |3 |66.0 |
 | argentina world cup odds |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |3 |96.3 |
@@ -57,9 +57,9 @@ Generated: 2026-06-21
 | https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |122 |
 | https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |0 |16 |
 | https://www.wc26chances.com/teams/argentina |0 |14 |
-| https://www.wc26chances.com/cities/san-francisco-bay-area |0 |5 |
+| https://www.wc26chances.com/cities/san-francisco-bay-area |0 |6 |
+| https://www.wc26chances.com/market/will-ivory-coast-win-the-2026-fifa-world-cup |0 |3 |
 | https://www.wc26chances.com/teams/usa |0 |3 |
-| https://www.wc26chances.com/market/will-ivory-coast-win-the-2026-fifa-world-cup |0 |2 |
 | https://www.wc26chances.com/teams/panama |0 |2 |
 
 ## High-Impression Pages With No Clicks
@@ -87,10 +87,10 @@ _No rows matched this sensor._
 
 | Page |Event |Count |
 | --- |--- |--- |
-| /teams/usa |planning_action_panel_view |11 |
+| /teams/usa |planning_action_panel_view |12 |
+| /teams/argentina |planning_action_panel_view |7 |
 | /teams/mexico |planning_action_panel_view |6 |
 | /teams/turkiye |planning_action_panel_view |5 |
-| /teams/argentina |planning_action_panel_view |4 |
 | /teams/australia |planning_action_panel_view |4 |
 | /teams/algeria |planning_action_panel_view |3 |
 | /teams/bosnia-herzegovina |planning_action_panel_view |3 |
@@ -107,15 +107,15 @@ _No rows matched this sensor._
 | (direct) / (none) |Direct |/ |7 |5 |
 | bing / organic |Organic Search |/teams/usa |7 |0 |
 | (direct) / (none) |Direct |/teams/argentina |6 |3 |
+| (not set) |Unassigned |/ |4 |2 |
 | bing / organic |Organic Search |/teams/mexico |4 |0 |
 | (direct) / (none) |Direct |/teams/mexico |3 |2 |
 | (direct) / (none) |Direct |/scenarios |3 |1 |
+| (not set) |Unassigned |/teams/argentina |3 |1 |
 | google / organic |Organic Search |/world-cup-2026-chances-by-team |3 |1 |
 | bing / organic |Organic Search |/teams/australia |3 |0 |
 | bing / organic |Organic Search |/teams/turkiye |3 |0 |
 | yahoo / organic |Organic Search |/teams/usa |3 |0 |
-| bing / organic |Organic Search |/teams/cape-verde |2 |1 |
-| bing / organic |Organic Search |/scenarios |2 |0 |
 
 ## URL Inspection Summary
 
