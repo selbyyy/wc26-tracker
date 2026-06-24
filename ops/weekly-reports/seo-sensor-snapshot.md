@@ -1,24 +1,24 @@
 # SEO Sensor Snapshot
 
-Generated: 2026-06-22
+Generated: 2026-06-24
 
 ## Inputs
 
-- Search Console: `ops/sensor-inputs/search-console.csv` (present, 36 rows; updated 2026-06-22T02:04:55.021Z)
-- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 52 rows; updated 2026-06-22T02:05:06.066Z)
-- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 38 rows; updated 2026-06-22T02:05:06.067Z)
-- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 88 rows; updated 2026-06-22T02:05:06.067Z)
-- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-06-22T02:07:26.508Z)
+- Search Console: `ops/sensor-inputs/search-console.csv` (present, 38 rows; updated 2026-06-24T03:26:31.216Z)
+- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 59 rows; updated 2026-06-24T03:26:23.397Z)
+- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 45 rows; updated 2026-06-24T03:26:23.398Z)
+- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 108 rows; updated 2026-06-24T03:26:23.399Z)
+- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-06-24T03:45:45.689Z)
 
 ## Input Readiness
 
 | Input | Status | Last updated | Next action |
 | --- | --- | --- | --- |
-| Search Console | present, 36 rows | 2026-06-22T02:04:55.021Z | Ready for opportunity analysis. |
-| Analytics pages | present, 52 rows | 2026-06-22T02:05:06.066Z | Ready for opportunity analysis. |
-| Analytics events | present, 38 rows | 2026-06-22T02:05:06.067Z | Ready for opportunity analysis. |
-| Analytics acquisition | present, 88 rows | 2026-06-22T02:05:06.067Z | Ready for opportunity analysis. |
-| URL inspection | present, 9 rows | 2026-06-22T02:07:26.508Z | Ready for opportunity analysis. |
+| Search Console | present, 38 rows | 2026-06-24T03:26:31.216Z | Ready for opportunity analysis. |
+| Analytics pages | present, 59 rows | 2026-06-24T03:26:23.397Z | Ready for opportunity analysis. |
+| Analytics events | present, 45 rows | 2026-06-24T03:26:23.398Z | Ready for opportunity analysis. |
+| Analytics acquisition | present, 108 rows | 2026-06-24T03:26:23.399Z | Ready for opportunity analysis. |
+| URL inspection | present, 9 rows | 2026-06-24T03:45:45.689Z | Ready for opportunity analysis. |
 
 ## Traffic Summary
 
@@ -26,12 +26,12 @@ Generated: 2026-06-22
 | --- | --- |
 | 100-click sprint progress | 0 / 100 (0.0%) |
 | Google organic clicks | 0 |
-| Google impressions | 166 |
+| Google impressions | 169 |
 | Average organic CTR | 0.0% |
-| Average organic position | 80.8 |
-| Analytics pageviews/sessions | 38 |
-| Planning action panel views | 83 |
-| Commercial or route-alert clicks | 3 |
+| Average organic position | 80.4 |
+| Analytics pageviews/sessions | 51 |
+| Planning action panel views | 132 |
+| Commercial or route-alert clicks | 4 |
 
 ## Top Queries
 
@@ -55,9 +55,9 @@ Generated: 2026-06-22
 | Page |Clicks |Impressions |
 | --- |--- |--- |
 | https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |122 |
-| https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |0 |16 |
+| https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |0 |18 |
 | https://www.wc26chances.com/teams/argentina |0 |14 |
-| https://www.wc26chances.com/cities/san-francisco-bay-area |0 |6 |
+| https://www.wc26chances.com/cities/san-francisco-bay-area |0 |7 |
 | https://www.wc26chances.com/market/will-ivory-coast-win-the-2026-fifa-world-cup |0 |3 |
 | https://www.wc26chances.com/teams/usa |0 |3 |
 | https://www.wc26chances.com/teams/panama |0 |2 |
@@ -87,35 +87,35 @@ _No rows matched this sensor._
 
 | Page |Event |Count |
 | --- |--- |--- |
-| /teams/usa |planning_action_panel_view |12 |
-| /teams/argentina |planning_action_panel_view |7 |
-| /teams/mexico |planning_action_panel_view |6 |
+| /teams/usa |planning_action_panel_view |18 |
+| /teams/argentina |planning_action_panel_view |11 |
+| /teams/mexico |planning_action_panel_view |10 |
+| /teams/portugal |planning_action_panel_view |8 |
+| /teams/uruguay |planning_action_panel_view |7 |
+| /teams/cape-verde |planning_action_panel_view |6 |
 | /teams/turkiye |planning_action_panel_view |5 |
 | /teams/australia |planning_action_panel_view |4 |
+| /teams/iran |planning_action_panel_view |4 |
+| /teams/netherlands |planning_action_panel_view |4 |
+| /teams/new-zealand |planning_action_panel_view |4 |
 | /teams/algeria |planning_action_panel_view |3 |
-| /teams/bosnia-herzegovina |planning_action_panel_view |3 |
-| /teams/canada |planning_action_panel_view |3 |
-| /teams/iran |planning_action_panel_view |3 |
-| /teams/portugal |planning_action_panel_view |3 |
-| /teams/south-africa |planning_action_panel_view |3 |
-| /teams/cape-verde |planning_action_panel_view |2 |
 
 ## Acquisition Source Summary
 
 | Source / medium |Channel |Page |Sessions |Views |
 | --- |--- |--- |--- |--- |
-| (direct) / (none) |Direct |/ |7 |5 |
-| bing / organic |Organic Search |/teams/usa |7 |0 |
-| (direct) / (none) |Direct |/teams/argentina |6 |3 |
+| bing / organic |Organic Search |/teams/usa |11 |0 |
+| (direct) / (none) |Direct |/ |9 |6 |
+| (direct) / (none) |Direct |/teams/argentina |7 |3 |
+| bing / organic |Organic Search |/teams/mexico |7 |0 |
+| duckduckgo / organic |Organic Search |/teams/uruguay |6 |0 |
+| bing / organic |Organic Search |/teams/cape-verde |5 |1 |
 | (not set) |Unassigned |/ |4 |2 |
-| bing / organic |Organic Search |/teams/mexico |4 |0 |
+| (direct) / (none) |Direct |/scenarios |4 |1 |
+| yahoo / organic |Organic Search |/teams/usa |4 |0 |
 | (direct) / (none) |Direct |/teams/mexico |3 |2 |
-| (direct) / (none) |Direct |/scenarios |3 |1 |
-| (not set) |Unassigned |/teams/argentina |3 |1 |
-| google / organic |Organic Search |/world-cup-2026-chances-by-team |3 |1 |
-| bing / organic |Organic Search |/teams/australia |3 |0 |
-| bing / organic |Organic Search |/teams/turkiye |3 |0 |
-| yahoo / organic |Organic Search |/teams/usa |3 |0 |
+| google / organic |Organic Search |/teams/argentina |3 |2 |
+| (direct) / (none) |Direct |/teams/japan |3 |1 |
 
 ## URL Inspection Summary
 
@@ -126,10 +126,10 @@ _No rows matched this sensor._
 | https://www.wc26chances.com/teams/argentina |Submitted and indexed |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/teams/argentina |2026-06-10T04:16:23Z | |
 | https://www.wc26chances.com/teams/usa |Submitted and indexed |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/teams/usa |2026-05-31T02:10:41Z | |
 | https://www.wc26chances.com/world-cup-2026-chances-by-team |Submitted and indexed |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/world-cup-2026-chances-by-team |2026-06-02T02:33:57Z | |
-| https://www.wc26chances.com/matches/netherlands-vs-japan-world-cup-2026-match-10 |Discovered - currently not indexed |INDEXING_STATE_UNSPECIFIED |PAGE_FETCH_STATE_UNSPECIFIED |n/a |n/a | |
+| https://www.wc26chances.com/matches/netherlands-vs-japan-world-cup-2026-match-10 |n/a |n/a |n/a |n/a |n/a |Network request failed with fetch (UND_ERR_CONNECT_TIMEOUT) and curl (curl: (28) Operation timed out after 123660 milliseconds with 0 bytes  |
 | https://www.wc26chances.com/matches/argentina-vs-algeria-world-cup-2026-match-19 |Discovered - currently not indexed |INDEXING_STATE_UNSPECIFIED |PAGE_FETCH_STATE_UNSPECIFIED |n/a |n/a | |
 | https://www.wc26chances.com/cities/dallas |Discovered - currently not indexed |INDEXING_STATE_UNSPECIFIED |PAGE_FETCH_STATE_UNSPECIFIED |n/a |n/a | |
-| https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |Page with redirect |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/teams/argentina |2026-06-10T04:16:23Z | |
+| https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |n/a |n/a |n/a |n/a |n/a |Network request failed with fetch (UND_ERR_CONNECT_TIMEOUT) and curl (curl: (28) Operation timed out after 903802 milliseconds with 0 bytes  |
 
 ## AI Loop Handoff
 

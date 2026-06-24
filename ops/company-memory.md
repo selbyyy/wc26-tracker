@@ -1586,6 +1586,78 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.
 
+## 2026-06-24 11:46 CST - Daily Growth Loop, Traffic Signals Rising But Google Indexing Still Blocks Clicks
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh` to pull Search Console, GA4 pages, GA4 events, GA4 acquisition, and URL Inspection data.
+- Reviewed the regenerated sensor snapshot.
+- Checked production `/world-cup-2026-games-today`, production sitemap, and production robots.txt.
+- Re-ran `npm run sensors:refresh` after a sensor script improvement to verify the real refresh path.
+
+### Observations
+- Google API access is working.
+- Search Console CSV has 38 rows, GA4 pages has 59 rows, GA4 events has 45 rows, GA4 acquisition has 108 rows, and URL Inspection has 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions increased from 166 to 169, CTR remains 0.0%, and weighted average position improved from 80.8 to 80.4.
+- Analytics pageviews/sessions increased from 38 to 51.
+- Planning action panel views increased from 83 to 132.
+- Commercial or route-alert clicks increased from 3 to 4.
+- Retired market URLs still dominate Google impressions: old Argentina market URL has 122 impressions and old Japan market URL has 18.
+- Live page visibility remains too low for CTR tests: `/teams/argentina` has 14 impressions, `/cities/san-francisco-bay-area` has 7, `/teams/usa` has 3, and `/teams/panama` has 2.
+- The only ranking 8-20 live-page signal remains one Argentina route-query impression at position 8.0.
+- Acquisition is improving outside Google Search Console: Bing organic sent 11 sessions to `/teams/usa` and 7 to `/teams/mexico`; DuckDuckGo organic sent 6 sessions to `/teams/uruguay`; GA4 also shows 3 Google organic sessions to `/teams/argentina`.
+- URL Inspection shows `/world-cup-2026-games-today` is still discovered but not indexed.
+- `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` are submitted and indexed.
+- `/matches/argentina-vs-algeria-world-cup-2026-match-19` and `/cities/dallas` are discovered but not indexed.
+- URL Inspection had transient network failures for `/matches/netherlands-vs-japan-world-cup-2026-match-10` and the retired Argentina market URL during the second refresh.
+- Production `/world-cup-2026-games-today` returns HTTP 200 with `x-nextjs-prerender: 1` and `x-vercel-cache: HIT`.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+- Production robots.txt allows crawling and points to the sitemap.
+
+### Decision
+- Do not make product or SEO page changes today. The business signal is moving in GA4, but Google live-page impressions are still too small to justify page copy or metadata churn.
+- Treat the biggest bottleneck as Google indexing of already-discovered current-slate, match, and city pages.
+- Improve sensor reliability instead: URL Inspection can be network-unstable, so curl fallback should respect per-call timeout settings.
+
+### Actions Taken
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh Google and GA4 data.
+- Updated `scripts/google-api-common.mjs` so `fetchJson` accepts a per-call `curlMaxTimeSeconds` option and does not pass that custom option into native `fetch`.
+- Updated `scripts/pull-google-sensors.mjs` so URL Inspection curl fallback uses the same timeout window as the URL Inspection fetch attempt.
+- Updated EXP-009 with the 2026-06-24 result.
+- Updated the SEO opportunity log for sensor reliability and current-slate indexing status.
+- Recorded this daily loop in company memory.
+
+### Files Changed
+- `scripts/google-api-common.mjs`
+- `scripts/pull-google-sensors.mjs`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and regenerated Search Console, GA4 pages, GA4 events, GA4 acquisition, URL Inspection, and the snapshot.
+- `node --check scripts/google-api-common.mjs` passed.
+- `node --check scripts/pull-google-sensors.mjs` passed.
+- `fetchJson` curl fallback smoke test passed.
+- `npm run lint` passed.
+- `npm run build` passed and generated 148 static pages.
+- Production today page check passed with HTTP 200.
+- Production sitemap check passed with 143 URLs and the today page present.
+- Production robots.txt check passed.
+
+### Expected Impact
+- Daily automation should be more resilient when URL Inspection has transient network failures.
+- The loop state is now clearer: the site has some qualified non-Google organic and CTA movement, but Google Search Console clicks are still blocked by indexing and weak ranking.
+- Avoiding more page churn preserves clean measurement until Google indexes the already-discovered live pages.
+
+### Follow-Up
+- Manually request indexing in Google Search Console for `/world-cup-2026-games-today`.
+- Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
+- If Google clicks remain 0 after those requests, prioritize human-reviewed answers in fresh match-day, qualification, ticket, and travel threads, using `/world-cup-2026-games-today` and specific team pages only when directly useful.
+
 ## 2026-06-22 10:08 CST - Daily Growth Loop, Slight Impressions Lift But Still No Google Clicks
 
 ### Inputs

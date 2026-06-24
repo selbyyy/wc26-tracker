@@ -13,12 +13,13 @@ export function requiredEnv(name) {
 }
 
 export async function fetchJson(url, options = {}) {
+  const { curlMaxTimeSeconds, ...fetchOptions } = options;
   let response;
 
   try {
-    response = await fetch(url, options);
+    response = await fetch(url, fetchOptions);
   } catch (error) {
-    return fetchJsonWithCurl(url, options, error);
+    return fetchJsonWithCurl(url, fetchOptions, error, curlMaxTimeSeconds);
   }
 
   const body = await response.text();
@@ -31,20 +32,22 @@ export async function fetchJson(url, options = {}) {
   }
 
   if (!response.ok) {
-    throw new Error(`${options.method ?? 'GET'} ${url} failed (${response.status}): ${JSON.stringify(payload)}`);
+    throw new Error(`${fetchOptions.method ?? 'GET'} ${url} failed (${response.status}): ${JSON.stringify(payload)}`);
   }
 
   return payload;
 }
 
-function fetchJsonWithCurl(url, options, fetchError) {
+function fetchJsonWithCurl(url, options, fetchError, curlMaxTimeSeconds) {
   const method = options.method ?? 'GET';
+  const envMaxTime = process.env.SENSOR_CURL_MAX_TIME_SECONDS?.trim();
+  const maxTime = String(curlMaxTimeSeconds ?? (envMaxTime || 30));
   const args = [
     '--silent',
     '--show-error',
     '--fail-with-body',
     '--max-time',
-    '30',
+    maxTime,
     '--request',
     method,
   ];

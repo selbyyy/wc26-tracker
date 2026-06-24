@@ -84,6 +84,7 @@ async function inspectUrl(inspectionUrl) {
       method: 'POST',
       headers,
       signal: controller.signal,
+      curlMaxTimeSeconds: Math.ceil(inspectionTimeoutMs / 1000),
       body: JSON.stringify({
         inspectionUrl,
         siteUrl,
