@@ -16,6 +16,7 @@ send unsolicited promotional messages.
 | 2026-06-02 | Reddit `r/worldcup` | [2026 FIFA World Cup Ticket & Travel Information Thread](https://www.reddit.com/r/worldcup/comments/1n6p3l5/2026_fifa_world_cup_ticket_travel_information/) | Broad ticket and travel planning discussion | Monitor for route-planning questions and answer only when the tool is directly useful | Medium | Monitor |
 | 2026-06-02 | Reddit `r/usmnt` | [Knockout Stage Scenarios](https://www.reddit.com/r/usmnt/comments/1qf4jsq/knockout_stage_scenarios/) | US fans are discussing possible knockout paths | Prepare a USA-specific answer if a fresh planning question appears; do not revive an old thread solely to promote | Low | Monitor |
 | 2026-06-14 | Reddit / football travel communities | Fresh match-day or "what games are today?" questions | Fans need the current slate quickly now that the tournament is live | Answer the exact day's schedule first, then disclose and link `/world-cup-2026-games-today` only if it saves the reader work | High | Human-reviewed draft ready |
+| 2026-06-25 | Reddit / football and ticket communities | Fresh "can this team qualify?", "who do they play next?", or "where would they go next?" questions | Fans need a clear split between confirmed schedule facts and conditional knockout routes during final group matches | Answer the exact team question first, disclose site ownership, and link the relevant team page only if it saves the reader from manually checking the bracket and host cities | High | Human-reviewed draft ready |
 
 ## Drafts
 
@@ -27,6 +28,20 @@ Use only in a fresh thread where someone is asking what games are on, how to pla
 If it helps, today's useful planning view is: who plays, kickoff label, city, stadium, and links out to the team/city pages. I put a simple current-slate page here: https://www.wc26chances.com/world-cup-2026-games-today
 
 No live scores or betting odds, just the schedule and travel-planning links so you can decide which match/city to dig into.
+```
+
+### 2026-06-25 qualification / next-opponent reply
+
+Use only in a fresh thread where someone asks whether a team can qualify, who they play next, or where their knockout path could go. Replace `[TEAM]` and `[TEAM_URL]` before publishing.
+
+```text
+The clean way to think about [TEAM] is to separate confirmed facts from conditional paths:
+
+1. Confirmed: their group matches, cities, stadiums, and kickoff labels.
+2. Conditional: the first knockout city depends on where they finish in the group.
+3. Practical: if you're buying tickets or planning travel, only treat the confirmed group games as fixed; use the knockout route as a shortlist, not a promise.
+
+I maintain a small planning page for this and I'm the site owner, so treat this as a tool link rather than official FIFA info: [TEAM_URL]
 ```
 
 ## Community Map

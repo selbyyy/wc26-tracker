@@ -1658,6 +1658,72 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after those requests, prioritize human-reviewed answers in fresh match-day, qualification, ticket, and travel threads, using `/world-cup-2026-games-today` and specific team pages only when directly useful.
 
+## 2026-06-25 10:04 CST - Daily Growth Loop, Engagement Rising But Google Clicks Still Blocked
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh` to pull Search Console, GA4 pages, GA4 events, GA4 acquisition, and URL Inspection data.
+- Reviewed the regenerated sensor snapshot and URL Inspection rows.
+- Checked production `/world-cup-2026-games-today`, production sitemap, production robots.txt, and the old Argentina market redirect.
+
+### Observations
+- Google API access is working.
+- Search Console CSV has 39 rows, GA4 pages has 60 rows, GA4 events has 47 rows, GA4 acquisition has 113 rows, and URL Inspection has 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions increased from 169 to 171, CTR remains 0.0%, and weighted average position is 80.5.
+- Analytics pageviews/sessions increased from 51 to 63.
+- Planning action panel views increased from 132 to 153.
+- Commercial or route-alert clicks increased from 4 to 5.
+- Retired market URLs still dominate Google impressions: old Argentina market URL has 122 impressions and old Japan market URL has 18.
+- Live page visibility remains too low for CTR tests: `/teams/argentina` has 15 impressions, `/cities/san-francisco-bay-area` has 8, `/teams/usa` has 3, and `/teams/panama` has 2.
+- The only ranking 8-20 live-page signal remains one Argentina route-query impression at position 8.0.
+- Acquisition continues improving outside Google Search Console: direct homepage sessions reached 12, Bing organic sent 12 sessions to `/teams/usa` and 7 to `/teams/mexico`, DuckDuckGo organic sent 6 sessions to `/teams/uruguay`, and GA4 still shows 3 Google organic sessions to `/teams/argentina`.
+- URL Inspection shows `/world-cup-2026-games-today`, both priority match pages, and `/cities/dallas` are discovered but not indexed.
+- `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` are submitted and indexed.
+- Production `/world-cup-2026-games-today` returns HTTP 200 with `x-nextjs-prerender: 1` and `x-vercel-cache: HIT`.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+- Production robots.txt allows crawling and points to the sitemap.
+- The old Argentina market URL returns HTTP 301 to `/teams/argentina`.
+
+### Decision
+- Do not make product page, metadata, or internal-link changes today. Google live-page impressions remain too small, and additional page churn would not address the current indexing bottleneck.
+- Treat the biggest bottleneck as Google indexing and weak ranking of already-discovered current-slate, match, and city pages.
+- Because the tournament window is now final group-stage / qualification / next-opponent demand, prepare a human-reviewed community reply draft for those questions instead of publishing automatically.
+
+### Actions Taken
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh Google and GA4 data.
+- Updated EXP-009 with the 2026-06-25 result.
+- Updated the SEO opportunity log for current-slate indexing status.
+- Added a 2026-06-25 community-promotion candidate and human-reviewed draft for qualification / next-opponent questions.
+- Recorded this daily loop in company memory.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/community-promotion-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and regenerated Search Console, GA4 pages, GA4 events, GA4 acquisition, URL Inspection, and the snapshot.
+- Production today page check passed with HTTP 200.
+- Production sitemap check passed with 143 URLs and the today page present.
+- Production robots.txt check passed.
+- Old Argentina market redirect check passed with HTTP 301 to `/teams/argentina`.
+- `git diff --check` passed.
+- `npm run lint` and `npm run build` were not run because no product code or page content changed.
+
+### Expected Impact
+- Keeps the AI loop state accurate while avoiding unnecessary page churn.
+- Adds a ready-to-review response asset for the active final-group / qualification demand window.
+- Confirms the strongest current lever remains manual indexing plus human-reviewed external answers, not more on-site expansion.
+
+### Follow-Up
+- Manually request indexing in Google Search Console for `/world-cup-2026-games-today`.
+- Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
+- Use the 2026-06-25 community draft only in fresh threads asking about qualification, next opponents, or knockout travel paths, and replace the team placeholders before publishing.
+
 ## 2026-06-22 10:08 CST - Daily Growth Loop, Slight Impressions Lift But Still No Google Clicks
 
 ### Inputs
