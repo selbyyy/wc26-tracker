@@ -1586,6 +1586,78 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.
 
+## 2026-06-26 15:33 CST - Daily Growth Loop, Behavior Signal Up But Google Clicks Still Zero
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh` to pull Search Console, GA4 pages, GA4 events, GA4 acquisition, and URL Inspection data.
+- Reviewed the regenerated sensor snapshot and raw URL Inspection rows.
+- Checked production `/world-cup-2026-games-today`, production sitemap, production robots.txt, and the old Argentina market redirect.
+
+### Observations
+- Google API access is working for Search Console and GA4.
+- Search Console CSV has 40 rows, GA4 pages has 62 rows, GA4 events has 51 rows, GA4 acquisition has 126 rows, and URL Inspection has 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions increased from 171 to 172, CTR remains 0.0%, and weighted average position improved from 80.5 to 80.2.
+- Analytics pageviews/sessions increased from 63 to 66.
+- Planning action panel views increased from 153 to 190.
+- Commercial or route-alert clicks increased from 5 to 7.
+- Retired market URLs still dominate Google impressions: old Argentina market URL has 122 impressions and old Japan market URL has 19.
+- Live page visibility remains too low for CTR tests: `/teams/argentina` has 15 impressions, `/cities/san-francisco-bay-area` has 8, `/teams/usa` has 3, and `/teams/panama` has 2.
+- The only ranking 8-20 live-page signal remains one Argentina route-query impression at position 8.0.
+- Acquisition continues improving outside Google Search Console: Bing organic sent 15 sessions to `/teams/usa`, 13 to `/teams/mexico`, 5 to `/teams/cape-verde`, 5 to `/teams/bosnia-herzegovina`, and 4 to `/teams/canada`; DuckDuckGo sent 6 sessions to `/teams/uruguay` and 5 to `/teams/colombia`; direct homepage sessions reached 14.
+- URL Inspection was unreliable today: most inspected URLs returned network/API timeout errors, and one fallback returned a 401 from Google.
+- The last reliable URL Inspection status from 2026-06-25 still has `/world-cup-2026-games-today`, priority match pages, and `/cities/dallas` discovered but not indexed.
+- The new last-known cache retained valid status for `/world-cup-2026-chances-by-team` as submitted and indexed, and `/matches/netherlands-vs-japan-world-cup-2026-match-10` as discovered but not indexed.
+- Production `/world-cup-2026-games-today` returns HTTP 200 with `x-nextjs-prerender: 1`.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+- Production robots.txt allows crawling and points to the sitemap.
+- The old Argentina market URL returns HTTP 301 to `/teams/argentina`.
+
+### Decision
+- Do not make product page, metadata, or internal-link changes today. Google live-page impressions remain too small, and the current bottleneck is still indexing / weak Google ranking rather than missing on-site content.
+- Treat non-Google organic and direct engagement as a positive product signal, but not yet proof of Google SEO traction.
+- Improve sensor robustness: URL Inspection failures should not erase prior successful indexing status from the local loop.
+
+### Actions Taken
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh Search Console and GA4 data.
+- Updated `scripts/pull-google-sensors.mjs` to keep a local `url-inspection-last-known.csv` cache and merge prior valid inspection status into rows when the latest inspection fails.
+- Verified the cache path with a short-timeout sensor refresh; it wrote URL Inspection rows and a last-known cache.
+- Re-ran normal `npm run sensors:refresh` after the sensor change.
+- Updated EXP-009 with the 2026-06-26 result.
+- Updated the SEO opportunity log for sensor reliability and current-slate indexing status.
+- Recorded this daily loop in company memory.
+
+### Files Changed
+- `scripts/pull-google-sensors.mjs`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and regenerated Search Console, GA4 pages, GA4 events, GA4 acquisition, URL Inspection, and the snapshot.
+- `URL_INSPECTION_TIMEOUT_MS=1000 npm run sensors:refresh` passed as a sensor fallback/cache smoke test.
+- `node --check scripts/pull-google-sensors.mjs` passed.
+- `node --check scripts/google-api-common.mjs` passed.
+- `npm run lint` passed.
+- `npm run build` passed and generated 148 static pages.
+- Production today page check passed with HTTP 200.
+- Production sitemap check passed with 143 URLs and the today page present.
+- Production robots.txt check passed.
+- Old Argentina market redirect check passed with HTTP 301 to `/teams/argentina`.
+
+### Expected Impact
+- Daily automation should retain useful URL Inspection context across transient Google API failures instead of replacing all indexing rows with `n/a`.
+- The business read is unchanged but clearer: users are engaging with team planning surfaces, while Google organic clicks remain blocked.
+- This keeps the loop from making premature page changes based on sensor noise.
+
+### Follow-Up
+- Manually request indexing in Google Search Console for `/world-cup-2026-games-today`.
+- Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
+- Use the 2026-06-25 community draft only in fresh threads asking about qualification, next opponents, or knockout travel paths, and replace the team placeholders before publishing.
+
 ## 2026-06-24 11:46 CST - Daily Growth Loop, Traffic Signals Rising But Google Indexing Still Blocks Clicks
 
 ### Inputs

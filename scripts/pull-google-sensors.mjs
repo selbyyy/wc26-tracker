@@ -1,4 +1,4 @@
-import { mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { daysAgo, fetchJson, getAccessToken, writeCsv } from './google-api-common.mjs';
 
@@ -9,6 +9,7 @@ const analyticsPagesPath = resolve(inputDir, 'analytics-pages.csv');
 const analyticsEventsPath = resolve(inputDir, 'analytics-events.csv');
 const analyticsAcquisitionPath = resolve(inputDir, 'analytics-acquisition.csv');
 const urlInspectionPath = resolve(inputDir, 'url-inspection.csv');
+const urlInspectionLastKnownPath = resolve(inputDir, 'url-inspection-last-known.csv');
 const siteUrl = process.env.GSC_SITE_URL?.trim() || 'https://www.wc26chances.com/';
 const ga4PropertyId = process.env.GA4_PROPERTY_ID?.trim() || '539351001';
 const inspectionTimeoutMs = Number(process.env.URL_INSPECTION_TIMEOUT_MS?.trim() || 15000);
@@ -33,6 +34,18 @@ const headers = {
   authorization: `Bearer ${accessToken}`,
   'content-type': 'application/json',
 };
+const urlInspectionColumns = [
+  { label: 'URL', value: (row) => row.url },
+  { label: 'Coverage state', value: (row) => row.coverageState },
+  { label: 'Indexing state', value: (row) => row.indexingState },
+  { label: 'Page fetch state', value: (row) => row.pageFetchState },
+  { label: 'Robots.txt state', value: (row) => row.robotsTxtState },
+  { label: 'User canonical', value: (row) => row.userCanonical },
+  { label: 'Google canonical', value: (row) => row.googleCanonical },
+  { label: 'Last crawl time', value: (row) => row.lastCrawlTime },
+  { label: 'Sitemap', value: (row) => row.sitemap },
+  { label: 'Error', value: (row) => row.error },
+];
 
 mkdirSync(inputDir, { recursive: true });
 
@@ -124,24 +137,99 @@ async function inspectUrl(inspectionUrl) {
   }
 }
 
-async function pullUrlInspection() {
+function normalizeKey(key) {
+  return key.toLowerCase().replaceAll(/\s+/g, '_').replaceAll(/[^\w]/g, '');
+}
+
+function parseCsv(input) {
   const rows = [];
-  for (const inspectionUrl of inspectionUrls) {
-    rows.push(await inspectUrl(inspectionUrl));
+  let row = [];
+  let cell = '';
+  let quoted = false;
+
+  for (let index = 0; index < input.length; index += 1) {
+    const char = input[index];
+    const next = input[index + 1];
+
+    if (char === '"' && quoted && next === '"') {
+      cell += '"';
+      index += 1;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === ',' && !quoted) {
+      row.push(cell.trim());
+      cell = '';
+    } else if ((char === '\n' || char === '\r') && !quoted) {
+      if (char === '\r' && next === '\n') index += 1;
+      row.push(cell.trim());
+      if (row.some(Boolean)) rows.push(row);
+      row = [];
+      cell = '';
+    } else {
+      cell += char;
+    }
   }
 
-  writeCsv(urlInspectionPath, rows, [
-    { label: 'URL', value: (row) => row.url },
-    { label: 'Coverage state', value: (row) => row.coverageState },
-    { label: 'Indexing state', value: (row) => row.indexingState },
-    { label: 'Page fetch state', value: (row) => row.pageFetchState },
-    { label: 'Robots.txt state', value: (row) => row.robotsTxtState },
-    { label: 'User canonical', value: (row) => row.userCanonical },
-    { label: 'Google canonical', value: (row) => row.googleCanonical },
-    { label: 'Last crawl time', value: (row) => row.lastCrawlTime },
-    { label: 'Sitemap', value: (row) => row.sitemap },
-    { label: 'Error', value: (row) => row.error },
-  ]);
+  row.push(cell.trim());
+  if (row.some(Boolean)) rows.push(row);
+
+  const [headers = [], ...records] = rows;
+  const normalizedHeaders = headers.map((header) => normalizeKey(header));
+
+  return records.map((record) => Object.fromEntries(
+    normalizedHeaders.map((header, index) => [header, record[index] ?? '']),
+  ));
+}
+
+function readInspectionRows(path) {
+  if (!existsSync(path)) return [];
+
+  return parseCsv(readFileSync(path, 'utf8')).map((row) => ({
+    url: row.url ?? '',
+    coverageState: row.coverage_state ?? '',
+    indexingState: row.indexing_state ?? '',
+    pageFetchState: row.page_fetch_state ?? '',
+    robotsTxtState: row.robotstxt_state ?? '',
+    userCanonical: row.user_canonical ?? '',
+    googleCanonical: row.google_canonical ?? '',
+    lastCrawlTime: row.last_crawl_time ?? '',
+    sitemap: row.sitemap ?? '',
+    error: row.error ?? '',
+  }));
+}
+
+function previousInspectionRows() {
+  const rows = [
+    ...readInspectionRows(urlInspectionLastKnownPath),
+    ...readInspectionRows(urlInspectionPath),
+  ];
+  return new Map(rows.filter((row) => row.url).map((row) => [row.url, row]));
+}
+
+function hasInspectionStatus(row) {
+  return Boolean(row?.coverageState || row?.indexingState || row?.googleCanonical || row?.lastCrawlTime || row?.sitemap);
+}
+
+function mergeInspectionRow(current, previous) {
+  if (!current.error || hasInspectionStatus(current) || !hasInspectionStatus(previous)) return current;
+
+  return {
+    ...previous,
+    url: current.url,
+    error: `Latest inspection failed; retained previous status. ${current.error}`,
+  };
+}
+
+async function pullUrlInspection() {
+  const previousRows = previousInspectionRows();
+  const rows = [];
+  for (const inspectionUrl of inspectionUrls) {
+    const current = await inspectUrl(inspectionUrl);
+    rows.push(mergeInspectionRow(current, previousRows.get(inspectionUrl)));
+  }
+
+  writeCsv(urlInspectionPath, rows, urlInspectionColumns);
+  writeCsv(urlInspectionLastKnownPath, rows.filter(hasInspectionStatus), urlInspectionColumns);
 }
 
 async function pullAnalytics() {
