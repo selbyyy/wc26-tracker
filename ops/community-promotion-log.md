@@ -17,6 +17,7 @@ send unsolicited promotional messages.
 | 2026-06-02 | Reddit `r/usmnt` | [Knockout Stage Scenarios](https://www.reddit.com/r/usmnt/comments/1qf4jsq/knockout_stage_scenarios/) | US fans are discussing possible knockout paths | Prepare a USA-specific answer if a fresh planning question appears; do not revive an old thread solely to promote | Low | Monitor |
 | 2026-06-14 | Reddit / football travel communities | Fresh match-day or "what games are today?" questions | Fans need the current slate quickly now that the tournament is live | Answer the exact day's schedule first, then disclose and link `/world-cup-2026-games-today` only if it saves the reader work | High | Human-reviewed draft ready |
 | 2026-06-25 | Reddit / football and ticket communities | Fresh "can this team qualify?", "who do they play next?", or "where would they go next?" questions | Fans need a clear split between confirmed schedule facts and conditional knockout routes during final group matches | Answer the exact team question first, disclose site ownership, and link the relevant team page only if it saves the reader from manually checking the bracket and host cities | High | Human-reviewed draft ready |
+| 2026-06-27 | Reddit / football and ticket communities | Fresh Round-of-32 matchup, city, or travel questions | Fans will shift from possible routes to confirmed knockout matchups and host-city logistics | Answer the confirmed matchup/city first, disclose site ownership, and link a team/city/match page only when it replaces manual bracket lookup | High | Human-reviewed draft ready |
 
 ## Drafts
 
@@ -42,6 +43,21 @@ The clean way to think about [TEAM] is to separate confirmed facts from conditio
 3. Practical: if you're buying tickets or planning travel, only treat the confirmed group games as fixed; use the knockout route as a shortlist, not a promise.
 
 I maintain a small planning page for this and I'm the site owner, so treat this as a tool link rather than official FIFA info: [TEAM_URL]
+```
+
+### 2026-06-27 Round-of-32 / confirmed route reply
+
+Use only in a fresh thread where someone asks where a confirmed knockout match is, what city a team goes to next, or how to compare two Round-of-32 ticket/travel options. Replace placeholders before publishing.
+
+```text
+For [MATCH_OR_TEAM], I would separate this into two decisions:
+
+1. The fixed part: confirmed opponent, city, stadium, and kickoff label.
+2. The travel part: whether that city also gives you useful nearby games or a realistic next-leg plan.
+
+I maintain a small planning page for this and I'm the site owner, so this is not official FIFA info, just a shortcut for schedule + city lookup: [RELEVANT_URL]
+
+If you're buying tickets, I would still verify the final listing on FIFA or your ticket platform before booking travel.
 ```
 
 ## Community Map

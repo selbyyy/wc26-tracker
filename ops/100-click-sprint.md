@@ -16,6 +16,11 @@ See `ops/world-cup-growth-milestones.md` for the tournament-calendar version of 
 As of June 14, 2026, the tournament is live and Google organic clicks remain 0.
 The sprint should not wait passively for broad SEO pickup.
 
+As of June 27, 2026, the sprint is still at 0 / 100 Google clicks with 162
+Google impressions. GA4 engagement is rising, but the primary Google bottleneck
+is unchanged: current-slate, match, and city pages are discovered but not
+indexed. The next recovery window is Round-of-32 demand through July 3.
+
 Immediate priority order:
 
 1. Current-slate page: keep `/world-cup-2026-games-today` visible from home and `/matches`.
@@ -67,3 +72,8 @@ Manual CSV exports remain available as a fallback.
 Pass: 100 organic clicks with at least one query/page pair showing repeatable impressions.
 
 Fail: fewer than 100 clicks and no page with 100+ impressions. If this happens, prioritize indexing, internal links, and more specific pages before monetization work.
+
+Jun 27 status: the original base-case 100-click window has failed. Do not add
+more broad pages. Prioritize manual indexing requests, human-reviewed answers
+in fresh qualification/next-opponent/travel threads, and conversion learning
+from Bing/DuckDuckGo/direct visitors.

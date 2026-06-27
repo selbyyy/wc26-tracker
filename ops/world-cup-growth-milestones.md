@@ -14,6 +14,18 @@ market URLs as of June 5, 2026.
 - Indexed/canonical bottleneck: retired market URLs still hold most impressions.
 - Fixed today: apex domain redirect changed from temporary 307 to permanent 308.
 
+## Current Checkpoint
+
+- Date: 2026-06-27
+- Google organic clicks: 0
+- Google impressions: 162
+- Average position: 79.1
+- Analytics pageviews/sessions: 74
+- Planning action panel views: 221
+- Commercial or route-alert clicks: 7
+- Indexed/canonical bottleneck: the current-slate page, priority match pages, and Dallas city page are discovered but not indexed; retired market URLs still hold most Google impressions.
+- Decision: the Jun 27 base-case 100-click milestone was missed. Treat Jun 28-Jul 3 as a recovery window focused on manual indexing requests, human-reviewed external answers, and scaling only pages that receive non-Google engagement or repeat Google impressions.
+
 ## Tournament Calendar Anchors
 
 | Window | Schedule Event | Search Demand Shape |
@@ -44,8 +56,8 @@ market URLs as of June 5, 2026.
 
 - First organic click: likely Jun 12-Jun 20 if recrawl responds after the 308 fix.
 - First 100 organic clicks:
-  - Optimistic: Jun 20-Jun 27, if team pages start indexing before second group matches.
-  - Base case: Jun 27-Jul 3, driven by final group-stage and Round-of-32 route demand.
+  - Optimistic: missed; Jun 20-Jun 27 closed at 0 Google clicks.
+  - Recovery case: Jul 3, only if Google indexes current-slate, match, or city pages during the Round-of-32 search spike.
   - Slow case: Jul 4-Jul 11, if old market URLs keep absorbing impressions and team pages stay low-ranked.
 
 ## Operating Rules

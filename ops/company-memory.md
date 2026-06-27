@@ -1586,6 +1586,77 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.
 
+## 2026-06-27 10:44 CST - Daily Growth Loop, Jun 27 Base-Case Missed
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and recent company memory.
+- Ran `npm run sensors:refresh` to pull Search Console, GA4 pages, GA4 events, GA4 acquisition, and URL Inspection data.
+- Reviewed the regenerated sensor snapshot, raw URL Inspection rows, and last-known URL Inspection cache.
+- Checked production `/world-cup-2026-games-today`, production sitemap, production robots.txt, and the old Argentina market redirect.
+
+### Observations
+- Google API access is working for Search Console, GA4, and URL Inspection.
+- Search Console CSV has 40 rows, GA4 pages has 65 rows, GA4 events has 52 rows, GA4 acquisition has 140 rows, and URL Inspection has 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions decreased from 172 to 162 as the rolling window moved, CTR remains 0.0%, and weighted average position improved from 80.2 to 79.1.
+- Analytics pageviews/sessions increased from 66 to 74.
+- Planning action panel views increased from 190 to 221.
+- Commercial or route-alert clicks remain 7.
+- Retired market URLs still dominate Google impressions: old Argentina market URL has 111 impressions and old Japan market URL has 20.
+- Live page visibility remains too low for CTR tests: `/teams/argentina` has 15 impressions, `/cities/san-francisco-bay-area` has 8, `/teams/usa` has 3, and `/teams/panama` has 2.
+- The only ranking 8-20 live-page signal remains one Argentina route-query impression at position 8.0.
+- Acquisition continues improving outside Google Search Console: Bing organic sent 15 sessions to `/teams/mexico`, 15 to `/teams/usa`, 5 to `/teams/cape-verde`, 5 to `/teams/bosnia-herzegovina`, and 5 to `/teams/canada`; DuckDuckGo sent 7 sessions to `/teams/colombia` and 6 to `/teams/uruguay`; direct homepage sessions reached 12.
+- URL Inspection fully returned today and confirms `/world-cup-2026-games-today`, both priority match pages, and `/cities/dallas` are still discovered but not indexed.
+- `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` remain submitted and indexed.
+- The homepage still has Google-selected apex canonical, while production apex-to-www behavior remains healthy.
+- Production `/world-cup-2026-games-today` returns HTTP 200 with `x-nextjs-prerender: 1` and `x-vercel-cache: HIT`.
+- Production sitemap returns 143 URLs and includes `/world-cup-2026-games-today`.
+- Production robots.txt allows crawling and points to the sitemap.
+- The old Argentina market URL returns HTTP 301 to `/teams/argentina`.
+
+### Decision
+- The Jun 27 base-case first-100-click milestone has failed. Treat Jun 28-Jul 3 as a recovery window, not a normal continuation of the original forecast.
+- Do not make product page, metadata, or internal-link changes today. Google live-page impressions remain too small, and URL Inspection confirms the priority pages are already discovered but not indexed.
+- Keep the next lever focused on manual indexing requests plus human-reviewed external answers for confirmed Round-of-32 / qualification / travel questions.
+- Continue using non-Google organic and direct engagement as product validation, but do not treat it as Google SEO validation.
+
+### Actions Taken
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh Search Console, GA4, acquisition, and URL Inspection data.
+- Updated `ops/world-cup-growth-milestones.md` with the Jun 27 checkpoint and recovery-case forecast.
+- Updated `ops/100-click-sprint.md` with the Jun 27 status and recovery direction.
+- Updated EXP-009 with the 2026-06-27 result.
+- Updated the SEO opportunity log for sensor reliability and current-slate indexing status.
+- Added a 2026-06-27 community-promotion candidate and human-reviewed draft for Round-of-32 / confirmed route questions.
+- Recorded this daily loop in company memory.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/world-cup-growth-milestones.md`
+- `ops/100-click-sprint.md`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/community-promotion-log.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and regenerated Search Console, GA4 pages, GA4 events, GA4 acquisition, URL Inspection, and the snapshot.
+- Production today page check passed with HTTP 200.
+- Production sitemap check passed with 143 URLs and the today page present.
+- Production robots.txt check passed.
+- Old Argentina market redirect check passed with HTTP 301 to `/teams/argentina`.
+- `npm run lint` and `npm run build` were not run because no product code or page content changed.
+
+### Expected Impact
+- The loop now has an explicit Jun 27 failure checkpoint instead of quietly continuing an outdated forecast.
+- The next operating focus is clearer: recover through Round-of-32 intent, manual indexing, and human-reviewed external answers.
+- Avoids noisy on-site changes while Google has not indexed the already-discovered high-priority pages.
+
+### Follow-Up
+- Manually request indexing in Google Search Console for `/world-cup-2026-games-today`.
+- Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
+- Use the 2026-06-25 and 2026-06-27 community drafts only in fresh threads asking about qualification, next opponents, confirmed knockout cities, or ticket/travel route choices.
+
 ## 2026-06-26 15:33 CST - Daily Growth Loop, Behavior Signal Up But Google Clicks Still Zero
 
 ### Inputs
