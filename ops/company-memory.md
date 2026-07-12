@@ -1586,6 +1586,51 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.
 
+## 2026-07-12 11:08 CST - Daily Growth Loop, Sensor Authorization Blocked
+
+### Inputs
+- User instruction: rerun the WC26 Chances daily growth loop.
+- Search Console and Analytics: ran `npm run sensors:refresh` first. The Google token refresh returned HTTP 400 and the local sensor script reported an expired or revoked refresh token.
+- Browser fallback: Chrome was available, but there was no authenticated Search Console or GA4 tab to inspect; no browser fallback measurement was available.
+- Site health: checked production `/world-cup-2026-games-today`, sitemap, robots.txt, and the legacy Argentina market redirect.
+- Relevant memory: the last complete sensor inputs were pulled on 2026-06-27; this run must not present them as current performance.
+
+### Observations
+- Fresh GSC, GA4, acquisition, CTA, and URL Inspection data cannot be collected until OAuth is reauthorized.
+- The regenerated snapshot is stale: all five local CSV inputs were last updated on 2026-06-27.
+- The last measurable baseline remains 0 / 100 Google organic clicks, 162 impressions, 0.0% CTR, and average position 79.1. GA4 baseline: 74 pageviews/sessions, 221 planning-action-panel views, and 7 commercial or route-alert clicks.
+- Stale URL Inspection rows still show `/world-cup-2026-games-today`, both priority match pages, and `/cities/dallas` as discovered but not indexed; indexed team/chance pages are available, and the legacy Argentina market URL redirects.
+- Production is technically healthy: the today page returns HTTP 200, sitemap contains 143 URLs including the today page, robots allow crawling and reference the sitemap, and the old Argentina market URL returns HTTP 301 to `/teams/argentina`.
+
+### Decision
+- Do not change page content, metadata, internal links, or CTAs while the measurement layer is stale. The primary blocker is restored observability, with Google indexing of current-slate pages still the growth constraint once measurement resumes.
+
+### Actions Taken
+- Ran the sensor refresh and regenerated the snapshot, which correctly retained the latest local CSV inputs after the live pull failed.
+- Checked authenticated-browser availability without creating or changing any external state.
+- Validated production crawlability, sitemap inclusion, and the redirect migration.
+- Recorded this blocked run in company memory.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` failed as expected with the explicit OAuth refresh-token blocker; the fallback snapshot was generated.
+- Production today-page check passed with HTTP 200.
+- Production sitemap check passed with 143 URLs and the today page present.
+- Production robots.txt and Argentina redirect checks passed.
+- `git diff --check` pending after this entry is written.
+- No lint or build run because no product code or page content changed.
+
+### Expected Impact
+- Prevents the loop from falsely treating 2026-06-27 data as a live growth signal.
+- Confirms the production site is available to crawlers, so reauthorization and indexing are the next constraints rather than a deployment defect.
+
+### Follow-Up
+- Reauthorize the local Google connection once from the repository root: `cd "/Users/selby/Documents/wc26chances.com 复活" && npm run sensors:oauth`.
+- Approve Search Console and Analytics read-only access, then run `npm run sensors:refresh` to verify fresh timestamps before making the next growth decision.
+
 ## 2026-06-27 10:44 CST - Daily Growth Loop, Jun 27 Base-Case Missed
 
 ### Inputs
