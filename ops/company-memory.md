@@ -1586,6 +1586,54 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.
 
+## 2026-07-14 10:05 CST - Daily Growth Loop, Argentina CTR Experiment
+
+### Inputs
+- Ran `npm run sensors:refresh` using working Google Search Console and GA4 OAuth access.
+- Read the business goals, AI loop, quality gates, experiment log, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and company memory.
+- Reviewed the fresh Search Console, GA4 page/event/acquisition, and URL Inspection snapshot.
+- Checked production response, sitemap membership, and robots rules for the Argentina team page.
+
+### Observations
+- Sensor access is working: Search Console returned 80 rows, GA4 page data 64 rows, GA4 events 48 rows, GA4 acquisition 178 rows, and URL Inspection 9 rows.
+- The first milestone remains 0 / 100 Google organic clicks. Google has 338 impressions, 0.0% CTR, and weighted average position 15.0.
+- `/teams/argentina` owns 279 impressions and 0 clicks. Its highest-volume exact queries are Argentina World Cup 2026 semifinal and quarterfinal chances, mostly at positions 6-9.
+- GA4 reports 69 pageviews/sessions, 304 planning-action-panel views, and 5 commercial or route-alert clicks. Bing, DuckDuckGo, and direct traffic continue to supply the measurable acquisition.
+- URL Inspection confirms `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` are indexed. The today page, Argentina vs Algeria, and Dallas remain discovered but not indexed; Netherlands vs Japan is currently unknown to Google.
+- Production returned HTTP 200, sitemap contains 143 URLs including the Argentina team page, and robots permits crawling with the sitemap declared.
+
+### Decision
+- The immediate controllable bottleneck is CTR on already-visible Argentina chance queries, not another broad content expansion.
+- Run a strictly metadata-only experiment on `/teams/argentina`; do not change page copy, internal links, or CTA at the same time.
+
+### Actions Taken
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh Google, GA4, acquisition, and inspection data.
+- Shipped EXP-010: Argentina metadata now explicitly names World Cup 2026 semifinal and quarterfinal chances while preserving knockout-route intent.
+- Logged the opportunity and experiment for a seven-day measurement window.
+
+### Files Changed
+- `app/teams/[slug]/page.tsx`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/seo-opportunity-log.md`
+- `ops/experiments.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed.
+- Production response, sitemap, and robots checks passed before the metadata change.
+- `npm run lint` passed.
+- `npm run build` passed; all 148 static pages generated successfully.
+- Pending: diff check and deployment verification.
+
+### Expected Impact
+- Better snippet-query alignment should convert some of the existing Argentina positions 6-9 into first clicks without confounding ranking inputs.
+- This does not remove the larger indexation deficit for current-slate and priority match/city URLs.
+
+### Follow-Up
+- Measure Argentina impressions, CTR, clicks, and position for seven days before changing this metadata again.
+- Continue manual Google Search Console indexing requests for the today, priority match, and Dallas pages.
+- Keep external promotion human-reviewed; do not publish community posts automatically.
+
 ## 2026-07-12 11:08 CST - Daily Growth Loop, Sensor Authorization Blocked
 
 ### Inputs
@@ -1630,6 +1678,46 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 ### Follow-Up
 - Reauthorize the local Google connection once from the repository root: `cd "/Users/selby/Documents/wc26chances.com 复活" && npm run sensors:oauth`.
 - Approve Search Console and Analytics read-only access, then run `npm run sensors:refresh` to verify fresh timestamps before making the next growth decision.
+
+## 2026-07-12 12:14 CST - OAuth Restored, Fresh Sensor Baseline
+
+### Inputs
+- User instruction: authorize the WC26 sensor directly in Chrome and continue the daily measurement loop.
+- OAuth scope granted: Google Analytics read-only and Search Console read-only for the local `WC26 chances sensor` application.
+- Ran `npm run sensors:refresh` after authorization.
+
+### Observations
+- OAuth completed successfully and all five sensor inputs refreshed on 2026-07-12: Search Console (68 rows), GA4 pages (65), GA4 events (48), GA4 acquisition (179), and URL Inspection (9).
+- The fresh Google baseline is 0 / 100 organic clicks, 270 impressions, 0.0% CTR, and average position 16.7.
+- `/teams/argentina` now accounts for 211 impressions with zero clicks. It ranks around positions 6-9 for several current Argentina quarterfinal and semifinal chances queries, including 26 impressions at position 8.0 for `argentina world cup 2026 quarterfinal chances`.
+- GA4 reports 69 pageviews/sessions, 310 planning-action-panel views, and 5 commercial or route-alert clicks. Bing and DuckDuckGo still provide visible organic sessions.
+- URL Inspection remains unchanged for the current-slate, priority match, and Dallas pages: discovered but not indexed. Argentina, USA, and the chances hub remain indexed.
+
+### Decision
+- The measurement blocker is resolved. The primary growth problem is now zero CTR on an indexed, first-page Argentina chances cluster, rather than absent visibility.
+- Do not infer that the title/meta solution is proven until the current title and snippet are reviewed against this query cluster in the next dedicated optimization pass.
+
+### Actions Taken
+- Completed the local OAuth authorization in Chrome with only the two intended read-only scopes.
+- Refreshed Search Console, GA4, acquisition, event, and URL Inspection datasets and regenerated the SEO sensor snapshot.
+- Recorded the fresh operating baseline in company memory.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- OAuth callback reported `WC26 sensor authorization complete`.
+- `npm run sensors:refresh` completed successfully and refreshed all five sensor inputs.
+- No product code changed; no build or lint required.
+
+### Expected Impact
+- Future daily loops can make decisions from current measurement rather than stale June data.
+- The new first-page Argentina chance-query cluster provides a focused CTR optimization target with materially better upside than broad new-page creation.
+
+### Follow-Up
+- Review the Argentina page's current Google title/snippet and align its above-the-fold copy with quarterfinal and semifinal chance intent before making a controlled CTR experiment.
+- Keep the discovered-but-not-indexed current-slate and match/city URLs in the manual indexing queue.
 
 ## 2026-06-27 10:44 CST - Daily Growth Loop, Jun 27 Base-Case Missed
 

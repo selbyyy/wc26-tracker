@@ -37,8 +37,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const matches = getTeamMatches(team);
   const cities = Array.from(new Set(matches.map((match) => match.city)));
-  const title = `${team} World Cup 2026 Chances, Schedule & Knockout Route`;
-  const description = `See ${team}'s modelled World Cup 2026 chances, confirmed group games in ${formatList(cities)}, and possible knockout routes by city.`;
+  const argentinaChanceQuery = team === 'Argentina';
+  const title = argentinaChanceQuery
+    ? 'Argentina World Cup 2026 Semifinal Chances & Knockout Route'
+    : `${team} World Cup 2026 Chances, Schedule & Knockout Route`;
+  const description = argentinaChanceQuery
+    ? 'See Argentina\'s modelled World Cup 2026 semifinal and quarterfinal chances, plus the possible knockout route and host cities.'
+    : `See ${team}'s modelled World Cup 2026 chances, confirmed group games in ${formatList(cities)}, and possible knockout routes by city.`;
 
   return {
     title,

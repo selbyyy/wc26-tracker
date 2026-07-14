@@ -1,24 +1,24 @@
 # SEO Sensor Snapshot
 
-Generated: 2026-07-12
+Generated: 2026-07-14
 
 ## Inputs
 
-- Search Console: `ops/sensor-inputs/search-console.csv` (present, 40 rows; updated 2026-06-27T02:41:59.409Z)
-- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 65 rows; updated 2026-06-27T02:42:08.642Z)
-- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 52 rows; updated 2026-06-27T02:42:08.643Z)
-- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 140 rows; updated 2026-06-27T02:42:08.646Z)
-- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-06-27T02:44:18.044Z)
+- Search Console: `ops/sensor-inputs/search-console.csv` (present, 80 rows; updated 2026-07-14T02:00:54.315Z)
+- Analytics pages: `ops/sensor-inputs/analytics-pages.csv` (present, 64 rows; updated 2026-07-14T02:01:07.565Z)
+- Analytics events: `ops/sensor-inputs/analytics-events.csv` (present, 48 rows; updated 2026-07-14T02:01:07.566Z)
+- Analytics acquisition: `ops/sensor-inputs/analytics-acquisition.csv` (present, 178 rows; updated 2026-07-14T02:01:07.569Z)
+- URL inspection: `ops/sensor-inputs/url-inspection.csv` (present, 9 rows; updated 2026-07-14T02:03:26.071Z)
 
 ## Input Readiness
 
 | Input | Status | Last updated | Next action |
 | --- | --- | --- | --- |
-| Search Console | present, 40 rows | 2026-06-27T02:41:59.409Z | Ready for opportunity analysis. |
-| Analytics pages | present, 65 rows | 2026-06-27T02:42:08.642Z | Ready for opportunity analysis. |
-| Analytics events | present, 52 rows | 2026-06-27T02:42:08.643Z | Ready for opportunity analysis. |
-| Analytics acquisition | present, 140 rows | 2026-06-27T02:42:08.646Z | Ready for opportunity analysis. |
-| URL inspection | present, 9 rows | 2026-06-27T02:44:18.044Z | Ready for opportunity analysis. |
+| Search Console | present, 80 rows | 2026-07-14T02:00:54.315Z | Ready for opportunity analysis. |
+| Analytics pages | present, 64 rows | 2026-07-14T02:01:07.565Z | Ready for opportunity analysis. |
+| Analytics events | present, 48 rows | 2026-07-14T02:01:07.566Z | Ready for opportunity analysis. |
+| Analytics acquisition | present, 178 rows | 2026-07-14T02:01:07.569Z | Ready for opportunity analysis. |
+| URL inspection | present, 9 rows | 2026-07-14T02:03:26.071Z | Ready for opportunity analysis. |
 
 ## Traffic Summary
 
@@ -26,47 +26,47 @@ Generated: 2026-07-12
 | --- | --- |
 | 100-click sprint progress | 0 / 100 (0.0%) |
 | Google organic clicks | 0 |
-| Google impressions | 162 |
+| Google impressions | 338 |
 | Average organic CTR | 0.0% |
-| Average organic position | 79.1 |
-| Analytics pageviews/sessions | 74 |
-| Planning action panel views | 221 |
-| Commercial or route-alert clicks | 7 |
+| Average organic position | 15.0 |
+| Analytics pageviews/sessions | 69 |
+| Planning action panel views | 304 |
+| Commercial or route-alert clicks | 5 |
 
 ## Top Queries
 
 | Query |Page |Clicks |Impressions |Position |
 | --- |--- |--- |--- |--- |
-| odds on argentina to win world cup 2026 |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |27 |90.9 |
-| argentina to win world cup odds |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |22 |93.5 |
-| argentina world cup winner odds |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |19 |92.7 |
-| argentina odds world cup 2026 |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |17 |86.9 |
-| argentina to win world cup 2026 odds |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |10 |63.7 |
-| market question: will the japan win the 2026 men's world cup? description: if japan wins the 2026 men's world cup, then the market resolves to yes. resolution time: 2026-07-19 14:00:00+00:00 today's date: 2026-06-01. return p(yes) as json: {"probability": ..., "reasoning": ...} |https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |0 |6 |7.7 |
-| world cup sf games |https://www.wc26chances.com/cities/san-francisco-bay-area |0 |6 |86.8 |
-| argentina odds to win world cup |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |5 |75.6 |
-| odds on argentina to win world cup |https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |5 |91.8 |
-| argentina world cup 2026 |https://www.wc26chances.com/teams/argentina |0 |3 |71.7 |
-| argentina world cup games |https://www.wc26chances.com/teams/argentina |0 |3 |66.0 |
-| argentina world cup schedule |https://www.wc26chances.com/teams/argentina |0 |3 |76.7 |
+| argentina world cup 2026 chances semifinal 2026 |https://www.wc26chances.com/teams/argentina |0 |50 |6.5 |
+| will japan win the 2026 fifa world cup? |https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |0 |32 |17.5 |
+| argentina world cup 2026 semifinal chances 2026 |https://www.wc26chances.com/teams/argentina |0 |29 |8.6 |
+| argentina world cup 2026 chances quarterfinal 2026 |https://www.wc26chances.com/teams/argentina |0 |27 |8.9 |
+| argentina world cup 2026 quarterfinal chances |https://www.wc26chances.com/teams/argentina |0 |26 |8.0 |
+| argentina world cup 2026 semifinal chances |https://www.wc26chances.com/teams/argentina |0 |18 |8.8 |
+| argentina world cup 2026 chances quarterfinal 7 |https://www.wc26chances.com/teams/argentina |0 |11 |7.6 |
+| argentina world cup 2026 chances quarterfinals |https://www.wc26chances.com/teams/argentina |0 |9 |9.1 |
+| argentina world cup 2026 knockout chances |https://www.wc26chances.com/teams/argentina |0 |9 |7.3 |
+| argentina world cup 2026 chances quarterfinals 2026 |https://www.wc26chances.com/teams/argentina |0 |7 |8.7 |
+| argentina world cup 2026 chances 7 |https://www.wc26chances.com/teams/argentina |0 |6 |8.3 |
+| argentina world cup 2026 knockout chances 2026 |https://www.wc26chances.com/teams/argentina |0 |5 |7.2 |
 
 ## Top Pages
 
 | Page |Clicks |Impressions |
 | --- |--- |--- |
-| https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |0 |111 |
-| https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |0 |20 |
-| https://www.wc26chances.com/teams/argentina |0 |15 |
-| https://www.wc26chances.com/cities/san-francisco-bay-area |0 |8 |
-| https://www.wc26chances.com/market/will-ivory-coast-win-the-2026-fifa-world-cup |0 |3 |
-| https://www.wc26chances.com/teams/usa |0 |3 |
-| https://www.wc26chances.com/teams/panama |0 |2 |
+| https://www.wc26chances.com/teams/argentina |0 |279 |
+| https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |0 |41 |
+| https://www.wc26chances.com/teams/ivory-coast |0 |9 |
+| https://www.wc26chances.com/cities/san-francisco-bay-area |0 |6 |
+| https://www.wc26chances.com/market/will-ivory-coast-win-the-2026-fifa-world-cup |0 |1 |
+| https://www.wc26chances.com/teams/japan |0 |1 |
+| https://www.wc26chances.com/teams/usa |0 |1 |
 
 ## High-Impression Pages With No Clicks
 
 | Page |Impressions |Clicks |
 | --- |--- |--- |
-| https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |111 |0 |
+| https://www.wc26chances.com/teams/argentina |279 |0 |
 
 ## High Impressions, Low CTR
 
@@ -76,9 +76,18 @@ _No rows matched this sensor._
 
 | Query |Page |Impressions |Position |
 | --- |--- |--- |--- |
+| argentina world cup 2026 quarterfinal chances |https://www.wc26chances.com/teams/argentina |26 |8.0 |
+| world cup 2026 argentina chances semifinal 2026 |https://www.wc26chances.com/teams/argentina |3 |8.0 |
+| argentina 2026 world cup chances 7 |https://www.wc26chances.com/teams/argentina |2 |8.0 |
+| argentina world cup 2026 chances semifinal final |https://www.wc26chances.com/teams/argentina |2 |8.0 |
+| argentina world cup 2026 semifinal chances july 2026 |https://www.wc26chances.com/teams/argentina |2 |8.0 |
+| argentina world cup 2026 chances quarterfinal semifinal 2026 |https://www.wc26chances.com/teams/argentina |1 |8.0 |
+| argentina world cup 2026 chances semifinal |https://www.wc26chances.com/teams/argentina |1 |8.0 |
 | what are plausible knockout matchups for argentina in the 2026 world cup and where would they be played? |https://www.wc26chances.com/teams/argentina |1 |8.0 |
-| will japan win the 2026 fifa world cup |https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |1 |11.0 |
-| will japan win the 2026 fifa world cup? |https://www.wc26chances.com/market/will-japan-win-the-2026-fifa-world-cup |2 |17.0 |
+| argentina world cup 2026 chances 7 |https://www.wc26chances.com/teams/argentina |6 |8.3 |
+| argentina quarterfinal chances world cup 2026 |https://www.wc26chances.com/teams/argentina |2 |8.5 |
+| argentina world cup 2026 chances round of 32 july 2026 |https://www.wc26chances.com/teams/argentina |2 |8.5 |
+| argentina world cup 2026 form semifinal chances |https://www.wc26chances.com/teams/argentina |2 |8.5 |
 
 ## Traffic With No Commercial Action
 
@@ -88,49 +97,49 @@ _No rows matched this sensor._
 
 | Page |Event |Count |
 | --- |--- |--- |
-| /teams/usa |planning_action_panel_view |27 |
-| /teams/mexico |planning_action_panel_view |19 |
-| /teams/argentina |planning_action_panel_view |12 |
-| /teams/belgium |planning_action_panel_view |9 |
-| /teams/colombia |planning_action_panel_view |9 |
-| /teams/portugal |planning_action_panel_view |9 |
-| /teams/senegal |planning_action_panel_view |8 |
-| /teams/uruguay |planning_action_panel_view |8 |
-| /teams/bosnia-herzegovina |planning_action_panel_view |6 |
-| /teams/canada |planning_action_panel_view |6 |
-| /teams/cape-verde |planning_action_panel_view |6 |
-| /teams/croatia |planning_action_panel_view |6 |
+| /teams/usa |planning_action_panel_view |39 |
+| /teams/mexico |planning_action_panel_view |24 |
+| /teams/belgium |planning_action_panel_view |21 |
+| /teams/portugal |planning_action_panel_view |18 |
+| /teams/argentina |planning_action_panel_view |16 |
+| /teams/colombia |planning_action_panel_view |13 |
+| /teams/iran |planning_action_panel_view |13 |
+| /teams/senegal |planning_action_panel_view |12 |
+| /teams/norway |planning_action_panel_view |10 |
+| /teams/uruguay |planning_action_panel_view |10 |
+| /teams/bosnia-herzegovina |planning_action_panel_view |9 |
+| /teams/ecuador |planning_action_panel_view |9 |
 
 ## Acquisition Source Summary
 
 | Source / medium |Channel |Page |Sessions |Views |
 | --- |--- |--- |--- |--- |
-| bing / organic |Organic Search |/teams/mexico |15 |0 |
-| bing / organic |Organic Search |/teams/usa |15 |0 |
-| (direct) / (none) |Direct |/ |12 |6 |
-| (direct) / (none) |Direct |/teams/argentina |7 |2 |
-| duckduckgo / organic |Organic Search |/teams/colombia |7 |0 |
-| duckduckgo / organic |Organic Search |/teams/uruguay |6 |0 |
-| bing / organic |Organic Search |/teams/cape-verde |5 |1 |
-| (direct) / (none) |Direct |/scenarios |5 |0 |
-| bing / organic |Organic Search |/teams/bosnia-herzegovina |5 |0 |
-| bing / organic |Organic Search |/teams/canada |5 |0 |
-| (not set) |Unassigned |/ |4 |2 |
-| (direct) / (none) |Direct |/teams/japan |4 |1 |
+| (direct) / (none) |Direct |/ |19 |1 |
+| bing / organic |Organic Search |/teams/usa |19 |1 |
+| bing / organic |Organic Search |/teams/mexico |18 |0 |
+| (direct) / (none) |Direct |/teams/belgium |10 |0 |
+| duckduckgo / organic |Organic Search |/teams/colombia |9 |0 |
+| bing / organic |Organic Search |/teams/portugal |7 |1 |
+| (direct) / (none) |Direct |/teams/usa |7 |0 |
+| duckduckgo / organic |Organic Search |/teams/uruguay |7 |0 |
+| duckduckgo / organic |Organic Search |/teams/usa |6 |2 |
+| bing / organic |Organic Search |/teams/norway |6 |1 |
+| (direct) / (none) |Direct |/teams/argentina |5 |1 |
+| (direct) / (none) |Direct |/teams/iran |5 |0 |
 
 ## URL Inspection Summary
 
 | URL |Coverage |Indexing |Fetch |Google canonical |Last crawl |Error |
 | --- |--- |--- |--- |--- |--- |--- |
-| https://www.wc26chances.com/ |Duplicate, Google chose different canonical than user |INDEXING_ALLOWED |SUCCESSFUL |https://wc26chances.com/ |2026-06-15T21:50:58Z | |
+| https://www.wc26chances.com/ |Duplicate, Google chose different canonical than user |INDEXING_ALLOWED |SUCCESSFUL |https://wc26chances.com/ |2026-07-03T20:13:36Z | |
 | https://www.wc26chances.com/world-cup-2026-games-today |Discovered - currently not indexed |INDEXING_STATE_UNSPECIFIED |PAGE_FETCH_STATE_UNSPECIFIED |n/a |n/a | |
-| https://www.wc26chances.com/teams/argentina |Submitted and indexed |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/teams/argentina |2026-06-10T04:16:23Z | |
+| https://www.wc26chances.com/teams/argentina |Submitted and indexed |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/teams/argentina |2026-06-28T21:37:20Z | |
 | https://www.wc26chances.com/teams/usa |Submitted and indexed |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/teams/usa |2026-05-31T02:10:41Z | |
 | https://www.wc26chances.com/world-cup-2026-chances-by-team |Submitted and indexed |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/world-cup-2026-chances-by-team |2026-06-02T02:33:57Z | |
-| https://www.wc26chances.com/matches/netherlands-vs-japan-world-cup-2026-match-10 |Discovered - currently not indexed |INDEXING_STATE_UNSPECIFIED |PAGE_FETCH_STATE_UNSPECIFIED |n/a |n/a | |
+| https://www.wc26chances.com/matches/netherlands-vs-japan-world-cup-2026-match-10 |URL is unknown to Google |INDEXING_STATE_UNSPECIFIED |PAGE_FETCH_STATE_UNSPECIFIED |n/a |n/a | |
 | https://www.wc26chances.com/matches/argentina-vs-algeria-world-cup-2026-match-19 |Discovered - currently not indexed |INDEXING_STATE_UNSPECIFIED |PAGE_FETCH_STATE_UNSPECIFIED |n/a |n/a | |
 | https://www.wc26chances.com/cities/dallas |Discovered - currently not indexed |INDEXING_STATE_UNSPECIFIED |PAGE_FETCH_STATE_UNSPECIFIED |n/a |n/a | |
-| https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |Page with redirect |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/teams/argentina |2026-06-10T04:16:23Z | |
+| https://www.wc26chances.com/market/will-argentina-win-the-2026-fifa-world-cup |Page with redirect |INDEXING_ALLOWED |SUCCESSFUL |https://www.wc26chances.com/teams/argentina |2026-06-28T21:37:20Z | |
 
 ## AI Loop Handoff
 
