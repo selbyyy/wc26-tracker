@@ -1586,6 +1586,53 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.
 
+## 2026-07-14 15:05 CST - Chance Trust Layer Recovery
+
+### Inputs
+- User concern: World Cup is nearly over, the site still has 0 Google clicks, and the chances data needs enough credibility to convert visitors.
+- Reviewed current probability implementation in `lib/probability-tree.ts` and team-page presentation in `app/teams/[slug]/page.tsx`.
+- Latest sensor state from the same day: 0 / 100 Google clicks, 380 impressions, average position 14.7, and `/teams/argentina` ranking on page one for multiple quarterfinal and semifinal chance queries.
+
+### Observations
+- The existing model is a static planning model: hand-maintained team strength, several group forecast overrides, and a stage penalty formula over the confirmed bracket.
+- It is not yet a live result model, betting-odds model, or externally sourced forecast.
+- The Argentina page ranked for semifinal and quarterfinal chance searches but did not directly surface a quarterfinal/semifinal/final/champion chance ladder above the route cards.
+- The phrase `Route odds` risked overclaiming because the underlying data is not live odds.
+
+### Decision
+- Stop treating this as a pure SEO waiting problem. The urgent product bottleneck is trust: a user who lands from a chance query needs a clear probability answer, model caveat, and next action.
+- Broaden the active Argentina CTR experiment into a trust-and-conversion recovery experiment, accepting that this introduces a page-content change because the tournament window is short.
+
+### Actions Taken
+- Added `getTeamStageChances()` to compute reach-knockouts, quarterfinal, semifinal, final, and champion estimates from the existing route tree.
+- Added a chance ladder to team pages, surfaced near the top of the page.
+- Changed the hero copy to answer quarterfinal and semifinal chance intent directly.
+- Renamed `Route odds` to `Route model`.
+- Added model notes with current model version, July 14 update date, and explicit guidance that the model is for route planning rather than live betting odds.
+- Recorded the trust-layer opportunity and EXP-011.
+
+### Files Changed
+- `lib/probability-tree.ts`
+- `app/teams/[slug]/page.tsx`
+- `ops/experiments.md`
+- `ops/seo-opportunity-log.md`
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run lint` passed.
+- `npm run build` passed, generating 148 static pages.
+
+### Expected Impact
+- The already-indexed Argentina page should better satisfy the exact queries now ranking on page one.
+- Visitors should see a concrete probability ladder before the planning CTA, improving trust and conversion potential.
+- Clearer model labelling should reduce bounce from users expecting live odds while preserving chances-query relevance.
+
+### Follow-Up
+- Recheck production deployment for the new chance ladder.
+- Monitor Argentina CTR, engagement, and route-alert clicks for 2-7 days.
+- Next model upgrade should ingest live results or an external rating/odds baseline before claiming higher predictive accuracy.
+
 ## 2026-07-14 10:05 CST - Daily Growth Loop, Argentina CTR Experiment
 
 ### Inputs

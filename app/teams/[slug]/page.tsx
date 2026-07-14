@@ -11,7 +11,7 @@ import {
   getTeamBySlugFromSchedule,
   getTeamMatches,
 } from '@/lib/schedule';
-import { getTeamGroupForecast, getTeamProbabilityTree } from '@/lib/probability-tree';
+import { getTeamGroupForecast, getTeamProbabilityTree, getTeamStageChances } from '@/lib/probability-tree';
 
 export const dynamic = 'force-static';
 
@@ -73,7 +73,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
   const matches = getTeamMatches(team);
   const group = getGroupForTeam(team);
   const groupForecast = getTeamGroupForecast(team);
-  const advanceChance = 100 - groupForecast.out;
+  const stageChances = getTeamStageChances(team);
   const probabilityTree = getTeamProbabilityTree(team);
   const cities = Array.from(new Set(matches.map((match) => match.city)));
   const firstMatch = matches[0];
@@ -155,14 +155,15 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
           <div className="grid gap-8 md:grid-cols-[1fr_420px] md:items-end">
             <div>
               <p className="inline-flex rounded-full bg-[#ffd447] px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-[#102033]">
-                {advanceChance}% modelled chance to reach the knockout stage
+                {stageChances.semifinal}% modelled chance to reach the semifinal
               </p>
               <h1 className="mt-4 text-5xl font-black leading-[0.98] tracking-normal md:text-7xl">
                 {team} World Cup 2026 chances.
               </h1>
               <p className="mt-5 max-w-3xl text-xl leading-8 text-white/85">
-                The planning model gives {team} a {advanceChance}% chance to get out of Group {group}. Start with
-                the confirmed games against {formatList(opponents)}, then see which cities open up along each route.
+                The route model gives {team} a {stageChances.quarterfinal}% chance to reach the quarterfinal and
+                a {stageChances.semifinal}% chance to reach the semifinal. Start with the confirmed games against
+                {` ${formatList(opponents)}`}, then see which cities open up along each route.
               </p>
             </div>
 
@@ -186,6 +187,33 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b-4 border-[#102033] bg-white">
+        <div className="mx-auto grid max-w-7xl gap-5 px-5 py-6 md:grid-cols-[1fr_0.85fr] md:px-8">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Chance ladder</p>
+            <h2 className="mt-2 text-3xl font-black">How far could {team} go?</h2>
+            <p className="mt-3 max-w-3xl leading-7 text-[#506070]">
+              These are model estimates for route planning. They use the confirmed bracket path plus a static team-strength
+              rating, so they are not live betting odds and they do not yet ingest match results minute by minute.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 md:grid-cols-2 lg:grid-cols-5">
+            {[
+              ['Knockouts', stageChances.reachKnockouts],
+              ['Quarterfinal', stageChances.quarterfinal],
+              ['Semifinal', stageChances.semifinal],
+              ['Final', stageChances.final],
+              ['Champion', stageChances.champion],
+            ].map(([label, value]) => (
+              <div key={label} className="rounded-md border-2 border-[#102033] bg-[#fffaf0] p-3">
+                <p className="text-xs font-black uppercase text-[#667085]">{label}</p>
+                <p className="mt-1 text-3xl font-black text-[#0b7a3b]">{value}%</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -247,7 +275,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
 
       <section className="border-y-4 border-[#102033] bg-[#ffd447]">
         <div className="mx-auto max-w-7xl px-5 py-8 md:px-8">
-          <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Route odds</p>
+          <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e52b2f]">Route model</p>
           <h2 className="mt-2 text-4xl font-black">How could {team} get through?</h2>
           <p className="mt-3 max-w-4xl text-lg leading-7 text-[#3d3b23]">
             This is a simple model built on top of the official bracket. Treat it as a planning guide, not a prediction
@@ -382,11 +410,11 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
 
       <section className="mx-auto max-w-7xl px-5 py-8 md:px-8">
         <div className="rounded-md bg-[#102033] p-6 text-white">
-          <p className="text-sm font-black uppercase tracking-[0.16em] text-[#ffd447]">What this page is for</p>
-          <h2 className="mt-2 text-3xl font-black">This page is for quick planning.</h2>
+          <p className="text-sm font-black uppercase tracking-[0.16em] text-[#ffd447]">Model notes</p>
+          <h2 className="mt-2 text-3xl font-black">Built for decisions, labelled as an estimate.</h2>
           <p className="mt-4 max-w-3xl text-lg leading-8 text-white/75">
-            If you support {team}, start here to see the cities that are already locked in. Tickets, hotels,
-            and odds are useful later, but the first question is simpler: where might you need to be?
+            Current model version: static team strength plus confirmed schedule and bracket routes, updated July 14, 2026.
+            Use it to compare route risk and travel options. Check official ticket, match, and team sources before booking.
           </p>
         </div>
       </section>

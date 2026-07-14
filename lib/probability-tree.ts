@@ -15,6 +15,14 @@ type GroupForecast = {
   out: number;
 };
 
+export type StageChances = {
+  reachKnockouts: number;
+  quarterfinal: number;
+  semifinal: number;
+  final: number;
+  champion: number;
+};
+
 export type PathNode = {
   match: Match;
   arrivalProbability: number;
@@ -191,6 +199,31 @@ export function getTeamProbabilityTree(team: string): PlacementPath[] {
 
 export function getTeamGroupForecast(team: string) {
   return modelGroupForecast(team);
+}
+
+export function getTeamStageChances(team: string): StageChances {
+  const forecast = modelGroupForecast(team);
+  const tree = getTeamProbabilityTree(team);
+  const chanceForStage = (stage: Match['stage']) => round1(
+    tree.reduce((total, path) => {
+      const node = path.nodes.find((candidate) => candidate.match.stage === stage);
+      return total + (node?.arrivalProbability ?? 0);
+    }, 0),
+  );
+  const champion = round1(
+    tree.reduce((total, path) => {
+      const finalNode = path.nodes.find((candidate) => candidate.match.stage === 'Final');
+      return total + (finalNode?.winTotalProbability ?? 0);
+    }, 0),
+  );
+
+  return {
+    reachKnockouts: round1(100 - forecast.out),
+    quarterfinal: chanceForStage('Quarterfinal'),
+    semifinal: chanceForStage('Semifinal'),
+    final: chanceForStage('Final'),
+    champion,
+  };
 }
 
 export function getFeaturedTreeTeams() {
