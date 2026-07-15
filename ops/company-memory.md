@@ -1586,6 +1586,63 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.
 
+## 2026-07-15 10:07 CST - Daily Growth Loop, Trust Layer Measurement Window
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and July company memory.
+- Ran `npm run sensors:refresh` to pull Search Console, GA4 page/event/acquisition, and URL Inspection data.
+- Checked production `/teams/argentina`, sitemap, robots.txt, `/world-cup-2026-games-today`, and the Argentina vs Algeria match page.
+
+### Observations
+- Google API access is working.
+- Search Console returned 85 rows, GA4 pages 62 rows, GA4 events 45 rows, GA4 acquisition 175 rows, and URL Inspection 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions are 378, CTR remains 0.0%, and weighted average position is 14.6.
+- `/teams/argentina` remains the main Google surface with 318 impressions and 0 clicks.
+- Top Argentina chance queries remain page-one or near-page-one: semifinal chance terms at positions 6.5, 8.8, and 9.0; quarterfinal chance terms at positions 8.0, 8.9, 7.6, and 9.1; knockout chance at position 7.3.
+- GA4 reports 69 pageviews/sessions, 300 planning-action-panel views, and 4 commercial or route-alert clicks.
+- Acquisition still comes from direct plus Bing and DuckDuckGo organic; no material Google click or Reddit referral signal is visible in the snapshot.
+- URL Inspection confirms `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` are indexed.
+- `/world-cup-2026-games-today`, Netherlands vs Japan, and `/cities/dallas` remain discovered but not indexed.
+- `/matches/argentina-vs-algeria-world-cup-2026-match-19` regressed from discovered to unknown to Google, even though production returns HTTP 200 and the URL is present in the sitemap.
+- Production Argentina page is live with the trust-layer elements: `Chance ladder`, `Route model`, and `Built for decisions`.
+- Production sitemap contains 143 URLs and includes the priority URLs. Robots allows crawling and declares the sitemap.
+
+### Decision
+- Do not change product code, metadata, internal links, or CTAs today.
+- The trust-layer update shipped less than 24 hours ago; changing Argentina again would confound EXP-010 and EXP-011 before Google has had time to recrawl and users have had time to react.
+- The biggest bottleneck remains zero CTR on indexed Argentina chance queries, with a secondary indexing problem for current-slate and match/city pages.
+
+### Actions Taken
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh Search Console, GA4, acquisition, and URL Inspection data.
+- Verified production Argentina page deployment and priority URL crawlability.
+- Recorded this daily loop in company memory.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and refreshed all five sensor inputs.
+- Production Argentina page check passed with HTTP 200 and the trust-layer copy present.
+- Production sitemap check passed with 143 URLs and the priority URLs present.
+- Production robots.txt check passed.
+- Production Argentina vs Algeria match page check passed with HTTP 200.
+- `git diff --check` pending after this entry is written.
+- No lint or build run because no product code changed.
+
+### Expected Impact
+- Preserves a clean measurement window for the July 14 CTR and trust-layer changes.
+- Keeps the sensor state current without adding noisy page churn during the final tournament window.
+- Confirms that Google can crawl the priority match page even though URL Inspection currently reports it unknown.
+
+### Follow-Up
+- Monitor Argentina CTR and clicks daily for 2-7 days before another Argentina page change.
+- If Argentina remains 300+ impressions and 0 clicks after the trust-layer recrawl, consider a sharper title test or SERP snippet review.
+- Continue manual Search Console indexing requests for `/world-cup-2026-games-today`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
+- Next material product improvement should be a live/external model baseline, not another static page expansion.
+
 ## 2026-07-14 15:05 CST - Chance Trust Layer Recovery
 
 ### Inputs
