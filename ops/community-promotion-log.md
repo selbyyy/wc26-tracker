@@ -18,6 +18,7 @@ send unsolicited promotional messages.
 | 2026-06-14 | Reddit / football travel communities | Fresh match-day or "what games are today?" questions | Fans need the current slate quickly now that the tournament is live | Answer the exact day's schedule first, then disclose and link `/world-cup-2026-games-today` only if it saves the reader work | High | Human-reviewed draft ready |
 | 2026-06-25 | Reddit / football and ticket communities | Fresh "can this team qualify?", "who do they play next?", or "where would they go next?" questions | Fans need a clear split between confirmed schedule facts and conditional knockout routes during final group matches | Answer the exact team question first, disclose site ownership, and link the relevant team page only if it saves the reader from manually checking the bracket and host cities | High | Human-reviewed draft ready |
 | 2026-06-27 | Reddit / football and ticket communities | Fresh Round-of-32 matchup, city, or travel questions | Fans will shift from possible routes to confirmed knockout matchups and host-city logistics | Answer the confirmed matchup/city first, disclose site ownership, and link a team/city/match page only when it replaces manual bracket lookup | High | Human-reviewed draft ready |
+| 2026-07-17 | Reddit / football and ticket communities | Fresh semifinal/final/champion chances, route, or travel questions | Fans are asking high-intent "can they win", "where is the final", and "is this worth a trip" questions near the last tournament weekend | Answer with the model caveat first, then link a relevant team/chances page only when it directly saves a bracket or route lookup | High | Human-reviewed draft ready |
 
 ## Drafts
 
@@ -58,6 +59,22 @@ For [MATCH_OR_TEAM], I would separate this into two decisions:
 I maintain a small planning page for this and I'm the site owner, so this is not official FIFA info, just a shortcut for schedule + city lookup: [RELEVANT_URL]
 
 If you're buying tickets, I would still verify the final listing on FIFA or your ticket platform before booking travel.
+```
+
+### 2026-07-17 final-week chances / route reply
+
+Use only in a fresh thread where someone asks about a specific team's semifinal, final, champion, or last-minute travel chances. Replace `[TEAM]`, `[TEAM_URL]`, and `[SPECIFIC_CHANCE]` before publishing.
+
+```text
+For [TEAM], I would separate this into three things:
+
+1. Confirmed facts: next match, city, stadium, and possible final/third-place route.
+2. Model estimate: [SPECIFIC_CHANCE]. Treat it as a planning estimate, not live betting odds.
+3. Booking decision: only the confirmed next match is fixed; any later city is still conditional.
+
+I maintain a small planning model for this and I'm the site owner, so this is not official FIFA info. The useful part is that it keeps the chance ladder and route cities on one page: [TEAM_URL]
+
+Before buying anything, verify the match listing and ticket status on FIFA or your ticket platform.
 ```
 
 ## Community Map
