@@ -1586,6 +1586,67 @@ Do not treat this as a changelog. A changelog says what changed. Company memory 
 - Also inspect/request indexing for `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
 - If Google clicks remain 0 after manual indexing attempts, prioritize human-reviewed distribution to fresh match-day/ticket/travel questions rather than more on-site expansion.
 
+## 2026-07-18 11:44 CST - Daily Growth Loop, Argentina Recrawl Blocker
+
+### Inputs
+- Automated daily WC26 Chances growth loop for the first 100 Google organic clicks.
+- Read business goals, AI loop policy, quality gates, experiments, SEO opportunity log, community promotion log, tournament milestones, 100-click sprint, and July company memory.
+- First resolved the prior local Git state: the 2026-07-17 commit was still ahead of origin because the prior push timed out. Retried `git push` successfully before today's sensor run.
+- Ran `npm run sensors:refresh` to pull Search Console, GA4 page/event/acquisition, and URL Inspection data.
+- Checked production `/teams/argentina`, sitemap, robots.txt, `/world-cup-2026-games-today`, and the Argentina vs Algeria match page.
+
+### Observations
+- Google API access is working.
+- Search Console returned 89 rows, GA4 pages 61 rows, GA4 events 44 rows, GA4 acquisition 166 rows, and URL Inspection 9 rows.
+- 100-click sprint progress remains 0 / 100 Google clicks.
+- Google impressions are 391, CTR remains 0.0%, and weighted average position is 14.2.
+- `/teams/argentina` remains the main Google surface with 330 impressions and 0 clicks.
+- Top Argentina chance queries remain stable: semifinal chance terms at positions 6.5, 8.8, and 9.0; quarterfinal chance terms at positions 8.0, 8.9, 7.6, and 9.1; knockout chance at position 7.3.
+- A new repeatable long-tail signal appeared: `argentina next match win chances 2026` with 2 impressions at position 8.0 on `/teams/argentina`.
+- GA4 reports 62 pageviews/sessions, 284 planning-action-panel views, and 4 commercial or route-alert clicks.
+- Acquisition still comes from direct plus Bing and DuckDuckGo organic; no material Google click or Reddit referral signal is visible.
+- URL Inspection confirms the homepage, `/teams/argentina`, `/teams/usa`, and `/world-cup-2026-chances-by-team` are indexed.
+- The Argentina URL Inspection last crawl is still 2026-06-28T21:37:20Z, before the July 14 metadata and trust-layer changes. This means the Google SERP may not yet reflect the updated title/page content.
+- `/world-cup-2026-games-today`, Netherlands vs Japan, Argentina vs Algeria, and `/cities/dallas` remain discovered but not indexed.
+- Production Argentina page is live with `Chance ladder`, `Route model`, and `Built for decisions`. Production response is HTTP 200.
+- Production sitemap contains 143 URLs and includes the priority URLs. Robots allows crawling and declares the sitemap.
+
+### Decision
+- Do not change product code, metadata, internal links, or CTAs today.
+- The primary blocker is no Google recrawl of the indexed Argentina page since the July 14 changes, not absence of deploy or crawlability.
+- Additional page edits would not address the current problem and would confound EXP-010/EXP-011 before Google has even fetched the changed page.
+- The practical next action remains manual Search Console indexing request for `/teams/argentina` plus the current-slate/match/city URLs; external community posts remain human-reviewed only.
+
+### Actions Taken
+- Successfully pushed the previously unpushed July 17 commit.
+- Regenerated `ops/weekly-reports/seo-sensor-snapshot.md` with fresh Search Console, GA4, acquisition, and URL Inspection data.
+- Verified production Argentina page deployment and priority URL crawlability.
+- Recorded this daily loop in company memory.
+
+### Files Changed
+- `ops/weekly-reports/seo-sensor-snapshot.md`
+- `ops/company-memory.md`
+
+### Quality Gates
+- `npm run sensors:refresh` passed and refreshed all five sensor inputs.
+- Production Argentina page check passed with HTTP 200 and the trust-layer copy present.
+- Production sitemap check passed with 143 URLs and the priority URLs present.
+- Production robots.txt check passed.
+- Production Argentina vs Algeria and today-page checks passed with HTTP 200.
+- `git diff --check` pending after this entry is written.
+- No lint or build run because no product code changed.
+
+### Expected Impact
+- Keeps the daily sensor state current while avoiding page churn during the final tournament window.
+- Clarifies that the zero-click Argentina experiment cannot be judged until Google recrawls the changed page or the SERP snippet is manually inspected.
+- Preserves the final-week community draft as a human-reviewed distribution option without automated posting.
+
+### Follow-Up
+- Manually request indexing in Search Console for `/teams/argentina` first, then `/world-cup-2026-games-today`, `/matches/argentina-vs-algeria-world-cup-2026-match-19`, `/matches/netherlands-vs-japan-world-cup-2026-match-10`, and `/cities/dallas`.
+- If Argentina remains 300+ impressions and 0 clicks after a post-July-14 crawl, run a sharper SERP title/snippet test or manually inspect the live SERP.
+- Use the final-week community draft only in fresh, relevant threads where it directly answers the question and disclosure is included.
+- Next material product improvement should be a live/external model baseline, not another static page expansion.
+
 ## 2026-07-17 10:07 CST - Daily Growth Loop, Final-Week Distribution Asset
 
 ### Inputs
